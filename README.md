@@ -1,2 +1,11 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/Bwpk2ByU)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=17427820&assignment_repo_type=AssignmentRepo)
+CP353004 Software Engineering 
+สมาชิกกลุ่ม Group 4 Sec 2
+มีสมาชิกดังนี้
+643021219-4	นายคัจฉพัฒน ศรีนวล
+653380028-0	นางสาวสุวรินทร์ โพธิ์ตาก
+653380131-7	นายธนธรณ์ จูหลาย
+653380285-0	นายอิทธิกร ฮึ้งเบี้ยว
+653380279-5	นางสาวมุตธิตา จันดาวงค์
+653380152-9	นายศุภสัณฑ์ มะนิสสา
+653380158-7	นางสาวไอรินทร์ เมษะสิทธิโรจน์
+653380265-6	นายณรงค์ฤทธิ์ พาอามาศ
