@@ -1,0 +1,58 @@
+services:
+  php:
+    image: php:8.2-apache  # ✅ ใช้ PHP 8 เวอร์ชันล่าสุดที่เสถียร
+    container_name: php_dev
+    ports:
+      - "80:8000"
+    volumes:
+      - ../:/var/www/html
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      APACHE_DOCUMENT_ROOT: /var/www/html
+    command: >
+      bash -c "apt-get update &&
+              apt-get install -y unzip curl git libpng-dev libonig-dev mariadb-client libzip-dev zip &&
+              docker-php-ext-install pdo pdo_mysql mysqli gd zip &&
+              curl -fsSL https://deb.nodesource.com/setup_20.x | bash - &&
+              apt-get install -y nodejs &&
+              npm install -g npm@latest &&
+              curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer &&
+              composer self-update --2.2 &&  # ✅ ใช้ Composer 2.2 เพื่อรองรับ Laravel 8
+              apache2-foreground"
+
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_dev
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: project
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 3
+      start_period: 30s
+      timeout: 5s
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_dev
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: 12345678
+    ports:
+      - "8081:80"
+
+volumes:
+  mysql_data:

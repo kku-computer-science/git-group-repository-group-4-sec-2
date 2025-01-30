@@ -1,0 +1,24 @@
+{
+    "name": "PHP Development Environment",
+    "dockerComposeFile": "./docker-compose.yml",
+    "service": "php",
+    "workspaceFolder": "/var/www/html",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "felixfbecker.php-intellisense",
+                "bmewburn.vscode-intelephense-client",
+                "ms-azuretools.vscode-docker"
+            ],
+            "settings": {
+                "php.validate.executablePath": "/usr/local/bin/php"
+            }
+        }
+    },
+    "postCreateCommand": "bash -c 'while ! command -v composer &> /dev/null; do echo \"Waiting for Composer...\"; sleep 2; done; cd project && composer install && npm install && php artisan migrate'"
+}
+
+// composer install
+// npm install 
+// php artisan migrate
+// php artisan serve --host=0.0.0.0 --port=8000
