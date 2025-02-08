@@ -1,5 +1,5 @@
 # CP353004 Software Engineering  
-**Group 4 Sec 2**
+**กลุ่มนี้เป็นส่วนหนึ่งของวิชา CP353004 Software Engineering Group 4 Sec 2 โดยมีสมาชิกทั้งหมด 8 คน**
 
 ---
 
