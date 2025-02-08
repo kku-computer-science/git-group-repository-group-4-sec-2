@@ -20,7 +20,7 @@
     },
     "remoteUser": "sail",
     "postCreateCommand": "chown -R 1000:1000 /var/www/html",
-    "postStartCommand": "mysql -h mysql -u root -p\"n*lYXLK_dIMA\" -D example_app < database.sql"
+    "postStartCommand": "mysql -h mysql -u cs04sec2_cs04sec267 -p\"n*lYXLK_dIMA\" -D cs04sec2_mysql < database.sql"
     // "forwardPorts": [],
     // "runServices": [],
     // "shutdownAction": "none",
