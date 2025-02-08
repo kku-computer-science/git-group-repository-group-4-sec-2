@@ -66,3 +66,6 @@ volumes:
         driver: local
     sail-mysql:
         driver: local
+
+
+# Loaded Configuration File:         C:\tools\php84\php.ini
