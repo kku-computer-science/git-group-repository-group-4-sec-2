@@ -35,10 +35,10 @@
 // ------------------------------------------------------------------------------------------------------------
 
 // for Windows
-// composer update
 // $phpIni = (php --ini | Select-String "Loaded Configuration File").ToString().Split(":")[-1].Trim()
 // (Get-Content $phpIni) -replace ";extension=fileinfo", "extension=fileinfo" `
 //                       -replace ";extension=gd", "extension=gd" `
 //                       -replace ";extension=zip", "extension=zip" | Set-Content $phpIni
 // php -m | findstr /I "fileinfo gd zip"
+// composer update
 // php artisan serve
