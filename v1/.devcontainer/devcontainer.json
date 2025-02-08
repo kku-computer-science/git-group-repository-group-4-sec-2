@@ -18,8 +18,9 @@
             "settings": {}
         }
     },
-    "remoteUser": "sail",
-    // "postCreateCommand": "chown -R 1000:1000 /var/www/html",
+    // "remoteUser": "sail",
+    "remoteUser": "root",
+    "postCreateCommand": "chown -R 1000:1000 /var/www/html",
     "postStartCommand": "mysql -h mysql -u cs04sec2_cs04sec267 -p\"n*lYXLK_dIMA\" -D cs04sec2_mysql < database.sql"
     // "forwardPorts": [],
     // "runServices": [],
@@ -28,17 +29,22 @@
 
 // you must install composer and php in your local machine before running the following commands!! -----------
 
-// for Mac
+// for Mac !!
+
 // composer update
-// php artisan serve
 
 // ------------------------------------------------------------------------------------------------------------
 
-// for Windows
+// for Windows !!
+
 // $phpIni = (php --ini | Select-String "Loaded Configuration File").ToString().Split(":")[-1].Trim()
 // (Get-Content $phpIni) -replace ";extension=fileinfo", "extension=fileinfo" `
 //                       -replace ";extension=gd", "extension=gd" `
 //                       -replace ";extension=zip", "extension=zip" | Set-Content $phpIni
 // php -m | findstr /I "fileinfo gd zip"
 // composer update
+
+
+// ------------------------------------------------------------------------------------------------------------
+
 // php artisan serve
