@@ -1,0 +1,50 @@
+// https://aka.ms/devcontainer.json
+{
+    "name": "Existing Docker Compose (Extend)",
+    "dockerComposeFile": [
+        "../docker-compose.yml"
+    ],
+    "service": "laravel.test",
+    "workspaceFolder": "/var/www/html",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // "mikestead.dotenv",
+                // "amiralizadeh9480.laravel-extra-intellisense",
+                // "ryannaddy.laravel-artisan",
+                // "onecentlin.laravel5-snippets",
+                // "onecentlin.laravel-blade"
+            ],
+            "settings": {}
+        }
+    },
+    // "remoteUser": "sail",
+    "remoteUser": "root",
+    "postCreateCommand": "chown -R 1000:1000 /var/www/html",
+    "postStartCommand": "mysql -h mysql -u cs04sec2_cs04sec267 -p\"n*lYXLK_dIMA\" -D cs04sec2_mysql < database.sql"
+    // "forwardPorts": [],
+    // "runServices": [],
+    // "shutdownAction": "none",
+}
+
+// you must install composer and php in your local machine before running the following commands!! -----------
+
+// for Mac !!
+
+// composer update
+
+// ------------------------------------------------------------------------------------------------------------
+
+// for Windows !!
+
+// $phpIni = (php --ini | Select-String "Loaded Configuration File").ToString().Split(":")[-1].Trim()
+// (Get-Content $phpIni) -replace ";extension=fileinfo", "extension=fileinfo" `
+//                       -replace ";extension=gd", "extension=gd" `
+//                       -replace ";extension=zip", "extension=zip" | Set-Content $phpIni
+// php -m | findstr /I "fileinfo gd zip"
+// composer update
+
+
+// ------------------------------------------------------------------------------------------------------------
+
+// php artisan serve
