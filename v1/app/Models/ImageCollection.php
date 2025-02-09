@@ -11,11 +11,11 @@ class ImageCollection extends Model
 
     protected $table = 'image_collection';
     protected $primaryKey = 'id';
-    public $timestamps = true;
+    public $timestamps = true; // มี `created_at` และ `updated_at`
 
     protected $fillable = ['image', 'highlight_id'];
 
-    // ความสัมพันธ์กับ Highlight
+    // ความสัมพันธ์กับ Highlight (รูปหนึ่งรูปเป็นของ Highlight หนึ่งอัน)
     public function highlight()
     {
         return $this->belongsTo(Highlight::class, 'highlight_id');
