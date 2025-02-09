@@ -44,6 +44,14 @@ use App\Http\Controllers\HighlightController;
 Route::middleware(['auth', 'role:staff'])->group(function () {
     Route::get('/highlights', [HighlightController::class, 'index'])->name('highlights.index');
 });
+
+Route::middleware(['auth', 'role:staff'])->group(function () {
+    Route::get('/highlights/create', [HighlightController::class, 'create'])->name('highlights.create');
+});
+
+Route::middleware(['auth', 'role:staff'])->group(function () {
+    Route::post('/highlights', [HighlightController::class, 'store'])->name('highlights.store');
+});
 /*
 |--------------------------------------------------------------------------
 | Web Routes
