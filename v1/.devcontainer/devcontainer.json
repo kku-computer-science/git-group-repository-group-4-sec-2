@@ -6,11 +6,11 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "streetsidesoftware.code-spell-checker",
-        "mhutchie.git-graph",
-        "bmewburn.vscode-intelephense-client",
-        "amiralizadeh9480.laravel-extra-intellisense",
-        "xdebug.php-debug"
+        // "streetsidesoftware.code-spell-checker",
+        // "mhutchie.git-graph",
+        // "bmewburn.vscode-intelephense-client",
+        // "amiralizadeh9480.laravel-extra-intellisense",
+        // "xdebug.php-debug"
       ]
     }
   },

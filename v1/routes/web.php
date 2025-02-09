@@ -41,9 +41,14 @@ use App\Http\Controllers\TcicallController;
 
 use App\Http\Controllers\HighlightController;
 
-Route::middleware(['auth', 'role:staff'])->group(function () {
-    Route::get('/highlights', [HighlightController::class, 'index'])->name('highlights.index');
+Route::prefix('highlights')->group(function () {
+    Route::get('/', [HighlightController::class, 'index'])->name('highlights.index');
+    Route::get('/create', [HighlightController::class, 'create'])->name('highlights.create');
+    Route::put('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.add');
+    Route::put('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.remove');
 });
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
