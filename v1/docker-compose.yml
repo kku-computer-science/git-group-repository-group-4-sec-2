@@ -1,68 +1,61 @@
 services:
-    laravel.test:
-        build:
-            context: ./vendor/laravel/sail/runtimes/8.2
-            dockerfile: Dockerfile
-            args:
-                WWWGROUP: '${WWWGROUP}'
-        image: sail-8.1/app
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
-        ports:
-            - '${APP_PORT:-80}:80'
-        environment:
-            WWWUSER: '${WWWUSER}'
-            LARAVEL_SAIL: 1
-            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
-            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
-        volumes:
-            - '.:/var/www/html'
-        networks:
-            - sail
-        depends_on:
-            - mysql
-    mysql:
-        image: 'mysql/mysql-server:8.0'
-        ports:
-            - '${FORWARD_DB_PORT:-3307}:3306'
-        environment:
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ROOT_HOST: '%'
-            MYSQL_DATABASE: '${DB_DATABASE}'
-            MYSQL_USER: '${DB_USERNAME}'
-            MYSQL_PASSWORD: '${DB_PASSWORD}'
-            MYSQL_ALLOW_EMPTY_PASSWORD: 1
-        volumes:
-            - 'sailmysql:/var/lib/mysql'
-        networks:
-            - sail
-        healthcheck:
-            test:
-                - CMD
-                - mysqladmin
-                - ping
-                - '-p${DB_PASSWORD}'
-            retries: 3
-            timeout: 5s
-    phpmyadmin:
-        image: phpmyadmin
-        restart: always
-        ports:
-            - '8080:80'
-        environment:
-            PMA_ARBITRARY: 1
-            PMA_HOST: mysql
-            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-        depends_on:
-            - mysql
-        networks:
-            - sail
+  php:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - app_network
+    depends_on:
+      - mysql
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - './:/var/www/html'
+    # volumes:
+    #   - ./InitialProject/src/storage:/var/www/html/InitialProject/src/storage
+    # environment:
+    #     TRUSTED_PROXIES: "*"
+      # APP_URL=http://localhost:8000
+    #   SESSION_DOMAIN=localhost
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always # Corrected the restart policy
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "8090:80"
+    depends_on:
+      - mysql
+    networks:
+      - app_network
 
 networks:
-    sail:
-        driver: bridge
+  app_network:
+    driver: bridge
+
 volumes:
-    sailmysql:
-        driver: local
-    sail-mysql:
-        driver: local
+  db_data:
+  # laravel_storage:

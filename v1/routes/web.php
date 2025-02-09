@@ -38,6 +38,12 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\TcicallController;
+
+use App\Http\Controllers\HighlightController;
+
+Route::middleware(['auth', 'role:staff'])->group(function () {
+    Route::get('/highlights', [HighlightController::class, 'index'])->name('highlights.index');
+});
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,6 +54,7 @@ use App\Http\Controllers\TcicallController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 
 
@@ -64,6 +71,27 @@ use App\Http\Controllers\TcicallController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
+
+// clear cache
+Route::get('/clear-all', function () {
+    Artisan::call('cache:clear');     // Clear Cache facade
+    Artisan::call('route:clear');     // Clear Route cache 
+    Artisan::call('view:clear');      // Clear View cache
+    Artisan::call('config:clear');    // Clear Config cache
+
+    Artisan::call('optimize');        // Reoptimize class loader
+    Artisan::call('route:cache');     // Cache Routes
+    Artisan::call('config:cache');    // Cache Config
+
+    return response()->json([
+        'cache' => 'Cache facade cleared',
+        'route' => 'Routes cached',
+        'view' => 'View cache cleared',
+        'config' => 'Config cached',
+        'optimize' => 'Class loader optimized'
+    ], 200);
+});
 
 
 Route::middleware(['middleware' => 'PreventBackHistory'])->group(function () {
@@ -91,6 +119,8 @@ Route::get('lang/{lang}', ['as' => 'langswitch', 'uses' => 'App\Http\Controllers
 Route::get('/export', [ExportPaperController::class, 'exportUsers'])->name('export-papers');
 Route::get('bib/{id}', [BibtexController::class, 'getbib'])->name('bibtex');
 
+
+
 //Route::get('bib/{id}', [BibtexController::class, 'index'])->name('bibtex');
 //Route::get('change/lang', [LocalizationController::class,'lang_change'])->name('LangChange');
 
@@ -99,7 +129,7 @@ Route::get('/callscopus/{id}', [App\Http\Controllers\ScopuscallController::class
 
 Route::group(['middleware' => ['isAdmin', 'auth', 'PreventBackHistory']], function () {
     //Route::post('change-profile-picture',[ProfileuserController::class,'updatePicture'])->name('adminPictureUpdate');
-    
+
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
@@ -138,6 +168,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('/ajax-get-subcat', [UserController::class, 'getCategory']);
     Route::get('tests', [TestController::class, 'index']); //call department
     Route::get('tests/{id}', [TestController::class, 'getCategory'])->name('tests'); //call program
+
 
 });
 

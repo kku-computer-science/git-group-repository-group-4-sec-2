@@ -1,32 +1,18 @@
-// https://aka.ms/devcontainer.json
 {
-    "name": "Existing Docker Compose (Extend)",
-    "dockerComposeFile": [
-        "../docker-compose.yml"
-    ],
-    "service": "laravel.test",
-    "workspaceFolder": "/var/www/html",
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                // "mikestead.dotenv",
-                // "amiralizadeh9480.laravel-extra-intellisense",
-                // "ryannaddy.laravel-artisan",
-                // "onecentlin.laravel5-snippets",
-                // "onecentlin.laravel-blade"
-            ],
-            "settings": {}
-        }
-    },
-    "remoteUser": "sail",
-    "postCreateCommand": "chown -R 1000:1000 /var/www/html",
-    "postStartCommand": "mysql -h mysql -u cs04sec2_cs04sec267 -p\"n*lYXLK_dIMA\" -D cs04sec2_mysql < database.sql"
-    // "forwardPorts": [],
-    // "runServices": [],
-    // "shutdownAction": "none",
+  "name": "PHP",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "php",
+  "workspaceFolder": "/var/www/html",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "streetsidesoftware.code-spell-checker",
+        "mhutchie.git-graph",
+        "bmewburn.vscode-intelephense-client",
+        "amiralizadeh9480.laravel-extra-intellisense",
+        "xdebug.php-debug"
+      ]
+    }
+  },
+  "postCreateCommand": "git config --global --add safe.directory /var/www/html && composer update && mysql -h mysql -u cs04sec2_cs04sec267 -p\"n*lYXLK_dIMA\" -D cs04sec2_mysql < database2.sql"
 }
-
-// composer update
-// npm i
-// php artisan migrate
-// php artisan serve

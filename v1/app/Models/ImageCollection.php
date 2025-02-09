@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class ImageCollection extends Model
 {
     use HasFactory;
 
-    protected $table = 'category';
+    protected $table = 'image_collection';
     protected $primaryKey = 'id';
     public $timestamps = true;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['image', 'highlight_id'];
 
     // ความสัมพันธ์กับ Highlight
-    public function highlights()
+    public function highlight()
     {
-        return $this->hasMany(Highlight::class, 'category_id');
+        return $this->belongsTo(Highlight::class, 'highlight_id');
     }
 }
