@@ -376,10 +376,15 @@ CREATE TABLE `highlight` (
   `description` varchar(45) DEFAULT NULL,
   `status` tinyint DEFAULT NULL,
   `category_id` int NOT NULL,
+  `user_id` bigint unsigned DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`,`category_id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_highlight_category1_idx` (`category_id`),
-  CONSTRAINT `fk_highlight_category1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`)
+  KEY `fk_highlight_user` (`user_id`),
+  CONSTRAINT `fk_highlight_category1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
+  CONSTRAINT `fk_highlight_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -403,6 +408,8 @@ CREATE TABLE `image_collection` (
   `id` int NOT NULL AUTO_INCREMENT,
   `image` varchar(45) DEFAULT NULL,
   `highlight_id` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idimage_collection_UNIQUE` (`id`),
   KEY `fk_image_collection_highlight1_idx` (`highlight_id`),
@@ -1120,4 +1127,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-09 23:10:15
+-- Dump completed on 2025-02-10  1:43:08
