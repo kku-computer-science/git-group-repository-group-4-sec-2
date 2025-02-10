@@ -57,9 +57,11 @@ Go to Login Page
     # 1. เปิดเว็บไซต์ที่หน้าแรก
     Location Should Be    ${URL}
     # 2. คลิกปุ่ม Login
-    Click Link    xpath=//a[@class='btn-solid-sm' and text()='Login']
+    # Click Link    xpath=//a[@class='btn-solid-sm' and text()='Login']
+    Click Link    xpath=//a[@class='btn btn-primary' and text()='Login']
+    # <a class="btn btn-primary" href="http://localhost/login">Login</a>
     # สลับไปยังแท็บใหม่ถ้ามี target="_blank"
-    Switch Window    NEW
+    # Switch Window    NEW
     Location Should Be    ${LOGIN_URL}
     Wait Until Page Contains    Account Login    ${DELAY}
 
