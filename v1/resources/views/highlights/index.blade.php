@@ -26,9 +26,9 @@
                 <td>{{ $highlight->id }}</td>
                 <td>
                     @if($highlight->image)
-                        <img src="{{ asset('storage/' . $highlight->image) }}" width="120">
+                    <img src="{{ asset('storage/' . $highlight->image) }}" width="120">
                     @else
-                        No Image
+                    No Image
                     @endif
                 </td>
                 <td>{{ $highlight->title }}</td>
@@ -42,7 +42,7 @@
                     <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary">
                         <i class="fas fa-edit"></i>
                     </a>
-                    
+
                     <!-- ปุ่ม Delete -->
                     <form action="{{ route('highlights.destroy', $highlight->id) }}" method="POST" style="display:inline;">
                         @csrf
@@ -84,9 +84,9 @@
                 <td>{{ $highlight->id }}</td>
                 <td>
                     @if($highlight->image)
-                        <img src="{{ asset('storage/' . $highlight->image) }}" width="120">
+                    <img src="{{ asset('storage/' . $highlight->image) }}" width="120">
                     @else
-                        No Image
+                    No Image
                     @endif
                 </td>
                 <td>{{ $highlight->title }}</td>
@@ -100,7 +100,7 @@
                     <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary">
                         <i class="fas fa-edit"></i>
                     </a>
-                    
+
                     <!-- ปุ่ม Delete -->
                     <form action="{{ route('highlights.destroy', $highlight->id) }}" method="POST" style="display:inline;">
                         @csrf
@@ -129,6 +129,12 @@
     $(document).ready(function() {
         $('#example1').DataTable();
         $('#example2').DataTable();
+    });
+
+    $(document).ready(function() {
+        setTimeout(function() {
+            $(".alert-success").fadeOut("slow");
+        }, 2000);
     });
 </script>
 @endsection
