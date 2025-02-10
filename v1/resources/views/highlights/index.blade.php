@@ -43,13 +43,6 @@
                     <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <form action="{{ route('highlights.deleteHighlightById', $highlight->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this news?')">
-                            <i class="fas fa-trash-alt"></i>  
-                        </button>
-                    </form>
                 </td>
                 <td>
                     <form action="{{ route('highlights.remove', $highlight->id) }}" method="POST">
@@ -100,13 +93,6 @@
                     <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <form action="{{ route('highlights.deleteHighlightById', $highlight->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this news?')">
-                            <i class="fas fa-trash-alt"></i>  
-                        </button>
-                    </form>
                 </td>
                 <td>
                     <form action="{{ route('highlights.add', $highlight->id) }}" method="POST">
@@ -114,7 +100,6 @@
                         <button type="submit" class="btn btn-success">ADD</button>
                     </form>
                 </td>
-                
             </tr>
             @endforeach
         </tbody>
