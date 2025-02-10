@@ -246,6 +246,9 @@ class HighlightController extends Controller
 
 public function update(Request $request, $id)
 {
+    Log::info("🛠 UPDATE FUNCTION CALLED FOR HIGHLIGHT ID: " . $id);
+    Log::info("🔍 REQUEST DATA:", $request->all());
+
     $request->validate([
         'title' => 'required|string|max:255',
         'category_id' => 'required|exists:category,id',

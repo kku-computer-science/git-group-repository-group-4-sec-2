@@ -22,6 +22,19 @@
             <input type="text" class="form-control" name="title" value="{{ $highlight->title }}" required>
         </div>
 
+        <!-- ✅ Category (Fixed Missing Category Input) -->
+        <div class="mb-3">
+            <label class="form-label">Category</label>
+            <select class="form-control" name="category_id" required>
+                <option value="">Select Category</option>
+                @foreach ($categories as $category)
+                <option value="{{ $category->id }}" {{ $highlight->category_id == $category->id ? 'selected' : '' }}>
+                    {{ $category->name }}
+                </option>
+                @endforeach
+            </select>
+        </div>
+
         <!-- ✅ Image Album (Multiple) -->
         <div class="mb-3">
             <label class="form-label">Upload New Image Album</label>
@@ -66,6 +79,11 @@
                 // Hide the image preview instead of deleting it immediately
                 container.style.display = 'none';
             });
+        });
+
+        // ✅ Debugging: Check deleted images before submission
+        document.querySelector('form').addEventListener('submit', function(event) {
+            console.log("Submitting deletedImages:", document.getElementById('deletedImagesInput').value);
         });
     });
 </script>
