@@ -27,6 +27,8 @@ ${STAFF_USERNAME}      staff@gmail.com
 ${STAFF_PASSWORD}      123456789
 ${RESEARCHER_USERNAME}      thanaphon@kku.ac.th
 ${RESEARCHER_PASSWORD}      123456789
+${INVALID_PASSWORD}    111111111
+${error_message}     Login Failed: Your user ID or password is incorrect
 ${DELAY}    2
 
 *** Keywords ***

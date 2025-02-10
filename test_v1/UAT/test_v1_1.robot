@@ -15,7 +15,7 @@ Test Login Role Admin Success
     Login Admin
     Verify Admin Dashboard
     Close Browser
-    Close Browser
+
 
 Test Login Role Staff Success
     [Documentation]    ทดสอบการ Login ของ Staff สำเร็จ
@@ -23,7 +23,7 @@ Test Login Role Staff Success
     Login Staff
     Verify Staff Dashboard
     Close Browser
-    Close Browser
+
 
 Test Login Role Researcher Success
     [Documentation]    ทดสอบการ Login ของ Researcher สำเร็จ
@@ -31,7 +31,7 @@ Test Login Role Researcher Success
     Login Researcher
     Verify Researcher Dashboard
     Close Browser
-    Close Browser
+
 
 Test Go to Manage Highlights Page
     [Documentation]    ทดสอบการ Login ของ Staff สำเร็จ และเข้าหน้า Manage Highlights
@@ -43,4 +43,4 @@ Test Go to Manage Highlights Page
     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    ${DELAY}
     Page Should Contain    Manage Highlights
     Close Browser
-    Close Browser
+
