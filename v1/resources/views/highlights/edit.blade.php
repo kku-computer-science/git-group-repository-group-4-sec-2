@@ -7,7 +7,7 @@
     <div class="card p-4">
         <div class="card-body">
             <h4 class="card-title">Edit News</h4>
-            <form action="{{ route('highlights.update', $highlight->id) }}" method="POST" enctype="multipart/form-data">
+            <form id="updateForm" action="{{ route('highlights.update', $highlight->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf @method('PUT')
 
                 <!-- ✅ Cover Image -->
@@ -83,7 +83,7 @@
                 <!-- ✅ Buttons -->
                 <div class="form-group d-flex justify-content-end gap-2">
                     <button type="button" class="btn btn-light" onclick="confirmCancel()">Cancel</button>
-                    <button type="submit" class="btn btn-dark">Update</button>
+                    <button type="button" class="btn btn-dark" onclick="confirmUpdate()">Update</button>
                 </div>
             </form>
         </div>
@@ -100,18 +100,39 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById("coverPreviewImg").src = e.target.result;
-                document.getElementById("coverPlaceholder").classList.add("d-none");
-                document.getElementById("coverPreview").classList.remove("d-none");
+                document.getElementById("coverPlaceholder").style.display = "none"; // Hide placeholder
+                document.getElementById("coverPreview").style.display = "block"; // Show preview
             };
             reader.readAsDataURL(file);
         }
     }
 
+
+    // function removeCoverImage() {
+    //     document.getElementById("cover_image").value = "";
+    //     document.getElementById("coverPreview").classList.add("d-none");
+    //     document.getElementById("coverPlaceholder").classList.remove("d-none");
+    // }
     function removeCoverImage() {
-        document.getElementById("cover_image").value = "";
-        document.getElementById("coverPreview").classList.add("d-none");
-        document.getElementById("coverPlaceholder").classList.remove("d-none");
+        event.stopPropagation();
+        document.getElementById("cover_image").value = ""; // Clear input
+        document.getElementById("coverPreview").style.display = "none"; // Hide preview
+        document.getElementById("coverPlaceholder").style.display = "flex"; // Show placeholder
+
+        // ✅ Force-reset the input to ensure new selections trigger 'change' event
+        let newInput = document.createElement("input");
+        newInput.type = "file";
+        newInput.name = "cover_image";
+        newInput.id = "cover_image";
+        newInput.className = "d-none";
+        newInput.accept = "image/*";
+        newInput.onchange = previewCoverImage;
+
+        // Replace the old input
+        document.getElementById("cover_image").replaceWith(newInput);
     }
+
+
 
     function markImageForDeletion(id, element) {
         deletedImages.push(id);
@@ -172,17 +193,36 @@
 
     function confirmCancel() {
         Swal.fire({
-            title: "Are you sure?",
-            text: "Your changes will be lost!",
+            title: "คุณแน่ใจหรือไม่?",
+            text: "หากยกเลิก ข้อมูลที่กรอกจะหายไป",
             icon: "warning",
+            padding: "1.25rem",
             showCancelButton: true,
             confirmButtonColor: "#d33",
             cancelButtonColor: "#3085d6",
-            confirmButtonText: "Yes, go back!",
-            cancelButtonText: "No, stay here"
+            confirmButtonText: "ใช่, ยกเลิกเลย!",
+            cancelButtonText: "ไม่, กลับไปแก้ไข"
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = "{{ route('highlights.index') }}";
+            }
+        });
+    }
+
+    function confirmUpdate() {
+        Swal.fire({
+            title: "ยืนยันการอัปเดต?",
+            text: "คุณแน่ใจหรือไม่ว่าต้องการอัปเดตข้อมูลนี้",
+            icon: "question",
+            showCancelButton: true,
+            padding: "1.25rem",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ใช่, อัปเดตเลย!",
+            cancelButtonText: "ยกเลิก"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById("updateForm").submit();
             }
         });
     }

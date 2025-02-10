@@ -64,7 +64,7 @@
 
                 <div class="form-group d-flex justify-content-end gap-2">
                     <button type="button" class="btn btn-light" onclick="confirmCancel()">Cancel</button>
-                    <button type="submit" class="btn btn-dark">Save</button>
+                    <button type="submit" class="btn btn-dark" onclick="CreateSuccess()">Save</button>
                 </div>
             </form>
         </div>
@@ -72,7 +72,7 @@
 </div>
 
 <script>
- function confirmCancel() {
+    function confirmCancel() {
         Swal.fire({
             title: "คุณแน่ใจหรือไม่?",
             text: "หากยกเลิก ข้อมูลที่กรอกจะหายไป",
@@ -89,8 +89,8 @@
             }
         });
     }
-    
-function previewCoverImage(event) {
+
+    function previewCoverImage(event) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -157,14 +157,24 @@ function previewCoverImage(event) {
     }
 
     function removeImage(index) {
-        selectedFiles.splice(index, 1); 
-        updateAlbumPreview(); 
+        selectedFiles.splice(index, 1);
+        updateAlbumPreview();
     }
 
     function clearAllImages() {
-        selectedFiles = []; 
+        selectedFiles = [];
         document.getElementById("image_album").value = "";
         updateAlbumPreview();
+    }
+
+    function CreateSuccess() {
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Your news has been saved",
+            showConfirmButton: false,
+            timer: 1500
+        });
     }
 </script>
 
@@ -217,7 +227,7 @@ function previewCoverImage(event) {
         font-size: 14px;
         color: #777;
     }
-    
+
     .image-upload-box.small {
         max-width: 200px;
         height: 100px;
