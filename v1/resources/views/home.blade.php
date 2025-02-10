@@ -72,28 +72,34 @@
 
     <!-- News -->
 
-    <div class="container news">
-        <h3>HIGHLIGHT NEWS</h3>
-        <div class="card-wrapper">
-            <ul class="card-list">
-                @foreach($highlights as $highlight)
-                <li class="card-item">
-                    <a href="{{ route('highlight.show', $highlight->id) }}" class="card-link">
-                        <img src="{{ asset('storage/' . $highlight->image) }}" class="d-block w-100" 
-                        style="height: 200px; object-fit: cover;" alt="Card Image" class="card-image">
-                        <p class="tag">{{ $highlight->category->name }}</p>
-                        <h6 class="card-title">{{ $highlight->title }}</h6>
-                        <p class="card-description">{{ Str::limit($highlight->description, 100) }}</p>
-                    </a>
-                </li>
-                @endforeach
-            </ul>
-            <div class="arrow-container">
-                <button class="arrow left">&#10094</button>
-                <button class="arrow right">&#10095</button>
+    <div class="container news mt-5">
+    <h3 class="mb-4 text-center">HIGHLIGHT NEWS</h3>
+
+    <div class="row">
+        @foreach($highlights as $highlight)
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm">
+                <a href="{{ route('highlight.show', $highlight->id) }}">
+                    <img src="{{ asset('storage/' . $highlight->image) }}" class="card-img-top img-fluid" 
+                         style="height: 200px; object-fit: cover;" alt="Card Image">
+                </a>
+                <div class="card-body">
+                    <span class="badge bg-primary">{{ $highlight->category->name }}</span>
+                    <h6 class="card-title mt-2">{{ $highlight->title }}</h6>
+                    <p class="card-text">{{ Str::limit($highlight->description, 100) }}</p>
+                </div>
             </div>
         </div>
+        @endforeach
     </div>
+
+    <!-- ปุ่มเลื่อน -->
+    <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-outline-primary me-2" id="scrollLeft"><i class="fas fa-chevron-left"></i></button>
+        <button class="btn btn-outline-primary" id="scrollRight"><i class="fas fa-chevron-right"></i></button>
+    </div>
+</div>
+
 
 
     <!-- Modal -->
