@@ -1,0 +1,83 @@
+@extends('dashboards.users.layouts.user-dash-layout')
+
+@section('content')
+<div class="container">
+    <h2>Edit News</h2>
+    <form action="{{ route('highlights.update', $highlight->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf @method('PUT')
+
+        <!-- ✅ Cover Image -->
+        <div class="mb-3">
+            <label class="form-label">Cover Image</label>
+            <input type="file" class="form-control" name="cover_image">
+            @if($highlight->image)
+            <p>Current Image:</p>
+            <img src="{{ asset('storage/' . $highlight->image) }}" width="120">
+            @endif
+        </div>
+
+        <!-- ✅ Title -->
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="text" class="form-control" name="title" value="{{ $highlight->title }}" required>
+        </div>
+
+        <!-- ✅ Image Album (Multiple) -->
+        <div class="mb-3">
+            <label class="form-label">Upload New Image Album</label>
+            <input type="file" class="form-control" name="images[]" multiple id="imageAlbumInput">
+
+            <div id="imageAlbumPreview" class="d-flex flex-wrap mt-2">
+                @foreach ($highlight->images as $image)
+                <div class="image-container" data-id="{{ $image->id }}">
+                    <img src="{{ asset('storage/' . $image->image) }}" width="80">
+                    <button type="button" class="btn btn-danger btn-sm remove-image" data-id="{{ $image->id }}">Remove</button>
+                </div>
+                @endforeach
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">Update</button>
+        <a href="{{ route('highlights.index') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<!-- ✅ JavaScript for Image Preview & Delete -->
+<script>
+    document.querySelectorAll('.remove-image').forEach(button => {
+        button.addEventListener('click', function() {
+            const imageId = this.getAttribute('data-id');
+            const container = this.closest('.image-container');
+
+            fetch(`/image-collection/${imageId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => {
+                            throw new Error(text);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        container.remove();
+                    } else {
+                        alert('Failed to delete image.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while deleting the image.');
+                });
+        });
+    });
+</script>
+
+
+@endsection
