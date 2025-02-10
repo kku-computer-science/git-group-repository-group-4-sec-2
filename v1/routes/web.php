@@ -41,6 +41,8 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\TcicallController;
 
 use App\Http\Controllers\HighlightController;
+use App\Http\Controllers\HighlightdetailController;
+
 
 Route::get('/test-permission', function () {
     return \Illuminate\Support\Facades\Gate::allows('manage-highlights') ? 'Allowed' : 'Denied';
@@ -60,7 +62,10 @@ Route::prefix('highlights')->group(function () {
 });
 
 
+Route::get('highlightdetail', [HighlightdetailController::class, 'index'])->name('highlightdetail');
+Route::get('/highlight/{id}', [HighlightdetailController::class, 'show'])->name('highlight.show');
 
+// Route::get('/news/{id}', [HighlightdetailController::class, 'show'])->name('news.show');
 
 
 /*
@@ -131,6 +136,8 @@ Route::get('loadindex', [PDFController::class, 'index']);
 Route::get('pdf', [PDFController::class, 'generateInvoicePDF'])->name('pdf');
 Route::get('docx', [PDFController::class, 'generateInvoiceDOCX'])->name('docx');
 Route::get('excel', [PDFController::class, 'generateInvoiceExcel'])->name('excel');
+
+
 
 Route::get('detail/{id}', [ProfileController::class, 'request'])->name('detail');
 Route::get('index', [LocalizationController::class, 'index']);
