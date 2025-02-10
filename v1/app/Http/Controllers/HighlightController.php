@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Imagick\Driver;
 // use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Encoders\JpegEncoder;
-use Illuminate\Support\Facades\Log;
 
 use Intervention\Image\Encoders\PngEncoder;
 use Intervention\Image\Encoders\GifEncoder;
