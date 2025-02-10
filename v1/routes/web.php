@@ -59,7 +59,6 @@ Route::prefix('highlights')->group(function () {
     Route::delete('/image-collection/{id}', [HighlightController::class, 'deleteImage'])->name('image.delete');
     Route::delete('/highlights/{id}', [HighlightController::class, 'deleteHighlightById'])->name('highlights.deleteHighlightById');
 
-
 });
 
 
