@@ -37,47 +37,37 @@
             </div>
         </div>
 
+        <!-- ✅ Hidden input to store image IDs that should be deleted -->
+        <input type="hidden" name="deleted_images" id="deletedImagesInput" value="[]">
+
         <button type="submit" class="btn btn-success">Update</button>
         <a href="{{ route('highlights.index') }}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 
-<!-- ✅ JavaScript for Image Preview & Delete -->
+<!-- ✅ JavaScript for Marking Images for Deletion -->
 <script>
-    document.querySelectorAll('.remove-image').forEach(button => {
-        button.addEventListener('click', function() {
-            const imageId = this.getAttribute('data-id');
-            const container = this.closest('.image-container');
+    document.addEventListener('DOMContentLoaded', function() {
+        let deletedImages = [];
 
-            fetch(`/highlights/image-collection/${imageId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(text => {
-                            throw new Error(text);
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        container.remove();
-                    } else {
-                        alert('Failed to delete image.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while deleting the image.');
-                });
+        document.querySelectorAll('.remove-image').forEach(button => {
+            button.addEventListener('click', function() {
+                const imageId = this.getAttribute('data-id');
+                const container = this.closest('.image-container');
+
+                // Add image ID to the delete list
+                if (!deletedImages.includes(imageId)) {
+                    deletedImages.push(imageId);
+                }
+
+                // Update hidden input field
+                document.getElementById('deletedImagesInput').value = JSON.stringify(deletedImages);
+
+                // Hide the image preview instead of deleting it immediately
+                container.style.display = 'none';
+            });
         });
     });
 </script>
-
 
 @endsection

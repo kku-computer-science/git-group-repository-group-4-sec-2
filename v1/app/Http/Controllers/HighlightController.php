@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Imagick\Driver;
 // use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Encoders\JpegEncoder;
+use Illuminate\Support\Facades\Log;
 
 use Intervention\Image\Encoders\PngEncoder;
 use Intervention\Image\Encoders\GifEncoder;
@@ -121,71 +122,186 @@ class HighlightController extends Controller
         return view('highlights.edit', compact('highlight', 'categories'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:category,id',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
-        ]);
-        Log::info('------=----1');
-        $highlight = Highlight::findOrFail($id);
-        $manager = new ImageManager(new Driver());
-        $coverImagePath = $highlight->image;
+    // public function update(Request $request, $id)
+    // {
+    //     $request->validate([
+    //         'title' => 'required|string|max:255',
+    //         'category_id' => 'required|exists:category,id',
+    //         'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+    //         'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+    //     ]);
+    //     Log::info('------=----1');
+    //     $highlight = Highlight::findOrFail($id);
+    //     $manager = new ImageManager(new Driver());
+    //     $coverImagePath = $highlight->image;
         
-        Log::info('------=----2');
-        // ✅ อัปเดต Cover Image (เก็บใน `highlightImage/`)
-        if ($request->hasFile('cover_image')) {
-            if ($highlight->image) {
-                Storage::disk('public')->delete($highlight->image); // ลบรูปเก่า
-            }
-            $image = $manager->read($request->file('cover_image')->getPathname())
-            ->scale(width: 1200)
-            ->encode(new JpegEncoder(80));
+    //     Log::info('------=----2');
+    //     // ✅ อัปเดต Cover Image (เก็บใน `highlightImage/`)
+    //     if ($request->hasFile('cover_image')) {
+    //         if ($highlight->image) {
+    //             Storage::disk('public')->delete($highlight->image); // ลบรูปเก่า
+    //         }
+    //         $image = $manager->read($request->file('cover_image')->getPathname())
+    //         ->scale(width: 1200)
+    //         ->encode(new JpegEncoder(80));
             
-            $fileName = 'highlightImage/' . uniqid() . '.jpg';
-            Storage::disk('public')->put($fileName, $image->toString());
-            $coverImagePath = $fileName;
+    //         $fileName = 'highlightImage/' . uniqid() . '.jpg';
+    //         Storage::disk('public')->put($fileName, $image->toString());
+    //         $coverImagePath = $fileName;
+    //     }
+    //     Log::info('------=----3');
+        
+    //     // ✅ อัปเดตข้อมูลในฐานข้อมูล
+    //     $highlight->update([
+    //         'title' => $request->title,
+    //         'description' => $request->description,
+    //         'category_id' => $request->category_id,
+    //         'image' => $coverImagePath,
+    //     ]);
+    //     Log::info('------=----4');
+        
+    //     // ✅ อัปเดต Image Album (เก็บใน `imageCollection/`)
+    //     if ($request->hasFile('images')) {
+    //         // ลบรูปเก่าทั้งหมดก่อน
+    //         foreach ($highlight->images as $image) {
+    //             Storage::disk('public')->delete($image->image);
+    //             $image->delete();
+    //         }
+            
+    //         // อัปโหลดรูปใหม่
+    //         foreach ($request->file('images') as $imageFile) {
+    //             $image = $manager->read($imageFile->getPathname())
+    //             ->scale(width: 1200)
+    //             ->encode(new JpegEncoder(80));
+                
+    //             $fileName = 'imageCollection/' . uniqid() . '.jpg';
+    //             Storage::disk('public')->put($fileName, $image->toString());
+                
+    //             ImageCollection::create([
+    //                 'image' => $fileName,
+    //                 'highlight_id' => $highlight->id,
+    //             ]);
+    //         }
+    //     }
+        
+    //     Log::info('------=----5');
+    //     return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
+    // }
+
+//     public function update(Request $request, $id)
+// {
+//     $request->validate([
+//         'title' => 'required|string|max:255',
+//         'category_id' => 'required|exists:category,id',
+//         'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+//         'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+//     ]);
+
+//     $highlight = Highlight::findOrFail($id);
+//     $coverImagePath = $highlight->image;
+    
+//     // ✅ ลบรูปภาพที่ถูกเลือกให้ลบเมื่อกด "Update"
+//     if ($request->deleted_images) {
+//         $deletedImageIds = json_decode($request->deleted_images, true);
+        
+//         foreach ($deletedImageIds as $imageId) {
+//             $image = ImageCollection::find($imageId);
+//             if ($image) {
+//                 Storage::disk('public')->delete($image->image);
+//                 $image->delete();
+//             }
+//         }
+//     }
+
+//     // ✅ อัปเดต Cover Image
+//     if ($request->hasFile('cover_image')) {
+//         if ($highlight->image) {
+//             Storage::disk('public')->delete($highlight->image);
+//         }
+//         $coverImagePath = $request->file('cover_image')->store('highlightImage', 'public');
+//     }
+
+//     // ✅ อัปเดตข้อมูล Highlight
+//     $highlight->update([
+//         'title' => $request->title,
+//         'description' => $request->description,
+//         'category_id' => $request->category_id,
+//         'image' => $coverImagePath,
+//     ]);
+
+//     // ✅ อัปโหลดรูปใหม่ที่ถูกเพิ่มเข้ามา
+//     if ($request->hasFile('images')) {
+//         foreach ($request->file('images') as $imageFile) {
+//             $fileName = $imageFile->store('imageCollection', 'public');
+
+//             ImageCollection::create([
+//                 'image' => $fileName,
+//                 'highlight_id' => $highlight->id,
+//             ]);
+//         }
+//     }
+
+//     return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
+// }
+
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'category_id' => 'required|exists:category,id',
+        'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+        'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+    ]);
+
+    Log::info('Starting update process...');
+    $highlight = Highlight::findOrFail($id);
+    $coverImagePath = $highlight->image;
+
+    // ✅ Update Cover Image
+    if ($request->hasFile('cover_image')) {
+        if ($highlight->image) {
+            Storage::disk('public')->delete($highlight->image);
         }
-        Log::info('------=----3');
-        
-        // ✅ อัปเดตข้อมูลในฐานข้อมูล
-        $highlight->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'category_id' => $request->category_id,
-            'image' => $coverImagePath,
-        ]);
-        Log::info('------=----4');
-        
-        // ✅ อัปเดต Image Album (เก็บใน `imageCollection/`)
-        if ($request->hasFile('images')) {
-            // ลบรูปเก่าทั้งหมดก่อน
-            foreach ($highlight->images as $image) {
+        $coverImagePath = $request->file('cover_image')->store('highlightImage', 'public');
+    }
+
+    // ✅ Update Highlight Data
+    $highlight->update([
+        'title' => $request->title,
+        'description' => $request->description,
+        'category_id' => $request->category_id,
+        'image' => $coverImagePath,
+    ]);
+
+    // ✅ Remove images marked for deletion
+    if ($request->deleted_images) {
+        $deletedImageIds = json_decode($request->deleted_images, true);
+        foreach ($deletedImageIds as $imageId) {
+            $image = ImageCollection::find($imageId);
+            if ($image) {
                 Storage::disk('public')->delete($image->image);
                 $image->delete();
             }
-            
-            // อัปโหลดรูปใหม่
-            foreach ($request->file('images') as $imageFile) {
-                $image = $manager->read($imageFile->getPathname())
-                ->scale(width: 1200)
-                ->encode(new JpegEncoder(80));
-                
-                $fileName = 'imageCollection/' . uniqid() . '.jpg';
-                Storage::disk('public')->put($fileName, $image->toString());
-                
-                ImageCollection::create([
-                    'image' => $fileName,
-                    'highlight_id' => $highlight->id,
-                ]);
-            }
         }
-        
-        Log::info('------=----5');
-        return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
     }
+
+    // ✅ Upload New Images (If Any)
+    if ($request->hasFile('images')) {
+        foreach ($request->file('images') as $imageFile) {
+            $fileName = $imageFile->store('imageCollection', 'public');
+
+            ImageCollection::create([
+                'image' => $fileName,
+                'highlight_id' => $highlight->id,
+            ]);
+        }
+    }
+
+    Log::info('Highlight updated successfully.');
+    return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
+}
+
+
 
     public function addToHighlights($id)
     {
