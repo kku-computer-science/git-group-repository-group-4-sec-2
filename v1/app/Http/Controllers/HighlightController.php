@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ImageCollection;
 use Illuminate\Http\Request;
 use App\Models\Highlight;
 use App\Models\Category;
-use App\Models\ImageCollection;
-use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Imagick\Driver;
@@ -52,7 +51,6 @@ class HighlightController extends Controller
 
         $coverImagePath = null;
 
-        // ✅ ลดขนาด Cover Image และจัดการประเภทไฟล์
         if ($request->hasFile('cover_image')) {
             $coverFile = $request->file('cover_image');
             $extension = $coverFile->getClientOriginalExtension();
@@ -75,7 +73,6 @@ class HighlightController extends Controller
             $coverImagePath = $fileName;
         }
 
-        // ✅ บันทึก Highlight
         $highlight = Highlight::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -85,7 +82,6 @@ class HighlightController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        // ✅ ลดขนาด Image Album และจัดการประเภทไฟล์
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $imageFile) {
                 $extension = $imageFile->getClientOriginalExtension();
@@ -230,4 +226,45 @@ class HighlightController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    // public function create()
+    // {
+    //     return view('highlights.create');
+    // }
+
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'title' => 'required|string|max:255',
+    //         'category_id' => 'required|integer',
+    //         'description' => 'nullable|string',
+    //         'image' => 'nullable|image|mimes:png,jpg,jpeg,gif,svg|max:2048',
+    //         'image_album.*' => 'nullable|image|mimes:png,jpg,jpeg,gif,svg|max:2048',
+    //     ]);
+
+    //     $highlight = new Highlight();
+    //     $highlight->title = $request->title;
+    //     $highlight->category_id = $request->category_id;
+    //     $highlight->description = $request->description;
+    //     $highlight->status = $request->status ?? 0;
+
+    //     if ($request->hasFile('image')) {
+    //         $imagePath = $request->file('image')->store('highlight_images', 'public');
+    //         $highlight->image = $imagePath;
+    //     }
+
+    //     $highlight->save();
+
+    //     if ($request->hasFile('image_album')) {
+    //         foreach ($request->file('image_album') as $imageFile) {
+    //             $imagePath = $imageFile->store('highlight_albums', 'public');
+
+    //             ImageCollection::create([
+    //                 'highlight_id' => $highlight->id,
+    //                 'image' => $imagePath
+    //             ]);
+    //         }
+    //     }
+    //     return redirect()->route('highlights.index')->with('success', 'Highlight created successfully.');
+    // }
 }
