@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Imagick\Driver;
 // use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Encoders\JpegEncoder;
+use Illuminate\Support\Facades\Log;
 
 use Intervention\Image\Encoders\PngEncoder;
 use Intervention\Image\Encoders\GifEncoder;
@@ -129,63 +130,72 @@ class HighlightController extends Controller
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
+    
         Log::info('------=----1');
         $highlight = Highlight::findOrFail($id);
         $manager = new ImageManager(new Driver());
         $coverImagePath = $highlight->image;
-        
+    
         Log::info('------=----2');
-        // ✅ อัปเดต Cover Image (เก็บใน `highlightImage/`)
+        // Update Cover Image
         if ($request->hasFile('cover_image')) {
             if ($highlight->image) {
-                Storage::disk('public')->delete($highlight->image); // ลบรูปเก่า
+                Storage::disk('public')->delete($highlight->image); // Delete old cover image
             }
             $image = $manager->read($request->file('cover_image')->getPathname())
-            ->scale(width: 1200)
-            ->encode(new JpegEncoder(80));
-            
+                ->scale(width: 1200)
+                ->encode(new JpegEncoder(80));
+    
             $fileName = 'highlightImage/' . uniqid() . '.jpg';
             Storage::disk('public')->put($fileName, $image->toString());
             $coverImagePath = $fileName;
         }
-        Log::info('------=----3');
-        
-        // ✅ อัปเดตข้อมูลในฐานข้อมูล
+    
+        // Update highlight details
         $highlight->update([
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category_id,
             'image' => $coverImagePath,
         ]);
-        Log::info('------=----4');
-        
-        // ✅ อัปเดต Image Album (เก็บใน `imageCollection/`)
-        if ($request->hasFile('images')) {
-            // ลบรูปเก่าทั้งหมดก่อน
+    
+        // Remove all images if requested
+        if ($request->has('remove_all_images')) {
+            // Delete all related images from ImageCollection
             foreach ($highlight->images as $image) {
                 Storage::disk('public')->delete($image->image);
                 $image->delete();
             }
-            
-            // อัปโหลดรูปใหม่
+        }
+    
+        // Update Image Album
+        if ($request->hasFile('images')) {
+            // Delete old images if new ones are uploaded
+            foreach ($highlight->images as $image) {
+                Storage::disk('public')->delete($image->image);
+                $image->delete();
+            }
+    
+            // Upload new images
             foreach ($request->file('images') as $imageFile) {
                 $image = $manager->read($imageFile->getPathname())
-                ->scale(width: 1200)
-                ->encode(new JpegEncoder(80));
-                
+                    ->scale(width: 1200)
+                    ->encode(new JpegEncoder(80));
+    
                 $fileName = 'imageCollection/' . uniqid() . '.jpg';
                 Storage::disk('public')->put($fileName, $image->toString());
-                
+    
                 ImageCollection::create([
                     'image' => $fileName,
                     'highlight_id' => $highlight->id,
                 ]);
             }
         }
-        
+    
         Log::info('------=----5');
         return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
     }
+    
 
     public function addToHighlights($id)
     {
