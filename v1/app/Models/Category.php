@@ -9,13 +9,13 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $table = 'category';
+    protected $table = 'category'; // ชื่อตารางในฐานข้อมูล
     protected $primaryKey = 'id';
-    public $timestamps = true;
+    public $timestamps = false; // ไม่มี `created_at` และ `updated_at`
 
     protected $fillable = ['name'];
 
-    // ความสัมพันธ์กับ Highlight
+    // ความสัมพันธ์กับ Highlight (หนึ่ง Category มีหลาย Highlight)
     public function highlights()
     {
         return $this->hasMany(Highlight::class, 'category_id');

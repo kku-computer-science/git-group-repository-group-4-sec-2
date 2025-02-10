@@ -51,10 +51,12 @@ class PermissionTableSeeder extends Seeder
             'departments-create',
             'departments-edit',
             'departments-delete',
+            // 🎯 เพิ่ม Permission สำหรับ Manage Highlights
+            'manage-highlights',
         ];
 
         foreach ($data as $permission) {
-             Permission::create(['name' => $permission]);
+            Permission::create(['name' => $permission]);
         }
     }
 }

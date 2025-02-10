@@ -6,13 +6,11 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "streetsidesoftware.code-spell-checker",
-        "mhutchie.git-graph",
+        "xdebug.php-pack",
         "bmewburn.vscode-intelephense-client",
-        "amiralizadeh9480.laravel-extra-intellisense",
-        "xdebug.php-debug"
+        "ms-azuretools.vscode-docker"
       ]
     }
   },
-  "postCreateCommand": "git config --global --add safe.directory /var/www/html && composer update && mysql -h mysql -u cs04sec2_cs04sec267 -p\"n*lYXLK_dIMA\" -D cs04sec2_mysql < database2.sql"
+  "postCreateCommand": "git config --global --add safe.directory /var/www/html && composer update && mysql -h mysql -u cs04sec2_cs04sec267 -p\"n*lYXLK_dIMA\" -D cs04sec2_mysql < database5.sql"
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 
 use App\Http\Controllers\HomeController;
@@ -38,6 +39,30 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\TcicallController;
+
+use App\Http\Controllers\HighlightController;
+
+Route::get('/test-permission', function () {
+    return \Illuminate\Support\Facades\Gate::allows('manage-highlights') ? 'Allowed' : 'Denied';
+});
+
+
+
+Route::prefix('highlights')->group(function () {
+    Route::get('/', [HighlightController::class, 'index'])->name('highlights.index');
+    Route::get('/create', [HighlightController::class, 'create'])->name('highlights.create');
+    Route::post('/', [HighlightController::class, 'store'])->name('highlights.store');
+    Route::get('/{id}/edit', [HighlightController::class, 'edit'])->name('highlights.edit');
+    Route::put('/{id}', [HighlightController::class, 'update'])->name('highlights.update');
+    Route::put('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.add'); // ✅ เพิ่มฟังก์ชันนี้
+    Route::put('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.remove'); // ✅ เพิ่มฟังก์ชันนี้
+    Route::delete('/image-collection/{id}', [HighlightController::class, 'deleteImage'])->name('image.delete');
+});
+
+
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,6 +73,7 @@ use App\Http\Controllers\TcicallController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 
 
 
@@ -112,6 +138,8 @@ Route::get('lang/{lang}', ['as' => 'langswitch', 'uses' => 'App\Http\Controllers
 Route::get('/export', [ExportPaperController::class, 'exportUsers'])->name('export-papers');
 Route::get('bib/{id}', [BibtexController::class, 'getbib'])->name('bibtex');
 
+
+
 //Route::get('bib/{id}', [BibtexController::class, 'index'])->name('bibtex');
 //Route::get('change/lang', [LocalizationController::class,'lang_change'])->name('LangChange');
 
@@ -159,6 +187,7 @@ Route::group(['middleware' => ['auth', 'PreventBackHistory']], function () {
     Route::get('/ajax-get-subcat', [UserController::class, 'getCategory']);
     Route::get('tests', [TestController::class, 'index']); //call department
     Route::get('tests/{id}', [TestController::class, 'getCategory'])->name('tests'); //call program
+
 
 });
 
