@@ -346,44 +346,20 @@ public function update(Request $request, $id)
         return response()->json(['success' => true]);
     }
 
-    // public function create()
-    // {
-    //     return view('highlights.create');
-    // }
+    public function deleteHighlightById($id)
+    {
+    $highlight = Highlight::findOrFail($id);
 
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'title' => 'required|string|max:255',
-    //         'category_id' => 'required|integer',
-    //         'description' => 'nullable|string',
-    //         'image' => 'nullable|image|mimes:png,jpg,jpeg,gif,svg|max:2048',
-    //         'image_album.*' => 'nullable|image|mimes:png,jpg,jpeg,gif,svg|max:2048',
-    //     ]);
+    // ลบข้อมูลใน ImageCollection ที่เกี่ยวข้อง
+    foreach ($highlight->images as $image) {
+        Storage::disk('public')->delete($image->image); // ลบไฟล์จาก storage
+        $image->delete(); // ลบข้อมูลจาก database
+    }
 
-    //     $highlight = new Highlight();
-    //     $highlight->title = $request->title;
-    //     $highlight->category_id = $request->category_id;
-    //     $highlight->description = $request->description;
-    //     $highlight->status = $request->status ?? 0;
+    // ลบ Highlight
+    $highlight->delete();
 
-    //     if ($request->hasFile('image')) {
-    //         $imagePath = $request->file('image')->store('highlight_images', 'public');
-    //         $highlight->image = $imagePath;
-    //     }
+    return redirect()->back()->with("success", "Highlight deleted successfully.");
+    }
 
-    //     $highlight->save();
-
-    //     if ($request->hasFile('image_album')) {
-    //         foreach ($request->file('image_album') as $imageFile) {
-    //             $imagePath = $imageFile->store('highlight_albums', 'public');
-
-    //             ImageCollection::create([
-    //                 'highlight_id' => $highlight->id,
-    //                 'image' => $imagePath
-    //             ]);
-    //         }
-    //     }
-    //     return redirect()->route('highlights.index')->with('success', 'Highlight created successfully.');
-    // }
 }
