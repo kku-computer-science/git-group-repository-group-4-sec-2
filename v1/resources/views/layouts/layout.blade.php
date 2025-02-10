@@ -49,7 +49,7 @@
 
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
-    
+
 
 </head>
 
@@ -112,7 +112,7 @@
 
 
                 </ul>
-                @if (Route::has('login'))
+                <!-- @if (Route::has('login'))
                 @auth
                 <span class="nav-item">
 
@@ -122,7 +122,27 @@
                     <a class="btn-solid-sm" href="/login" target="_blank">Login</a>
                 </span>
                 @endauth
+                @endif -->
+                @if (Route::has('login'))
+                @auth
+                <!-- ถ้าล็อกอินแล้ว ให้แสดงปุ่ม Logout -->
+
+                <a href="{{ route('logout') }}"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Logout <i class="mdi mdi-logout"></i>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
+
+                @else
+                <!-- ถ้ายังไม่ได้ล็อกอิน ให้แสดงปุ่ม Login -->
+
+                <a class="btn btn-primary" href="{{ route('login') }}">Login</a>
+
+                @endauth
                 @endif
+
             </div> <!-- end of navbar-collapse -->
         </div> <!-- end of container -->
     </nav> <!-- end of navbar -->

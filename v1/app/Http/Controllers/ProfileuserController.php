@@ -67,7 +67,7 @@ class ProfileuserController extends Controller
             // $doctoral = '';
             $pos_eng = '';
             $pos_thai = '';
-            if (Auth::user()->hasRole('admin') or Auth::user()->hasRole('student') ) {
+            if (Auth::user()->hasRole('admin') or Auth::user()->hasRole('student')) {
                 $request->academic_ranks_en = null;
                 $request->academic_ranks_th = null;
                 $pos_eng = null;
@@ -173,7 +173,8 @@ class ProfileuserController extends Controller
         //Validate form
         $validator = \Validator::make($request->all(), [
             'oldpassword' => [
-                'required', function ($attribute, $value, $fail) {
+                'required',
+                function ($attribute, $value, $fail) {
                     if (!\Hash::check($value, Auth::user()->password)) {
                         return $fail(__('The current password is incorrect'));
                     }
@@ -206,5 +207,12 @@ class ProfileuserController extends Controller
                 return response()->json(['status' => 1, 'msg' => 'Your password has been changed successfully']);
             }
         }
+    }
+
+    public function edit($id)
+    {
+        $highlight = Highlight::findOrFail($id);
+        $categories = Category::all();
+        return view('highlights.edit', compact('highlight', 'categories'));
     }
 }

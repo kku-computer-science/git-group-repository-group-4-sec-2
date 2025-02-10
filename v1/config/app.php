@@ -179,6 +179,7 @@ return [
         //Yajra\DataTables\DataTablesServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        
     ],
 
     /*
