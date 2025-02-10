@@ -18,6 +18,7 @@
                 <th>Date Time</th>
                 <th>Created By</th>
                 <th>Actions</th>
+                <th>Remove Highlight</th>
             </tr>
         </thead>
         <tbody>
@@ -52,6 +53,9 @@
                         </button>
                     </form>
 
+                    
+                </td>
+                <td>
                     <!-- ปุ่ม Remove from Highlight -->
                     <form action="{{ route('highlights.remove', $highlight->id) }}" method="POST" style="display:inline;">
                         @csrf @method('PUT')
@@ -76,6 +80,7 @@
                 <th>Date Time</th>
                 <th>Created By</th>
                 <th>Actions</th>
+                <th>Add to Highlight</th>
             </tr>
         </thead>
         <tbody>
@@ -110,6 +115,9 @@
                         </button>
                     </form>
 
+                    
+                </td>
+                <td>
                     <!-- ปุ่ม Add to Highlight -->
                     <form action="{{ route('highlights.add', $highlight->id) }}" method="POST" style="display:inline;">
                         @csrf @method('PUT')
