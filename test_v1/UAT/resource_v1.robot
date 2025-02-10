@@ -10,16 +10,17 @@ Library           SeleniumLibrary
 ${BROWSER}       chrome
 # สำหรับทดสอบ localhost
 # ${LOCALHOST}     127.0.0.1:8000
-# ${URL}           http://${LOCALHOST}/
-# ${LOGIN_URL}     http://${LOCALHOST}/login
-# ${DASHBOARD_URL}  http://${LOCALHOST}/dashboard
-# ${MANAGE_HIGHLIGHTS_URL}    http://${LOCALHOST}/highlights
+${LOCALHOST}     localhost
+${URL}           http://${LOCALHOST}/
+${LOGIN_URL}     http://${LOCALHOST}/login
+${DASHBOARD_URL}  http://${LOCALHOST}/dashboard
+${MANAGE_HIGHLIGHTS_URL}    http://${LOCALHOST}/highlights
 # สำหรับทดสอบ host จริง
-${HOST}          cs04sec267.cpkkuhost.com
-${URL}           https://${HOST}/
-${LOGIN_URL}     https://${HOST}/login
-${DASHBOARD_URL}  https://${HOST}/dashboard
-${MANAGE_HIGHLIGHTS_URL}    https://${HOST}/highlights
+# ${HOST}          cs04sec267.cpkkuhost.com
+# ${URL}           https://${HOST}/
+# ${LOGIN_URL}     https://${HOST}/login
+# ${DASHBOARD_URL}  https://${HOST}/dashboard
+# ${MANAGE_HIGHLIGHTS_URL}    https://${HOST}/highlights
 ${ADMIN_USERNAME}      admin@gmail.com
 ${ADMIN_PASSWORD}      12345678
 ${STAFF_USERNAME}      staff@gmail.com
@@ -27,6 +28,7 @@ ${STAFF_PASSWORD}      123456789
 ${RESEARCHER_USERNAME}      thanaphon@kku.ac.th
 ${RESEARCHER_PASSWORD}      123456789
 ${DELAY}    2
+
 *** Keywords ***
 Verify Admin Dashboard
     # ตรวจสอบเมนูเฉพาะของ Admin
@@ -48,6 +50,46 @@ Verify Researcher Dashboard
     Page Should Not Contain    Departments
     Page Should Not Contain    Manage Programs
     Page Should Not Contain    Manage Highlights
+
+Go to Login Page
+    Open Browser    ${URL}    ${BROWSER}
+    Maximize Browser Window
+    # 1. เปิดเว็บไซต์ที่หน้าแรก
+    Location Should Be    ${URL}
+    # 2. คลิกปุ่ม Login
+    Click Link    xpath=//a[@class='btn-solid-sm' and text()='Login']
+    # สลับไปยังแท็บใหม่ถ้ามี target="_blank"
+    Switch Window    NEW
+    Location Should Be    ${LOGIN_URL}
+    Wait Until Page Contains    Account Login    ${DELAY}
+
+Login Admin
+    Input Text    id=username    ${ADMIN_USERNAME}
+    Input Text    id=password    ${ADMIN_PASSWORD}
+    # 5. คลิกปุ่ม Log in
+    Click Button    xpath=//button[contains(text(),'Log In')]
+    # 6. รอจนกว่าหน้า Dashboard ของ Staff โหลดเสร็จ
+    Wait Until Location Is    ${DASHBOARD_URL}    ${DELAY}
+    Wait Until Page Contains    Dashboard    ${DELAY}
+
+Login Staff
+    Input Text    id=username    ${STAFF_USERNAME}
+    Input Text    id=password    ${STAFF_PASSWORD}
+    # 5. คลิกปุ่ม Log in
+    Click Button    xpath=//button[contains(text(),'Log In')]
+    # 6. รอจนกว่าหน้า Dashboard ของ Staff โหลดเสร็จ
+    Wait Until Location Is    ${DASHBOARD_URL}    ${DELAY}
+    Wait Until Page Contains    Dashboard    ${DELAY}
+
+Login Researcher
+    Input Text    id=username    ${RESEARCHER_USERNAME}
+    Input Text    id=password    ${RESEARCHER_PASSWORD}
+    # 5. คลิกปุ่ม Log in
+    Click Button    xpath=//button[contains(text(),'Log In')]
+    # 6. รอจนกว่าหน้า Dashboard ของ Researcher โหลดเสร็จ
+    Wait Until Location Is    ${DASHBOARD_URL}    ${DELAY}
+    Wait Until Page Contains    Dashboard    ${DELAY}
+
 
 # สำหรับ Test ไม่ผ่าน
 # Verify Admin Dashboard
