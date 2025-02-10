@@ -59,6 +59,7 @@
                         </div>
                     </div>
                     <div id="albumPreview" class="album-preview"></div>
+                    <button type="button" id="clearAllBtn" class="btn btn-danger d-none" style="margin-top: 1.25rem;" onclick="clearAllImages()">Clear All</button>
                 </div>
 
                 <div class="form-group d-flex justify-content-end gap-2">
@@ -71,7 +72,8 @@
 </div>
 
 <script>
-    function previewCoverImage(event) {
+
+function previewCoverImage(event) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -90,93 +92,63 @@
         document.getElementById("coverPlaceholder").classList.remove("d-none");
     }
 
+    let selectedFiles = []; // Store selected images
+
     document.getElementById('image_album').addEventListener('change', function(event) {
-        const files = event.target.files;
-        const previewContainer = document.getElementById('albumPreview');
-        // previewContainer.innerHTML = '';
-
-        if (files) {
-            Array.from(files).forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const imgWrapper = document.createElement('div');
-                    imgWrapper.classList.add('image-item');
-
-                    const imgElement = document.createElement('img');
-                    imgElement.src = e.target.result;
-                    imgElement.alt = "Image Preview";
-
-                    const removeBtn = document.createElement('button');
-                    removeBtn.innerHTML = '✖';
-                    removeBtn.classList.add('remove-btn');
-                    removeBtn.onclick = function() {
-                        removeImage(index);
-                    };
-
-                    imgWrapper.appendChild(imgElement);
-                    imgWrapper.appendChild(removeBtn);
-                    previewContainer.appendChild(imgWrapper);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
+        const newFiles = Array.from(event.target.files);
+        selectedFiles = selectedFiles.concat(newFiles); // Append new images
+        updateAlbumPreview();
     });
+
+    function updateAlbumPreview() {
+        const previewContainer = document.getElementById('albumPreview');
+        previewContainer.innerHTML = ''; // Clear the UI, not the file list
+
+        if (selectedFiles.length > 0) {
+            document.getElementById("clearAllBtn").classList.remove("d-none"); // Show "Clear All" button
+        } else {
+            document.getElementById("clearAllBtn").classList.add("d-none"); // Hide when no images
+        }
+
+        selectedFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgWrapper = document.createElement('div');
+                imgWrapper.classList.add('image-item');
+
+                const imgElement = document.createElement('img');
+                imgElement.src = e.target.result;
+                imgElement.alt = "Image Preview";
+
+                const removeBtn = document.createElement('button');
+                removeBtn.innerHTML = '✖';
+                removeBtn.classList.add('remove-btn');
+                removeBtn.onclick = function() {
+                    removeImage(index);
+                };
+
+                imgWrapper.appendChild(imgElement);
+                imgWrapper.appendChild(removeBtn);
+                previewContainer.appendChild(imgWrapper);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        const dt = new DataTransfer();
+        selectedFiles.forEach(file => dt.items.add(file));
+        document.getElementById("image_album").files = dt.files;
+    }
 
     function removeImage(index) {
-        const input = document.getElementById("image_album");
-        const dt = new DataTransfer();
-        const files = input.files;
-
-        for (let i = 0; i < files.length; i++) {
-            if (i !== index) {
-                dt.items.add(files[i]);
-            }
-        }
-
-        input.files = dt.files;
-        document.getElementById('image_album').dispatchEvent(new Event('change'));
+        selectedFiles.splice(index, 1); 
+        updateAlbumPreview(); 
     }
 
-    function confirmCancel() {
-        Swal.fire({
-            title: "คุณแน่ใจหรือไม่?",
-            text: "หากยกเลิก ข้อมูลที่กรอกจะหายไป",
-            icon: "warning",
-            padding: "1.25rem",
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "ใช่, ยกเลิกเลย!",
-            cancelButtonText: "ไม่, กลับไปแก้ไข"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = "{{ route('highlights.index') }}";
-            }
-        });
+    function clearAllImages() {
+        selectedFiles = []; 
+        document.getElementById("image_album").value = "";
+        updateAlbumPreview();
     }
-
-    document.addEventListener("DOMContentLoaded", function() {
-        const form = document.querySelector("form");
-
-        form.addEventListener("submit", function(event) {
-            let title = document.getElementById("title").value.trim();
-            let category = document.getElementById("category").value.trim();
-            let description = document.getElementById("description").value.trim();
-
-            if (title === "" || category === "" || description === "") {
-                event.preventDefault(); // Prevent form submission
-
-                Swal.fire({
-                    title: "กรุณากรอกข้อมูลให้ครบถ้วน",
-                    text: "โปรดตรวจสอบว่าคุณได้กรอกข้อมูลทุกช่องที่จำเป็น",
-                    icon: "warning",
-                    confirmButtonText: "ตกลง",
-                });
-
-                return false;
-            }
-        });
-    });
 </script>
 
 <style>
