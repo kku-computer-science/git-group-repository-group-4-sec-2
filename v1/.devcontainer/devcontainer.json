@@ -14,5 +14,5 @@
       ]
     }
   },
-  "postCreateCommand": "git config --global --add safe.directory /var/www/html && composer update && mysql -h mysql -u cs04sec2_cs04sec267 -p\"n*lYXLK_dIMA\" -D cs04sec2_mysql < database.sql"
+  "postCreateCommand": "git config --global --add safe.directory /var/www/html && composer update && mysql -h mysql -u cs04sec2_cs04sec267 -p\"n*lYXLK_dIMA\" -D cs04sec2_mysql < database3.sql"
 }
