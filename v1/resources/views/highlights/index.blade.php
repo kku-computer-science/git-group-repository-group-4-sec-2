@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     @if ($message = Session::get('success'))
-        <div class="alert alert-success">{{ $message }}</div>
+    <div class="alert alert-success">{{ $message }}</div>
     @endif
 
     <!-- ตาราง Highlights -->
@@ -23,31 +23,34 @@
         </thead>
         <tbody>
             @foreach ($highlights as $highlight)
-                <tr>
-                    <td>{{ $highlight->id }}</td>
-                    <td>
-                        @if($highlight->image)
-                            <img src="{{ asset('storage/' . $highlight->image) }}" width="120">
-                        @else
-                            No Image
-                        @endif
-                    </td>
-                    <td>{{ $highlight->title }}</td>
-                    <td>{{ $highlight->category->name ?? 'No Category' }}</td>
-                    <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
-                    <td>{{ $highlight->user->fname_th ?? 'Unknown' }} {{ $highlight->user->lname_th ?? '' }}</td>
-                    <td>
-                        <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                    </td>
-                    <td>
-                        <form action="{{ route('highlights.remove', $highlight->id) }}" method="POST">
-                            @csrf @method('PUT')
-                            <button type="submit" class="btn btn-danger">REMOVE</button>
-                        </form>
-                    </td>
-                </tr>
+            <tr>
+                <td>{{ $highlight->id }}</td>
+                <td>
+                    @if($highlight->image)
+                    <img src="{{ asset('storage/' . $highlight->image) }}" width="120">
+                    @else
+                    No Image
+                    @endif
+                </td>
+                <td>{{ $highlight->title }}</td>
+                <td>{{ $highlight->category->name ?? 'No Category' }}</td>
+                <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
+                <td>
+                    {{ optional($highlight->user)->fname_th ?? 'Unknown' }}
+                    {{ optional($highlight->user)->lname_th ?? '' }}
+                </td>
+                <td>
+                    <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </td>
+                <td>
+                    <form action="{{ route('highlights.remove', $highlight->id) }}" method="POST">
+                        @csrf @method('PUT')
+                        <button type="submit" class="btn btn-danger">REMOVE</button>
+                    </form>
+                </td>
+            </tr>
             @endforeach
         </tbody>
     </table>
@@ -70,31 +73,34 @@
         </thead>
         <tbody>
             @foreach ($news as $highlight)
-                <tr>
-                    <td>{{ $highlight->id }}</td>
-                    <td>
-                        @if($highlight->image)
-                            <img src="{{ asset('storage/' . $highlight->image) }}" width="120">
-                        @else
-                            No Image
-                        @endif
-                    </td>
-                    <td>{{ $highlight->title }}</td>
-                    <td>{{ $highlight->category->name ?? 'No Category' }}</td>
-                    <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
-                    <td>{{ $highlight->user->fname_th ?? 'Unknown' }} {{ $highlight->user->lname_th ?? '' }}</td>
-                    <td>
-                        <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                    </td>
-                    <td>
-                        <form action="{{ route('highlights.add', $highlight->id) }}" method="POST">
-                            @csrf @method('PUT')
-                            <button type="submit" class="btn btn-success">ADD</button>
-                        </form>
-                    </td>
-                </tr>
+            <tr>
+                <td>{{ $highlight->id }}</td>
+                <td>
+                    @if($highlight->image)
+                    <img src="{{ asset('storage/' . $highlight->image) }}" width="120">
+                    @else
+                    No Image
+                    @endif
+                </td>
+                <td>{{ $highlight->title }}</td>
+                <td>{{ $highlight->category->name ?? 'No Category' }}</td>
+                <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
+                <td>
+                    {{ optional($highlight->user)->fname_th ?? 'Unknown' }}
+                    {{ optional($highlight->user)->lname_th ?? '' }}
+                </td>
+                <td>
+                    <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </td>
+                <td>
+                    <form action="{{ route('highlights.add', $highlight->id) }}" method="POST">
+                        @csrf @method('PUT')
+                        <button type="submit" class="btn btn-success">ADD</button>
+                    </form>
+                </td>
+            </tr>
             @endforeach
         </tbody>
     </table>
@@ -104,9 +110,9 @@
 <script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
 <script src="https://cdn.datatables.net/1.12.0/js/dataTables.bootstrap4.min.js" defer></script>
 <script>
-$(document).ready(function() {
-    $('#example1').DataTable();
-    $('#example2').DataTable();
-});
+    $(document).ready(function() {
+        $('#example1').DataTable();
+        $('#example2').DataTable();
+    });
 </script>
 @endsection
