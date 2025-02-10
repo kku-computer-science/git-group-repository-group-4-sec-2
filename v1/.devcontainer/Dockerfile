@@ -1,33 +1,33 @@
 # ใช้ Base Image PHP 8 พร้อม Apache
 FROM php:8.2-apache
 
-# ติดตั้ง PHP Extensions และแพ็คเกจที่จำเป็น
+# ติดตั้งแพ็กเกจที่จำเป็น และ PHP Extensions
 RUN apt-get update && apt-get install -y \
     libpng-dev libjpeg-dev libfreetype6-dev \
     libonig-dev libxml2-dev libzip-dev \
     zip unzip curl git \
     default-mysql-client \
-    && docker-php-ext-configure gd \
+    libmagickwand-dev imagemagick \
+    && docker-php-ext-configure gd --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd mbstring exif pcntl bcmath mysqli pdo_mysql zip opcache \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
-
 
 # เปิดใช้งาน mod_rewrite ของ Apache
 RUN a2enmod rewrite
 
+# ตั้งค่า Timezone
 ENV TZ=Asia/Bangkok
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-
-# ตั้งค่า ServerName ใน Apache เพื่อหลีกเลี่ยงข้อความเตือน
+# ตั้งค่า ServerName ใน Apache
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # ติดตั้ง Composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && php -r "unlink('composer-setup.php');"
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# ติดตั้ง Laravel Installer โดยใช้ Composer
+# ติดตั้ง Laravel Installer ผ่าน Composer
 RUN composer global require laravel/installer
 ENV PATH="$PATH:/root/.composer/vendor/bin"
 
