@@ -31,29 +31,32 @@
         display: table;
         color: #4ad1e5;
     }
-
 </style>
 @section('content')
 <div class="container home">
     <div class="container d-sm-flex justify-content-center mt-5">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+
+            <!-- Carousel Indicators -->
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <!-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                aria-label="Slide 3"></button> -->
+                @foreach($heads as $index => $head)
+                <button type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide-to="{{ $index }}" class="{{ $loop->first ? 'active' : '' }}"
+                    aria-label="Slide {{ $index + 1 }}"></button>
+                @endforeach
             </div>
+
+            <!-- Carousel Items -->
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="{{asset('img/Banner1.png')}}" class="d-block w-100" alt="...">
+                @foreach($heads as $index => $head)
+                <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                    <img src="{{ asset('storage/' . $head->image) }}" class="d-block w-200" 
+                    style="height: 400px; object-fit: cover;" alt="...">
                 </div>
-                <div class="carousel-item">
-                    <img src="{{asset('img/Banner2.png')}}" class="d-block w-100" alt="...">
-                </div>
-                <!-- <div class="carousel-item">
-                <img src="..." class="d-block w-100" alt="...">
-            </div> -->
+                @endforeach
             </div>
+
+            <!-- Navigation Buttons -->
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
@@ -62,6 +65,7 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
+
         </div>
     </div>
 
@@ -69,76 +73,28 @@
     <!-- News -->
 
     <div class="container news">
-    <h3>HIGHLIGHT NEWS</h3>
+        <h3>HIGHLIGHT NEWS</h3>
         <div class="card-wrapper">
             <ul class="card-list">
-                <!-- Card 1 -->
+                @foreach($highlights as $highlight)
                 <li class="card-item">
-                <a href="#" class="card-link">
-                    <img src="img/news1.png" alt="Card Image" 
-                    class="card-image">
-                    <p class="tag">Computing</p>
-                    <h6 class="card-title">News Title</h6>
-                    <h10 class="card-description">News Description</h10>
-                </a>
+                    <a href="{{ route('highlight.show', $highlight->id) }}" class="card-link">
+                        <img src="{{ asset('storage/' . $highlight->image) }}" class="d-block w-100" 
+                        style="height: 200px; object-fit: cover;" alt="Card Image" class="card-image">
+                        <p class="tag">{{ $highlight->category->name }}</p>
+                        <h6 class="card-title">{{ $highlight->title }}</h6>
+                        <p class="card-description">{{ Str::limit($highlight->description, 100) }}</p>
+                    </a>
                 </li>
-                <!-- Card 2 -->
-                <li class="card-item">
-                <a href="#" class="card-link">
-                    <img src="img/news2.png" alt="Card Image" 
-                    class="card-image">
-                    <p class="tag">Computing</p>
-                    <h6 class="card-title">News Title</h6>
-                    <h10 class="card-description">News Description</h10>
-                </a>
-                </li>
-                <!-- Card 3 -->
-                <li class="card-item">
-                <a href="#" class="card-link">
-                    <img src="img/news3.png" alt="Card Image" 
-                    class="card-image">
-                    <p class="tag">Computing</p>
-                    <h6 class="card-title">News Title</h6>
-                    <h10 class="card-description">News Description</h10>
-                </a>
-                </li>
-                <!-- Card 4 -->
-                <li class="card-item">
-                <a href="#" class="card-link">
-                    <img src="img/news4.png" alt="Card Image" 
-                    class="card-image">
-                    <p class="tag">Computing</p>
-                    <h6 class="card-title">News Title</h6>
-                    <h10 class="card-description">News Description</h10>
-                </a>
-                </li>
-                <!-- Card 5 -->
-                <li class="card-item">
-                <a href="#" class="card-link">
-                    <img src="img/news5.png" alt="Card Image" 
-                    class="card-image">
-                    <p class="tag">Computing</p>
-                    <h6 class="card-title">News Title</h6>
-                    <h10 class="card-description">News Description</h10>
-                </a>
-                </li>
-                <!-- Card 6 -->
-                <li class="card-item">
-                <a href="#" class="card-link">
-                    <img src="img/news6.png" alt="Card Image" 
-                    class="card-image">
-                    <p class="tag">Computing</p>
-                    <h6 class="card-title">News Title</h6>
-                    <h10 class="card-description">News Description</h10>
-                </a>
-                </li>
+                @endforeach
             </ul>
             <div class="arrow-container">
                 <button class="arrow left">&#10094</button>
                 <button class="arrow right">&#10095</button>
-            </div>    
+            </div>
         </div>
     </div>
+
 
     <!-- Modal -->
 
@@ -201,8 +157,6 @@
     </div>
 
 
-
-
     <div class="container mixpaper pb-10 mt-3">
         <h3>{{ trans('message.publications') }}</h3>
         @foreach($papers as $n => $pe)
@@ -234,7 +188,7 @@
                                     <!-- <a href="{{ route('bibtex',['id'=>$p['id']])}}">
                                         [อ้างอิง]
                                     </a> -->
-                                    <button style="padding: 0;"class="btn btn-link open_modal" value="{{$p['id']}}">[อ้างอิง]</button>
+                                    <button style="padding: 0;" class="btn btn-link open_modal" value="{{$p['id']}}">[อ้างอิง]</button>
                                 </p>
                             </div>
                         </div>
@@ -247,6 +201,7 @@
         </div>
         @endforeach
     </div>
+
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 
@@ -265,6 +220,7 @@
         });
     });
 </script>
+
 <script>
     var year = <?php echo $year; ?>;
     var paper_tci = <?php echo $paper_tci; ?>;
@@ -373,7 +329,7 @@
     let sumsco = paper_scopus;
     let sumwos = paper_wos;
     (function($) {
-        
+
         let sum = paper_wos + paper_tci + paper_scopus;
         //console.log(sum);
         //$("#scopus").append('data-to="100"');
@@ -492,6 +448,8 @@
         }
     });
 </script>
+
+
 <script>
     $(document).on('click', '.open_modal', function() {
         //var url = "domain.com/yoururl";
@@ -499,7 +457,7 @@
         $.get('/bib/' + tour_id, function(data) {
             //success data
             console.log(data);
-            $( ".bibtex-biblio" ).remove();
+            $(".bibtex-biblio").remove();
             document.getElementById("name").innerHTML += `${data}`
             // $('#tour_id').val(data.id);
             // $('#name').val(data);
