@@ -46,15 +46,6 @@ Route::get('/test-permission', function () {
     return \Illuminate\Support\Facades\Gate::allows('manage-highlights') ? 'Allowed' : 'Denied';
 });
 
-<<<<<<< HEAD
-Route::middleware(['auth', 'role:staff'])->group(function () {
-    Route::get('/highlights/create', [HighlightController::class, 'create'])->name('highlights.create');
-});
-
-Route::middleware(['auth', 'role:staff'])->group(function () {
-    Route::post('/highlights', [HighlightController::class, 'store'])->name('highlights.store');
-});
-=======
 
 
 Route::prefix('highlights')->group(function () {
@@ -72,7 +63,6 @@ Route::prefix('highlights')->group(function () {
 
 
 
->>>>>>> main
 /*
 |--------------------------------------------------------------------------
 | Web Routes

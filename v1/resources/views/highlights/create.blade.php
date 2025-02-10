@@ -1,6 +1,8 @@
 @extends('dashboards.users.layouts.user-dash-layout')
 
 @section('content')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="container">
     <div class="card" style="padding: 16px;">
         <div class="card-body">
@@ -12,25 +14,18 @@
                     <label for="cover_image">Cover Image</label>
                     <div class="image-upload-box" id="coverImageBox">
                         <input type="file" name="cover_image" id="cover_image" class="d-none" accept="image/*" onchange="previewCoverImage(event)">
-
-                        <!-- Placeholder for Upload -->
                         <div class="upload-placeholder" id="coverPlaceholder" onclick="document.getElementById('cover_image').click();">
                             <div class="icon">
                                 <i class="mdi mdi-plus"></i>
                             </div>
                             <p>เพิ่มรูปภาพ</p>
-                            <span>1234 × 4567</span>
                         </div>
-
-                        <!-- Preview Area -->
                         <div class="image-preview d-none" id="coverPreview">
-                            <img id="coverPreviewImg" src="" alt="Cover Image">
+                            <img id="coverPreviewImg" src="#" alt="Cover Image">
                             <button type="button" class="close-btn" onclick="removeCoverImage()">✖</button>
                         </div>
                     </div>
                 </div>
-
-
 
                 <div class="form-group">
                     <label for="title">Title</label>
@@ -39,34 +34,31 @@
 
                 <div class="form-group">
                     <label for="category">Category</label>
-                    <select name="category" id="category" class="form-control">
+                    <select name="category_id" id="category" class="form-control" required>
                         <option value="">Select Category</option>
-                        <!-- Add category options -->
+                        @foreach ($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea name="description" id="description" class="form-control" rows="4"></textarea>
+                    <textarea name="description" id="description" class="form-control description-box" rows="6"></textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="image_album">Image Album</label>
                     <div class="image-upload-box" id="imageAlbumBox">
-                        <input type="file" name="image_album[]" id="image_album" class="d-none" multiple accept="image/*" onchange="previewImageAlbum(event)">
-
-                        <!-- Placeholder -->
+                        <input type="file" name="images[]" id="image_album" class="d-none" multiple accept="image/*">
                         <div class="upload-placeholder" onclick="document.getElementById('image_album').click();">
                             <div class="icon">
                                 <i class="mdi mdi-plus"></i>
                             </div>
                             <p>เพิ่มรูปภาพ</p>
-                            <span>1234 × 1234</span>
                         </div>
                     </div>
-
-                    <!-- Preview Gallery -->
-                    <div class="album-preview" id="albumPreview"></div>
+                    <div id="albumPreview" class="album-preview"></div>
                 </div>
 
                 <div class="form-group d-flex justify-content-end gap-2">
@@ -98,37 +90,37 @@
         document.getElementById("coverPlaceholder").classList.remove("d-none");
     }
 
-    function previewImageAlbum(event) {
+    document.getElementById('image_album').addEventListener('change', function(event) {
         const files = event.target.files;
-        const albumPreview = document.getElementById("albumPreview");
-        albumPreview.innerHTML = ""; // ล้างข้อมูลเก่าก่อน
+        const previewContainer = document.getElementById('albumPreview');
+        previewContainer.innerHTML = '';
 
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const reader = new FileReader();
+        if (files) {
+            Array.from(files).forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgWrapper = document.createElement('div');
+                    imgWrapper.classList.add('image-item');
 
-            reader.onload = function(e) {
-                const imageItem = document.createElement("div");
-                imageItem.classList.add("image-item");
+                    const imgElement = document.createElement('img');
+                    imgElement.src = e.target.result;
+                    imgElement.alt = "Image Preview";
 
-                const img = document.createElement("img");
-                img.src = e.target.result;
+                    const removeBtn = document.createElement('button');
+                    removeBtn.innerHTML = '✖';
+                    removeBtn.classList.add('remove-btn');
+                    removeBtn.onclick = function() {
+                        removeImage(index);
+                    };
 
-                const removeBtn = document.createElement("button");
-                removeBtn.innerHTML = "✖";
-                removeBtn.classList.add("remove-btn");
-                removeBtn.onclick = function() {
-                    removeImage(i);
+                    imgWrapper.appendChild(imgElement);
+                    imgWrapper.appendChild(removeBtn);
+                    previewContainer.appendChild(imgWrapper);
                 };
-
-                imageItem.appendChild(img);
-                imageItem.appendChild(removeBtn);
-                albumPreview.appendChild(imageItem);
-            };
-
-            reader.readAsDataURL(file);
+                reader.readAsDataURL(file);
+            });
         }
-    }
+    });
 
     function removeImage(index) {
         const input = document.getElementById("image_album");
@@ -142,23 +134,60 @@
         }
 
         input.files = dt.files;
-        previewImageAlbum({
-            target: {
-                files: dt.files
+        document.getElementById('image_album').dispatchEvent(new Event('change'));
+    }
+
+    function confirmCancel() {
+        Swal.fire({
+            title: "คุณแน่ใจหรือไม่?",
+            text: "หากยกเลิก ข้อมูลที่กรอกจะหายไป",
+            icon: "warning",
+            padding: "1.25rem",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "ใช่, ยกเลิกเลย!",
+            cancelButtonText: "ไม่, กลับไปแก้ไข"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{{ route('highlights.index') }}";
             }
         });
     }
 
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
 
-    function confirmCancel() {
-        let confirmAction = confirm("คุณต้องการยกเลิกหรือไม่?");
-        if (confirmAction) {
-            window.location.href = "{{ route('highlights.index') }}";
-        }
-    }
+        form.addEventListener("submit", function(event) {
+            let title = document.getElementById("title").value.trim();
+            let category = document.getElementById("category").value.trim();
+            let description = document.getElementById("description").value.trim();
+
+            if (title === "" || category === "" || description === "") {
+                event.preventDefault(); // Prevent form submission
+
+                Swal.fire({
+                    title: "กรุณากรอกข้อมูลให้ครบถ้วน",
+                    text: "โปรดตรวจสอบว่าคุณได้กรอกข้อมูลทุกช่องที่จำเป็น",
+                    icon: "warning",
+                    confirmButtonText: "ตกลง",
+                });
+
+                return false;
+            }
+        });
+    });
 </script>
 
 <style>
+    .description-box {
+        height: 200px;
+        resize: vertical;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 16px;
+    }
+
     .image-upload-box {
         position: relative;
         width: 100%;
@@ -212,26 +241,26 @@
     .album-preview {
         display: flex;
         flex-wrap: wrap;
-        margin-top: 10px;
         gap: 10px;
+        margin-top: 10px;
     }
 
-    .album-preview .image-item {
+    .image-item {
         position: relative;
-        width: 100px;
-        height: 100px;
+        width: 120px;
+        height: 120px;
         border-radius: 8px;
         overflow: hidden;
         background: #333;
     }
 
-    .album-preview .image-item img {
+    .image-item img {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
 
-    .album-preview .remove-btn {
+    .remove-btn {
         position: absolute;
         top: 5px;
         right: 5px;
