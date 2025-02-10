@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Highlight;
 use App\Models\Category;
 use App\Models\ImageCollection;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Imagick\Driver;
@@ -116,8 +117,11 @@ class HighlightController extends Controller
 
     public function edit($id)
     {
+        Log::info('Edit Highlight ID: 1');
         $highlight = Highlight::with('images')->findOrFail($id);
+        Log::info('Edit Highlight ID: 2');
         $categories = Category::all();
+        Log::info('Edit Highlight ID: 3');
         return view('highlights.edit', compact('highlight', 'categories'));
     }
 
@@ -129,25 +133,27 @@ class HighlightController extends Controller
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
-
+        Log::info('------=----1');
         $highlight = Highlight::findOrFail($id);
         $manager = new ImageManager(new Driver());
         $coverImagePath = $highlight->image;
-
+        
+        Log::info('------=----2');
         // ✅ อัปเดต Cover Image (เก็บใน `highlightImage/`)
         if ($request->hasFile('cover_image')) {
             if ($highlight->image) {
                 Storage::disk('public')->delete($highlight->image); // ลบรูปเก่า
             }
             $image = $manager->read($request->file('cover_image')->getPathname())
-                ->scale(width: 1200)
-                ->encode(new JpegEncoder(80));
-
+            ->scale(width: 1200)
+            ->encode(new JpegEncoder(80));
+            
             $fileName = 'highlightImage/' . uniqid() . '.jpg';
             Storage::disk('public')->put($fileName, $image->toString());
             $coverImagePath = $fileName;
         }
-
+        Log::info('------=----3');
+        
         // ✅ อัปเดตข้อมูลในฐานข้อมูล
         $highlight->update([
             'title' => $request->title,
@@ -155,7 +161,8 @@ class HighlightController extends Controller
             'category_id' => $request->category_id,
             'image' => $coverImagePath,
         ]);
-
+        Log::info('------=----4');
+        
         // ✅ อัปเดต Image Album (เก็บใน `imageCollection/`)
         if ($request->hasFile('images')) {
             // ลบรูปเก่าทั้งหมดก่อน
@@ -163,23 +170,24 @@ class HighlightController extends Controller
                 Storage::disk('public')->delete($image->image);
                 $image->delete();
             }
-
+            
             // อัปโหลดรูปใหม่
             foreach ($request->file('images') as $imageFile) {
                 $image = $manager->read($imageFile->getPathname())
-                    ->scale(width: 1200)
-                    ->encode(new JpegEncoder(80));
-
+                ->scale(width: 1200)
+                ->encode(new JpegEncoder(80));
+                
                 $fileName = 'imageCollection/' . uniqid() . '.jpg';
                 Storage::disk('public')->put($fileName, $image->toString());
-
+                
                 ImageCollection::create([
                     'image' => $fileName,
                     'highlight_id' => $highlight->id,
                 ]);
             }
         }
-
+        
+        Log::info('------=----5');
         return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
     }
 
@@ -203,17 +211,22 @@ class HighlightController extends Controller
 
     public function deleteImage($id)
     {
+        Log::info('++++++++++++++++1');
         $image = ImageCollection::find($id);
-
+        Log::info('++++++++++++++++2');
+        
         if (!$image) {
             return response()->json(['error' => 'Image not found'], 404);
         }
-
+        Log::info('++++++++++++++++3');
+        
         // ลบไฟล์ออกจาก Storage
         Storage::disk('public')->delete($image->image);
-
+        
+        Log::info('++++++++++++++++4');
         // ลบจาก Database
         $image->delete();
+        Log::info('++++++++++++++++5');
 
         return response()->json(['success' => true]);
     }

@@ -49,7 +49,7 @@
             const imageId = this.getAttribute('data-id');
             const container = this.closest('.image-container');
 
-            fetch(`/image-collection/${imageId}`, {
+            fetch(`/highlights/image-collection/${imageId}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
