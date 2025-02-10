@@ -34,7 +34,7 @@
 
 
                 <div class="form-group
-                    <label for=" title">Title</label>
+                    <label for="title">Title</label>
                     <input type="text" name="title" id="title" class="form-control" value="{{ $highlight->title }}" required>
                 </div>
 
@@ -84,11 +84,14 @@
                 </div>
             </form>
         </div>
+
+        <!-- ✅ Hidden input to store image IDs that should be deleted -->
+        <input type="hidden" name="deleted_images" id="deletedImagesInput" value="[]">
     </div>
 </div>
 </div>
 
-<!-- JavaScript for Image Preview & Delete -->
+<!-- ✅ JavaScript for Marking Images for Deletion -->
 <script>
     function previewCoverImage(event) {
         const input = event.target;

@@ -57,6 +57,8 @@ Route::prefix('highlights')->group(function () {
     Route::put('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.add'); // ✅ เพิ่มฟังก์ชันนี้
     Route::put('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.remove'); // ✅ เพิ่มฟังก์ชันนี้
     Route::delete('/image-collection/{id}', [HighlightController::class, 'deleteImage'])->name('image.delete');
+    Route::delete('/highlights/{id}', [HighlightController::class, 'deleteHighlightById'])->name('highlights.deleteHighlightById');
+
 });
 
 
