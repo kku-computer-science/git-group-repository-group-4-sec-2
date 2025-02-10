@@ -31,6 +31,7 @@
         display: table;
         color: #4ad1e5;
     }
+
 </style>
 @section('content')
 <div class="container home">
@@ -65,9 +66,81 @@
     </div>
 
 
+    <!-- News -->
+
+    <div class="container news">
+    <h3>HIGHLIGHT NEWS</h3>
+        <div class="card-wrapper">
+            <ul class="card-list">
+                <!-- Card 1 -->
+                <li class="card-item">
+                <a href="#" class="card-link">
+                    <img src="img/news1.png" alt="Card Image" 
+                    class="card-image">
+                    <p class="tag">Computing</p>
+                    <h6 class="card-title">News Title</h6>
+                    <h10 class="card-description">News Description</h10>
+                </a>
+                </li>
+                <!-- Card 2 -->
+                <li class="card-item">
+                <a href="#" class="card-link">
+                    <img src="img/news2.png" alt="Card Image" 
+                    class="card-image">
+                    <p class="tag">Computing</p>
+                    <h6 class="card-title">News Title</h6>
+                    <h10 class="card-description">News Description</h10>
+                </a>
+                </li>
+                <!-- Card 3 -->
+                <li class="card-item">
+                <a href="#" class="card-link">
+                    <img src="img/news3.png" alt="Card Image" 
+                    class="card-image">
+                    <p class="tag">Computing</p>
+                    <h6 class="card-title">News Title</h6>
+                    <h10 class="card-description">News Description</h10>
+                </a>
+                </li>
+                <!-- Card 4 -->
+                <li class="card-item">
+                <a href="#" class="card-link">
+                    <img src="img/news4.png" alt="Card Image" 
+                    class="card-image">
+                    <p class="tag">Computing</p>
+                    <h6 class="card-title">News Title</h6>
+                    <h10 class="card-description">News Description</h10>
+                </a>
+                </li>
+                <!-- Card 5 -->
+                <li class="card-item">
+                <a href="#" class="card-link">
+                    <img src="img/news5.png" alt="Card Image" 
+                    class="card-image">
+                    <p class="tag">Computing</p>
+                    <h6 class="card-title">News Title</h6>
+                    <h10 class="card-description">News Description</h10>
+                </a>
+                </li>
+                <!-- Card 6 -->
+                <li class="card-item">
+                <a href="#" class="card-link">
+                    <img src="img/news6.png" alt="Card Image" 
+                    class="card-image">
+                    <p class="tag">Computing</p>
+                    <h6 class="card-title">News Title</h6>
+                    <h10 class="card-description">News Description</h10>
+                </a>
+                </li>
+            </ul>
+            <div class="arrow-container">
+                <button class="arrow left">&#10094</button>
+                <button class="arrow right">&#10095</button>
+            </div>    
+        </div>
+    </div>
+
     <!-- Modal -->
-
-
 
     <div class="container card-cart d-sm-flex justify-content-center mt-5">
         <div class="col-md-8">
@@ -435,5 +508,40 @@
             $('#myModal').modal('show');
         })
     });
+</script>
+<script>
+    const cardList = document.querySelector('.card-list');
+    const leftArrow = document.querySelector('.arrow.left');
+    const rightArrow = document.querySelector('.arrow.right');
+
+    const cardWidth = document.querySelector('.card-item').offsetWidth + 24;
+    const visibleCards = 3;
+    const totalCards = document.querySelectorAll('.card-item').length;
+    let position = 0;
+
+    function moveSlider(direction) {
+        const maxScroll = cardWidth * (totalCards - visibleCards);
+
+        if (direction === 'right') {
+            position -= cardWidth;
+            if (Math.abs(position) > maxScroll) {
+                position = 0;
+            }
+        } else {
+            position += cardWidth;
+            if (position > 0) {
+                position = -maxScroll;
+            }
+        }
+
+        cardList.style.transform = `translateX(${position}px)`;
+    }
+    window.addEventListener('resize', () => {
+        position = 0;
+        cardList.style.transform = `translateX(${position}px)`;
+    });
+
+    rightArrow.addEventListener('click', () => moveSlider('right'));
+    leftArrow.addEventListener('click', () => moveSlider('left'));
 </script>
 @endsection
