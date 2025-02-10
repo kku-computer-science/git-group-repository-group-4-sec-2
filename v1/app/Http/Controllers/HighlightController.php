@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\ImageCollection;
 use Illuminate\Http\Request;
 use App\Models\Highlight;
@@ -124,78 +125,63 @@ class HighlightController extends Controller
 
     public function update(Request $request, $id)
     {
+        Log::info("🛠 UPDATE FUNCTION CALLED FOR HIGHLIGHT ID: " . $id);
+        Log::info("🔍 REQUEST DATA:", $request->all());
+
         $request->validate([
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:category,id',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
-    
-        Log::info('------=----1');
+
+        Log::info('Starting update process...');
         $highlight = Highlight::findOrFail($id);
-        $manager = new ImageManager(new Driver());
         $coverImagePath = $highlight->image;
-    
-        Log::info('------=----2');
-        // Update Cover Image
+
+        // ✅ Update Cover Image
         if ($request->hasFile('cover_image')) {
             if ($highlight->image) {
-                Storage::disk('public')->delete($highlight->image); // Delete old cover image
+                Storage::disk('public')->delete($highlight->image);
             }
-            $image = $manager->read($request->file('cover_image')->getPathname())
-                ->scale(width: 1200)
-                ->encode(new JpegEncoder(80));
-    
-            $fileName = 'highlightImage/' . uniqid() . '.jpg';
-            Storage::disk('public')->put($fileName, $image->toString());
-            $coverImagePath = $fileName;
+            $coverImagePath = $request->file('cover_image')->store('highlightImage', 'public');
         }
-    
-        // Update highlight details
+
+        // ✅ Update Highlight Data
         $highlight->update([
             'title' => $request->title,
             'description' => $request->description,
             'category_id' => $request->category_id,
             'image' => $coverImagePath,
         ]);
-    
-        // Remove all images if requested
-        if ($request->has('remove_all_images')) {
-            // Delete all related images from ImageCollection
-            foreach ($highlight->images as $image) {
-                Storage::disk('public')->delete($image->image);
-                $image->delete();
+
+        // ✅ Remove images marked for deletion
+        if ($request->deleted_images) {
+            $deletedImageIds = json_decode($request->deleted_images, true);
+            foreach ($deletedImageIds as $imageId) {
+                $image = ImageCollection::find($imageId);
+                if ($image) {
+                    Storage::disk('public')->delete($image->image);
+                    $image->delete();
+                }
             }
         }
-    
-        // Update Image Album
+
+        // ✅ Upload New Images (If Any)
         if ($request->hasFile('images')) {
-            // Delete old images if new ones are uploaded
-            foreach ($highlight->images as $image) {
-                Storage::disk('public')->delete($image->image);
-                $image->delete();
-            }
-    
-            // Upload new images
             foreach ($request->file('images') as $imageFile) {
-                $image = $manager->read($imageFile->getPathname())
-                    ->scale(width: 1200)
-                    ->encode(new JpegEncoder(80));
-    
-                $fileName = 'imageCollection/' . uniqid() . '.jpg';
-                Storage::disk('public')->put($fileName, $image->toString());
-    
+                $fileName = $imageFile->store('imageCollection', 'public');
+
                 ImageCollection::create([
                     'image' => $fileName,
                     'highlight_id' => $highlight->id,
                 ]);
             }
         }
-    
-        Log::info('------=----5');
+
+        Log::info('Highlight updated successfully.');
         return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
     }
-    
 
     public function addToHighlights($id)
     {
@@ -220,15 +206,15 @@ class HighlightController extends Controller
         Log::info('++++++++++++++++1');
         $image = ImageCollection::find($id);
         Log::info('++++++++++++++++2');
-        
+
         if (!$image) {
             return response()->json(['error' => 'Image not found'], 404);
         }
         Log::info('++++++++++++++++3');
-        
+
         // ลบไฟล์ออกจาก Storage
         Storage::disk('public')->delete($image->image);
-        
+
         Log::info('++++++++++++++++4');
         // ลบจาก Database
         $image->delete();
@@ -236,45 +222,62 @@ class HighlightController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function destroy($id)
+    {
+        $highlight = Highlight::findOrFail($id); // หาไฮไลท์จาก ID
+        if ($highlight->image) {
+            Storage::disk('public')->delete($highlight->image); // ลบไฟล์รูปภาพ
+        }
+
+        // ลบภาพทั้งหมดที่เกี่ยวข้อง
+        foreach ($highlight->images as $image) {
+            Storage::disk('public')->delete($image->image);
+            $image->delete();
+        }
+
+        $highlight->delete(); // ลบข้อมูลไฮไลท์ออกจากฐานข้อมูล
+
+        return redirect()->route('highlights.index')->with('success', 'Highlight deleted successfully.');
+    }
+
+    public function dataTable(Request $request)
+    {
+        $type = $request->query('type');
+
+        $query = Highlight::with(['category', 'user'])
+            ->when($type === 'highlights', function ($q) {
+                return $q->where('status', 1)->latest()->take(5);
+            })
+            ->when($type === 'news', function ($q) {
+                return $q->whereNull('status')->latest()->take(5);
+            });
+
+        return datatables()->eloquent($query)
+            ->addColumn('category', function ($highlight) {
+                return $highlight->category->name ?? 'No Category';
+            })
+            ->addColumn('created_by', function ($highlight) {
+                return optional($highlight->user)->fname_th . ' ' . optional($highlight->user)->lname_th ?? 'Unknown';
+            })
+            ->addColumn('actions', function ($highlight) use ($type) {
+                $editUrl = route('highlights.edit', $highlight->id);
+                $deleteUrl = route('highlights.destroy', $highlight->id);
+                $toggleUrl = ($type === 'highlights') ? route('highlights.remove', $highlight->id) : route('highlights.add', $highlight->id);
+                $toggleText = ($type === 'highlights') ? 'REMOVE' : 'ADD';
+
+                return '
+                    <a href="' . $editUrl . '" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a>
+                    <button class="btn btn-danger btn-sm delete-btn" data-url="' . $deleteUrl . '">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <form action="' . $toggleUrl . '" method="POST" style="display:inline;">
+                        ' . csrf_field() . method_field('PUT') . '
+                        <button type="submit" class="btn btn-warning btn-sm">' . $toggleText . '</button>
+                    </form>
+                ';
+            })
+            ->rawColumns(['image', 'actions'])
+            ->make(true);
+    }
 }
-
-    // public function create()
-    // {
-    //     return view('highlights.create');
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'title' => 'required|string|max:255',
-    //         'category_id' => 'required|integer',
-    //         'description' => 'nullable|string',
-    //         'image' => 'nullable|image|mimes:png,jpg,jpeg,gif,svg|max:2048',
-    //         'image_album.*' => 'nullable|image|mimes:png,jpg,jpeg,gif,svg|max:2048',
-    //     ]);
-
-    //     $highlight = new Highlight();
-    //     $highlight->title = $request->title;
-    //     $highlight->category_id = $request->category_id;
-    //     $highlight->description = $request->description;
-    //     $highlight->status = $request->status ?? 0;
-
-    //     if ($request->hasFile('image')) {
-    //         $imagePath = $request->file('image')->store('highlight_images', 'public');
-    //         $highlight->image = $imagePath;
-    //     }
-
-    //     $highlight->save();
-
-    //     if ($request->hasFile('image_album')) {
-    //         foreach ($request->file('image_album') as $imageFile) {
-    //             $imagePath = $imageFile->store('highlight_albums', 'public');
-
-    //             ImageCollection::create([
-    //                 'highlight_id' => $highlight->id,
-    //                 'image' => $imagePath
-    //             ]);
-    //         }
-    //     }
-    //     return redirect()->route('highlights.index')->with('success', 'Highlight created successfully.');
-    // 
