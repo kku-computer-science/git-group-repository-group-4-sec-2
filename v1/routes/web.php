@@ -46,8 +46,6 @@ Route::get('/test-permission', function () {
     return \Illuminate\Support\Facades\Gate::allows('manage-highlights') ? 'Allowed' : 'Denied';
 });
 
-
-
 Route::prefix('highlights')->group(function () {
     Route::get('/', [HighlightController::class, 'index'])->name('highlights.index');
     Route::get('/create', [HighlightController::class, 'create'])->name('highlights.create');
@@ -57,6 +55,9 @@ Route::prefix('highlights')->group(function () {
     Route::put('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.add'); // ✅ เพิ่มฟังก์ชันนี้
     Route::put('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.remove'); // ✅ เพิ่มฟังก์ชันนี้
     Route::delete('/image-collection/{id}', [HighlightController::class, 'deleteImage'])->name('image.delete');
+    // DELETE route สำหรับลบ Highlight
+    Route::delete('//{id}', [HighlightController::class, 'destroy'])->name('highlights.destroy');
+    Route::get('/data', [HighlightController::class, 'dataTable'])->name('highlights.data');
 });
 
 

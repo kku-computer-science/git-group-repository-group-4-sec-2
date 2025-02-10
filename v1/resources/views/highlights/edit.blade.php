@@ -1,45 +1,42 @@
 @extends('dashboards.users.layouts.user-dash-layout')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 
 @section('content')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="container">
-    <div class="card" style="padding: 16px;">
+    <div class="card p-4">
         <div class="card-body">
             <h4 class="card-title">Edit News</h4>
             <form action="{{ route('highlights.update', $highlight->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf @method('PUT')
 
+                <!-- ✅ Cover Image -->
                 <div class="form-group">
                     <label for="cover_image">Cover Image</label>
                     <div class="image-upload-box" id="coverImageBox" onclick="document.getElementById('cover_image').click();">
                         <input type="file" name="cover_image" id="cover_image" class="d-none" accept="image/*" onchange="previewCoverImage(event)">
-
-                        <!-- Improved Placeholder -->
                         <div class="upload-placeholder" id="coverPlaceholder" style="{{ $highlight->image ? 'display: none;' : '' }}">
                             <div class="placeholder-content">
                                 <i class="mdi mdi-cloud-upload-outline"></i>
-                                <p>คลิกเพื่อเพิ่มรูปภาพ</p>
+                                <p>Click to upload an image</p>
                             </div>
                         </div>
-
-                        <!-- Image Preview -->
-                        <div class="image-preview" id="coverPreview" style="{{ $highlight->image ? '' : 'display: none;' }}">
-                            <img id="coverPreviewImg" src="{{ $highlight->image ? asset('storage/' . $highlight->image) : '' }}" alt="Cover Image">
+                        <div class="image-preview {{ $highlight->image ? '' : 'd-none' }}" id="coverPreview">
+                            <img id="coverPreviewImg" src="{{ asset('storage/' . $highlight->image) }}" alt="Cover Image">
                             <button type="button" class="close-btn" onclick="removeCoverImage(event)">✖</button>
                         </div>
                     </div>
                 </div>
 
-
-
-                <div class="form-group
-                    <label for=" title">Title</label>
+                <!-- ✅ Title -->
+                <div class="form-group">
+                    <label for="title">Title</label>
                     <input type="text" name="title" id="title" class="form-control" value="{{ $highlight->title }}" required>
                 </div>
 
-                <div class="form-group
-                    <label for=" category">Category</label>
+                <!-- ✅ Category -->
+                <div class="form-group">
+                    <label for="category">Category</label>
                     <select name="category_id" id="category" class="form-control" required>
                         <option value="">Select Category</option>
                         @foreach ($categories as $category)
@@ -48,36 +45,42 @@
                         </option>
                         @endforeach
                     </select>
-
                 </div>
 
-                <div class="form-group
-                    <label for=" description">Description</label>
+                <!-- ✅ Description -->
+                <div class="form-group">
+                    <label for="description">Description</label>
                     <textarea name="description" id="description" class="form-control description-box" rows="6">{{ $highlight->description }}</textarea>
                 </div>
 
+                <!-- ✅ Image Album -->
                 <div class="form-group">
                     <label for="image_album">Image Album</label>
-                    <div class="image-upload-box small" id="albumImageBox" onclick="document.getElementById('image_album').click();">
-                        <input type="file" name="images[]" id="image_album" class="d-none" multiple onchange="previewAlbumImages(event)">
-                        <div class="upload-placeholder" id="albumPlaceholder">
+                    <div class="image-upload-box small" id="imageAlbumBox">
+                        <input type="file" name="images[]" id="image_album" class="d-none" multiple accept="image/*">
+                        <div class="upload-placeholder" onclick="document.getElementById('image_album').click();">
                             <div class="placeholder-content">
                                 <i class="mdi mdi-cloud-upload-outline"></i>
-                                <p>คลิกเพื่อเพิ่มรูปภาพ</p>
+                                <p>Click to upload images</p>
                             </div>
                         </div>
                     </div>
-                    <div class="album-preview" id="imageAlbumPreview">
+
+                    <!-- ✅ แสดงรูปภาพทั้งหมด -->
+                    <div id="albumPreview" class="album-preview mt-2">
                         @foreach ($highlight->images as $image)
-                        <div class="image-item" data-id="{{ $image->id }}">
-                            <img src="{{ asset('storage/' . $image->image) }}">
-                            <button type="button" class="remove-btn" onclick="removeAlbumImage({{ $image->id }}, this)">✖</button>
+                        <div class="image-item existing-image" data-id="{{ $image->id }}">
+                            <img src="{{ asset('storage/' . $image->image) }}" alt="Album Image">
+                            <button type="button" class="remove-btn" onclick="markImageForDeletion({{ $image->id }}, this)">✖</button>
                         </div>
                         @endforeach
                     </div>
-                    <button id="RemoveallBtn" type="button" class="btn btn-danger mt-2 d-none" style="margin-top: 1.25rem;" onclick="removeAllAlbumImages()">Remove All</button>
                 </div>
 
+                <!-- ✅ Store Deleted Image IDs -->
+                <input type="hidden" name="deleted_images" id="deletedImagesInput">
+
+                <!-- ✅ Buttons -->
                 <div class="form-group d-flex justify-content-end gap-2">
                     <button type="button" class="btn btn-light" onclick="confirmCancel()">Cancel</button>
                     <button type="submit" class="btn btn-dark">Update</button>
@@ -86,102 +89,105 @@
         </div>
     </div>
 </div>
-</div>
 
-<!-- JavaScript for Image Preview & Delete -->
 <script>
+    let deletedImages = [];
+    let selectedFiles = [];
+
     function previewCoverImage(event) {
-        const input = event.target;
-        const reader = new FileReader();
-
-        reader.onload = function() {
-            document.getElementById('coverPreviewImg').src = reader.result;
-            document.getElementById('coverPreview').style.display = "block";
-            document.getElementById('coverPlaceholder').style.display = "none";
-        };
-
-        if (input.files && input.files[0]) {
-            reader.readAsDataURL(input.files[0]);
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById("coverPreviewImg").src = e.target.result;
+                document.getElementById("coverPlaceholder").classList.add("d-none");
+                document.getElementById("coverPreview").classList.remove("d-none");
+            };
+            reader.readAsDataURL(file);
         }
     }
 
-    function removeCoverImage(event) {
-        event.stopPropagation(); // Prevent triggering file selection when clicking delete
-
-        document.getElementById('cover_image').value = "";
-        document.getElementById('coverPreview').style.display = "none";
-        document.getElementById('coverPreviewImg').src = "";
-        document.getElementById('coverPlaceholder').style.display = "flex";
+    function removeCoverImage() {
+        document.getElementById("cover_image").value = "";
+        document.getElementById("coverPreview").classList.add("d-none");
+        document.getElementById("coverPlaceholder").classList.remove("d-none");
     }
 
+    function markImageForDeletion(id, element) {
+        deletedImages.push(id);
+        document.getElementById('deletedImagesInput').value = JSON.stringify(deletedImages);
+        element.parentElement.remove();
+    }
+
+    document.getElementById('image_album').addEventListener('change', function(event) {
+        const newFiles = Array.from(event.target.files);
+        selectedFiles = selectedFiles.concat(newFiles);
+        updateAlbumPreview();
+    });
+
+    function updateAlbumPreview() {
+        const previewContainer = document.getElementById('albumPreview');
+
+        // ✅ ตรวจสอบว่ามีรูปเก่าอยู่แล้วหรือไม่ ถ้าไม่ให้ดึงข้อมูลใหม่
+        if (!document.querySelector('.existing-image')) {
+            document.querySelectorAll('.existing-image').forEach(existing => {
+                previewContainer.appendChild(existing);
+            });
+        }
+
+        // ✅ แสดงรูปที่เพิ่งเพิ่ม
+        selectedFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgWrapper = document.createElement('div');
+                imgWrapper.classList.add('image-item');
+
+                const imgElement = document.createElement('img');
+                imgElement.src = e.target.result;
+                imgElement.alt = "Image Preview";
+
+                const removeBtn = document.createElement('button');
+                removeBtn.innerHTML = '✖';
+                removeBtn.classList.add('remove-btn');
+                removeBtn.onclick = function() {
+                    removeImage(index);
+                };
+
+                imgWrapper.appendChild(imgElement);
+                imgWrapper.appendChild(removeBtn);
+                previewContainer.appendChild(imgWrapper);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        const dt = new DataTransfer();
+        selectedFiles.forEach(file => dt.items.add(file));
+        document.getElementById("image_album").files = dt.files;
+    }
+
+    function removeImage(index) {
+        selectedFiles.splice(index, 1);
+        updateAlbumPreview();
+    }
 
     function confirmCancel() {
         Swal.fire({
-            title: "คุณแน่ใจหรือไม่?",
-            text: "หากยกเลิก ข้อมูลที่กรอกจะหายไป",
+            title: "Are you sure?",
+            text: "Your changes will be lost!",
             icon: "warning",
-            padding: "1.25rem",
             showCancelButton: true,
             confirmButtonColor: "#d33",
             cancelButtonColor: "#3085d6",
-            confirmButtonText: "ใช่, ยกเลิกเลย!",
-            cancelButtonText: "ไม่, กลับไปแก้ไข"
+            confirmButtonText: "Yes, go back!",
+            cancelButtonText: "No, stay here"
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = "{{ route('highlights.index') }}";
             }
         });
     }
-
-    function previewAlbumImages(event) {
-        const previewContainer = document.getElementById('imageAlbumPreview');
-        for (const file of event.target.files) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const div = document.createElement('div');
-                div.classList.add('image-item');
-                div.innerHTML = `<img src="${e.target.result}"><button type='button' class='remove-btn' onclick='this.parentElement.remove()'>✖</button>`;
-                previewContainer.appendChild(div);
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-
-    function removeAlbumImage(id, element) {
-        fetch(`/highlights/image-collection/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json'
-                }
-            }).then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    element.parentElement.remove();
-                } else {
-                    alert('Failed to delete image.');
-                }
-            }).catch(error => console.error('Error:', error));
-    }
-
-    function toggleRemoveButton() {
-        const removeBtn = document.getElementById('removeBtn');
-        const images = document.querySelectorAll('.album-image'); // Adjust the selector based on your image class
-
-        if (images.length > 0) {
-            removeBtn.classList.remove('d-none');
-        } else {
-            removeBtn.classList.add('d-none');
-        }
-    }
-
- function removeAllAlbumImages() {
-        document.querySelectorAll('.album-image').forEach(img => img.remove());
-        toggleRemoveButton(); // Hide button after removing images
-    }
-}
-
 </script>
+
 <style>
     .image-upload-box.small {
         max-width: 200px;
@@ -297,5 +303,4 @@
         font-size: 12px;
     }
 </style>
-
 @endsection

@@ -386,7 +386,7 @@ CREATE TABLE `highlight` (
   KEY `fk_highlight_user` (`user_id`),
   CONSTRAINT `fk_highlight_category1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
   CONSTRAINT `fk_highlight_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -395,6 +395,7 @@ CREATE TABLE `highlight` (
 
 LOCK TABLES `highlight` WRITE;
 /*!40000 ALTER TABLE `highlight` DISABLE KEYS */;
+INSERT INTO `highlight` VALUES (2,'highlightImage/rPY4ve84QjuWxawdIB96jWUTtRdd0WkdTwLf1TKq.png','555555','า่า',NULL,2,35,'2025-02-11 01:25:46','2025-02-11 03:13:18'),(3,'highlightImage/67aa44eb2fc62.jpg','2','3',NULL,3,35,'2025-02-11 01:26:51','2025-02-11 01:26:51');
 /*!40000 ALTER TABLE `highlight` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -407,7 +408,7 @@ DROP TABLE IF EXISTS `image_collection`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `image_collection` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `image` varchar(45) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `highlight_id` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -415,7 +416,7 @@ CREATE TABLE `image_collection` (
   UNIQUE KEY `idimage_collection_UNIQUE` (`id`),
   KEY `fk_image_collection_highlight1_idx` (`highlight_id`),
   CONSTRAINT `fk_image_collection_highlight1` FOREIGN KEY (`highlight_id`) REFERENCES `highlight` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -424,6 +425,7 @@ CREATE TABLE `image_collection` (
 
 LOCK TABLES `image_collection` WRITE;
 /*!40000 ALTER TABLE `image_collection` DISABLE KEYS */;
+INSERT INTO `image_collection` VALUES (18,'imageCollection/Koa09YnIIa7qHx5PVQlWhg2S4dkzJBQOE3AWoEQ9.jpg',2,'2025-02-11 03:12:32','2025-02-11 03:12:32');
 /*!40000 ALTER TABLE `image_collection` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1128,4 +1130,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-10 14:17:15
+-- Dump completed on 2025-02-11  3:14:42
