@@ -93,7 +93,7 @@
     document.getElementById('image_album').addEventListener('change', function(event) {
         const files = event.target.files;
         const previewContainer = document.getElementById('albumPreview');
-        previewContainer.innerHTML = '';
+        // previewContainer.innerHTML = '';
 
         if (files) {
             Array.from(files).forEach((file, index) => {
