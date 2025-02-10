@@ -100,6 +100,14 @@
                         <button type="submit" class="btn btn-success">ADD</button>
                     </form>
                 </td>
+                <td>
+                    <form action="{{ route('highlights.deleteHighlightById', $highlight->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this news?')">
+                            <i class="fas fa-trash-alt"></i> DELETE 
+                        </button>
+                </td>
             </tr>
             @endforeach
         </tbody>

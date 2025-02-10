@@ -217,4 +217,21 @@ class HighlightController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function deleteHighlightById($id)
+    {
+    $highlight = Highlight::findOrFail($id);
+
+    // ลบข้อมูลใน ImageCollection ที่เกี่ยวข้อง
+    foreach ($highlight->images as $image) {
+        Storage::disk('public')->delete($image->image); // ลบไฟล์จาก storage
+        $image->delete(); // ลบข้อมูลจาก database
+    }
+
+    // ลบ Highlight
+    $highlight->delete();
+
+    return redirect()->back()->with("success", "Highlight deleted successfully.");
+    }
+
 }
