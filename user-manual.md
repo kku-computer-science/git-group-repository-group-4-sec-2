@@ -28,7 +28,7 @@ The **Research Information Management System (RIMS)** is a comprehensive platfor
 ## 2. Accessing the Highlights Management Module
 
 ### Step 1: Log in to RIMS
-1. Open a web browser [https://cs04sec267.cpkkuhost.com/](web browser) and navigate to the **RIMS login page**.
+1. Open a web browser [web browser](https://cs04sec267.cpkkuhost.com/) and navigate to the **RIMS login page**.
 2. Enter your **username** and **password** (for staff or admin accounts).
 3. Click **Login** to access your dashboard.
 
@@ -68,8 +68,9 @@ The **Research Information Management System (RIMS)** is a comprehensive platfor
 ## 6. Add News to Highlights
 1. Select the news you want to add.
 2. Click the **ADD** button in the News table.
-3. Once added, a notification will appear confirming that the news has been added to Highlights.
-4. The added news will appear in the Highlights section on the homepage.
+3. **Note:** You cannot add more highlights if there are already 5 items in the Highlights section.
+4. Once added, a notification will appear confirming that the news has been added to Highlights.
+5. The added news will appear in the Highlights section on the homepage.
 
 ---
 
@@ -82,8 +83,8 @@ The **Research Information Management System (RIMS)** is a comprehensive platfor
 ---
 
 ## 8. Search Highlights and News
-1. Click the **Search** button.
-2. You can search by Title and Category.
+1. Click the **Search** field.
+2. You can search by **Title** and **Category** using the search field.
 
 ---
 
