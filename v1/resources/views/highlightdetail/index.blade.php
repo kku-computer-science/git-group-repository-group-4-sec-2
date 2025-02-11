@@ -45,8 +45,7 @@
 @if($highlights->isNotEmpty())
 @foreach($highlights as $highlight)
 <div class="head-img">
-    <img src="{{ asset('storage/' . $highlight->image) }}" sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 100vw" 
-        style="width: 100%; height: 100%;">
+    <img src="{{ asset('storage/' . $highlight->image) }}" class="w-100" style="height: 600px; object-fit: cover;">
 </div>
 
 <div class="container">

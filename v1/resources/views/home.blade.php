@@ -122,7 +122,8 @@
     /* Fix the carousel size */
     #carouselExampleIndicators {
         max-width: 100%;
-        border-radius: 20px; /* Add rounded corners */
+        border-radius: 20px;
+        /* Add rounded corners */
 
         width: 100%;
         /* Set your desired width */
@@ -130,8 +131,10 @@
         /* Set your desired height */
         margin: auto;
         /* Center the carousel */
-        overflow: hidden; /* Prevent image overflow */
-        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2); /* Add soft shadow */
+        overflow: hidden;
+        /* Prevent image overflow */
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+        /* Add soft shadow */
 
 
     }
@@ -150,7 +153,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 20px; 
+        border-radius: 20px;
         /* Ensure the image covers the box */
     }
 
@@ -166,7 +169,6 @@
         opacity: 1 !important;
         /* Ensure arrows are fully visible */
     }
-    
 </style>
 @section('content')
 <div class="container home">
@@ -186,7 +188,10 @@
             <div class="carousel-inner">
                 @foreach($heads as $index => $head)
                 <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                    <img src="{{ asset('storage/' . $head->image) }}" alt="Slide {{ $index + 1 }}">
+                    <a href="{{ route('highlight.show', $head->id) }}">
+                        <img src="{{ asset('storage/' . $head->image) }}" class="d-block w-200"
+                            style="height: 400px; object-fit: cover;" alt="...">
+                    </a>
                 </div>
                 @endforeach
             </div>
