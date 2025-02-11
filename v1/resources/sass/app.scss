@@ -9,4 +9,6 @@
 
 
 // Flag Icon CSS
-@import '~flag-icon-css/sass/flag-icon';
+// @import '~flag-icon-css/sass/flag-icon';
+@import 'flag-icon-css/sass/flag-icons';
+@use 'flag-icon-css/sass/flag-icons';
