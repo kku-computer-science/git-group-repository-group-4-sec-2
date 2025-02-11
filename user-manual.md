@@ -28,7 +28,7 @@ The **Research Information Management System (RIMS)** is a comprehensive platfor
 ## 2. Accessing the Highlights Management Module
 
 ### Step 1: Log in to RIMS
-1. Open a web browser and navigate to the **RIMS login page**.
+1. Open a web browser [https://cs04sec267.cpkkuhost.com/](web browser) and navigate to the **RIMS login page**.
 2. Enter your **username** and **password** (for staff or admin accounts).
 3. Click **Login** to access your dashboard.
 
