@@ -9,10 +9,14 @@
 2. [Accessing the Highlights Management Module](#2-accessing-the-highlights-management-module)
    - [Step 1: Log in to RIMS](#step-1-log-in-to-rims)
    - [Step 2: Navigate to Highlights Management](#step-2-navigate-to-highlights-management)
-3. [Adding a New Highlight](#3-adding-a-new-highlight)
-4. [Editing an Existing Highlight](#4-editing-an-existing-highlight)
-5. [Deleting a Highlight](#5-deleting-a-highlight)
-6. [Viewing and Searching Highlights](#6-viewing-and-searching-highlights)
+3. [Create a New Newst](#3-create-a-new-news)
+4. [Editing an Existing News](#4-editing-an-existing-news)
+5. [Deleting a News](#5-deleting-a-news)
+6. [Add News to Highlights](#6-add-news-to-highlights)
+7. [Remove News from Highlights](#7-remove-news-from-highlightss)
+8. [Search Highlights and News](#8-search-highlights-and-news)
+9. [Viewing News and Hightlights Information on the Home Page](#9-viewing-news-and-hightlights-information-on-the-home-page)
+
 
 ---
 
@@ -83,5 +87,5 @@ The **Research Information Management System (RIMS)** is a comprehensive platfor
 
 ---
 
-## 3. Viewing News and Hightlights Information on the Home Page
+## 9. Viewing News and Hightlights Information on the Home Page
 On the home page, both highlighted news and all news will be displayed. You can click on any news to view its details.
