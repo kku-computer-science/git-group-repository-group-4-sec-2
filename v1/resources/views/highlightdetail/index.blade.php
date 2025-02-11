@@ -56,11 +56,11 @@
                     <span>เผยแพร่&nbsp;{{ $highlight->created_at->format('d/m/Y H:i') }}&nbsp;</span>
                 </div>
                 <div class="px-2 d-flex col-lg-8">
-                    <div class="d-flex px-1 align-items-center" style="width: 150px;">
+                    <div class="d-flex px-1 align-items-center" style="width: fit-content;">
                         <span>หมวดหมู่:</span>
-                        <a href="/content/news/category/{{ $highlight->category->name }}">
+                        <!-- <a href="/content/news/category/{{ $highlight->category->name }}"> -->
                             <span>&nbsp;{{ $highlight->category->name }}</span>
-                        </a>
+                        <!-- </a> -->
                     </div>
                 </div>
             </div>

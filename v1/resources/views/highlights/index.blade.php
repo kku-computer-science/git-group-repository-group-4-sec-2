@@ -161,7 +161,10 @@
             $.ajax({
                 url: "/highlights/" + highlightId + "/add",
                 type: "POST",
-                data: { _token: "{{ csrf_token() }}", _method: "PUT" },
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    _method: "PUT"
+                },
                 success: function(response) {
                     Swal.fire({
                         position: "center",
@@ -194,7 +197,10 @@
             $.ajax({
                 url: "/highlights/" + highlightId + "/remove",
                 type: "POST",
-                data: { _token: "{{ csrf_token() }}", _method: "PUT" },
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    _method: "PUT"
+                },
                 success: function(response) {
                     Swal.fire({
                         position: "center",
@@ -239,7 +245,10 @@
                     $.ajax({
                         url: "/highlights/" + highlightId,
                         type: "POST",
-                        data: { _token: "{{ csrf_token() }}", _method: "DELETE" },
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            _method: "DELETE"
+                        },
                         success: function(response) {
                             Swal.fire({
                                 icon: "success",
@@ -265,9 +274,17 @@
     });
 
     $(document).ready(function() {
-    // Initialize DataTables for both tables
-    $('#highlight-table').DataTable();
-    $('#news-table').DataTable();
-});
+        // Initialize DataTables for both tables
+        $('#highlight-table').DataTable();
+        $('#news-table').DataTable();
+
+      
+        setTimeout(function() {
+            $(".alert-success").fadeOut("slow");
+        }, 2000);
+        setTimeout(function() {
+            $(".alert-danger").fadeOut("slow");
+        }, 2000);
+    });
 </script>
 @endsection

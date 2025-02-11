@@ -12,5 +12,5 @@
       ]
     }
   },
-  "postCreateCommand": "git config --global --add safe.directory /var/www/html && composer update && rm -rf public/storage && php artisan storage:link && curl http://localhost/clear-all && mysql -h mysql -u cs04sec2_cs04sec267 -p\"n*lYXLK_dIMA\" -D cs04sec2_mysql < database8.sql"
+  "postCreateCommand": "git config --global --add safe.directory /var/www/html && composer update && rm -rf public/storage && php artisan storage:link && curl http://localhost/clear-all && mysql -h mysql -u cs04sec2_cs04sec267 -p\"n*lYXLK_dIMA\" -D cs04sec2_mysql < database10.sql"
 }
