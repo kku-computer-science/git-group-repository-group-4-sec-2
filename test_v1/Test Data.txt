@@ -1,0 +1,25 @@
+${BROWSER}       chrome
+
+# สำหรับทดสอบ localhost
+${LOCALHOST}     127.0.0.1:8000
+${LOCALHOST}     localhost
+${URL}           http://${LOCALHOST}/
+${LOGIN_URL}     http://${LOCALHOST}/login
+${DASHBOARD_URL}  http://${LOCALHOST}/dashboard
+${MANAGE_HIGHLIGHTS_URL}    http://${LOCALHOST}/highlights
+
+# สำหรับทดสอบ host จริง
+${HOST}          cs04sec267.cpkkuhost.com
+${URL}           https://${HOST}/
+${LOGIN_URL}     https://${HOST}/login
+${DASHBOARD_URL}  https://${HOST}/dashboard
+${MANAGE_HIGHLIGHTS_URL}    https://${HOST}/highlights
+
+
+# บัญชีผู้ใช้
+${ADMIN_USERNAME}      admin@gmail.com
+${ADMIN_PASSWORD}      12345678
+${STAFF_USERNAME}      staff@gmail.com
+${STAFF_PASSWORD}      123456789
+${RESEARCHER_USERNAME}      thanaphon@kku.ac.th
+${RESEARCHER_PASSWORD}      123456789

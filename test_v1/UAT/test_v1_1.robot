@@ -9,12 +9,12 @@ Test Go to Login Page
     [Documentation]    ทดสอบการเข้าหน้า Login
     Go to Login Page
     Close Browser
+    
 Test Login Role Admin Success
     [Documentation]    ทดสอบการ Login ของ Admin สำเร็จ
     Go to Login Page
     Login Admin
     Verify Admin Dashboard
-    Close Browser
     Close Browser
 
 Test Login Role Staff Success
@@ -23,14 +23,12 @@ Test Login Role Staff Success
     Login Staff
     Verify Staff Dashboard
     Close Browser
-    Close Browser
 
 Test Login Role Researcher Success
     [Documentation]    ทดสอบการ Login ของ Researcher สำเร็จ
     Go to Login Page
     Login Researcher
     Verify Researcher Dashboard
-    Close Browser
     Close Browser
 
 Test Go to Manage Highlights Page
@@ -42,5 +40,4 @@ Test Go to Manage Highlights Page
     Click Link    xpath=//a[@class='nav-link' and contains(span, 'Manage Highlights')]
     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    ${DELAY}
     Page Should Contain    Manage Highlights
-    Close Browser
     Close Browser
