@@ -1,0 +1,42 @@
+{
+    "browser": "chrome",
+    "localhost": {
+      "ip": "127.0.0.1:8000",
+      "url": "http://localhost/",
+      "login_url": "http://localhost/login",
+      "dashboard_url": "http://localhost/dashboard",
+      "manage_highlights_url": "http://localhost/highlights"
+    },
+    "host": {
+      "domain": "cs04sec267.cpkkuhost.com",
+      "url": "https://cs04sec267.cpkkuhost.com/",
+      "login_url": "https://cs04sec267.cpkkuhost.com/login",
+      "dashboard_url": "https://cs04sec267.cpkkuhost.com/dashboard",
+      "manage_highlights_url": "https://cs04sec267.cpkkuhost.com/highlights"
+    },
+    "accounts": {
+      "admin": {
+        "email": "admin@gmail.com",
+        "password": "12345678"
+      },
+      "staff": {
+        "email": "staff@gmail.com",
+        "password": "123456789"
+      },
+      "researcher": {
+        "email": "thanaphon@kku.ac.th",
+        "password": "123456789"
+      }
+    },
+    "invalid_credentials": {
+      "invalid_password": "111111111",
+      "error_message": "Login Failed: Your user ID or password is incorrect"
+    },
+    "test_news_data": {
+      "title": "ตัวอย่างข่าวสาร",
+      "content": "เนื้อหาของข่าวสารตัวอย่าง",
+      "author": "เจ้าหน้าที่ฝ่ายบริหาร",
+      "publish_date": "2025-02-11"
+    }
+  }
+  
