@@ -117,6 +117,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 FAQ</a>
                             <a class="dropdown-item"><i
                                     class="dropdown-item-icon mdi mdi-power text-primary me-2"></i>Sign Out</a> -->
+                    <a href="{{ route('home') }}" class="nav-link home-icon">
+                        <i class="fas fa-home fa-2x"></i>
+                    </a>
+
+
+
                     <li class="nav-item d-none d-sm-inline-block">
                         <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); 
                         document.getElementById ('logout-form').submit();"> {{ __('Logout') }} <i class="mdi mdi-logout"></i></a>
@@ -336,6 +342,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
 </body>
-
+<style>
+    .home-icon i {
+        font-size: 18px;
+        color: black;
+        margin-left: 20px;
+    }
+</style>
 
 </html>

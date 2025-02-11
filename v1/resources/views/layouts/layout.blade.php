@@ -57,7 +57,7 @@
     <!-- Navigation -->
     <nav id="navbar" class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-            <a class="navbar-brand logo-image" href="#"><img src="{{asset('img/logo3.png')}}" alt="alternative"></a>
+            <a class="navbar-brand logo-image" href="#"><img src="{{asset('img/logo2.png')}}" alt="alternative"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -125,20 +125,25 @@
                 @endif -->
                 @if (Route::has('login'))
                 @auth
-                <!-- ถ้าล็อกอินแล้ว ให้แสดงปุ่ม Logout -->
+                <!-- เพิ่ม space และกำหนดสีไอคอนเป็นสีเทาด้วย text-secondary -->
+                <a href="{{ url('/profile') }}" class="ms-3 me-3 text-secondary">
+                    <i class="fa fa-user-circle fa-2x" style="color: gray;"></i>
+                </a>
 
-                <a href="{{ route('logout') }}"
+                <!-- ปุ่ม Logout -->
+                <a href="{{ route('logout') }}" class="btn btn-danger"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    Logout <i class="mdi mdi-logout"></i>
+                    <i class="fa fa-sign-out-alt fa-lg"></i> Logout
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
 
                 @else
-                <!-- ถ้ายังไม่ได้ล็อกอิน ให้แสดงปุ่ม Login -->
-
-                <a class="btn btn-primary" href="{{ route('login') }}">Login</a>
+                <!-- ปุ่ม Login -->
+                <a class="btn btn-primary" href="{{ route('login') }}">
+                    <i class="fa fa-sign-in-alt fa-lg"></i> Login
+                </a>
 
                 @endauth
                 @endif

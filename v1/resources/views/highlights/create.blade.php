@@ -7,18 +7,18 @@
     <div class="card" style="padding: 16px;">
         <div class="card-body">
             <h4 class="card-title">Create News</h4>
-            <form action="{{ route('highlights.store') }}" method="POST" enctype="multipart/form-data">
+            <form id="newsForm" action="{{ route('highlights.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="form-group">
                     <label for="cover_image">Cover Image</label>
-                    <div class="image-upload-box" id="coverImageBox">
+                    <div class="image-upload-box" id="coverImageBox" onclick="document.getElementById('cover_image').click();">
                         <input type="file" name="cover_image" id="cover_image" class="d-none" accept="image/*" onchange="previewCoverImage(event)">
-                        <div class="upload-placeholder" id="coverPlaceholder" onclick="document.getElementById('cover_image').click();">
-                            <div class="icon">
-                                <i class="mdi mdi-plus"></i>
+                        <div class="upload-placeholder" id="coverPlaceholder" >
+                            <div class="placeholder-content">
+                                <i class="mdi mdi-cloud-upload-outline"></i>
+                                <p>คลิกเพื่อเพิ่มรูปภาพ</p>
                             </div>
-                            <p>เพิ่มรูปภาพ</p>
                         </div>
                         <div class="image-preview d-none" id="coverPreview">
                             <img id="coverPreviewImg" src="#" alt="Cover Image">
@@ -34,7 +34,7 @@
 
                 <div class="form-group">
                     <label for="category">Category</label>
-                    <select name="category_id" id="category" class="form-control" required>
+                    <select name="category_id" id="category" class="form-control">
                         <option value="">Select Category</option>
                         @foreach ($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -49,13 +49,13 @@
 
                 <div class="form-group">
                     <label for="image_album">Image Album</label>
-                    <div class="image-upload-box" id="imageAlbumBox">
+                    <div class="image-upload-box small" id="imageAlbumBox" onclick="document.getElementById('image_album').click();">
                         <input type="file" name="images[]" id="image_album" class="d-none" multiple accept="image/*">
-                        <div class="upload-placeholder" onclick="document.getElementById('image_album').click();">
-                            <div class="icon">
-                                <i class="mdi mdi-plus"></i>
+                        <div class="upload-placeholder" id="albumPlaceholder" >
+                            <div class="placeholder-content">
+                                <i class="mdi mdi-cloud-upload-outline"></i>
+                                <p>คลิกเพื่อเพิ่มรูปภาพ</p>
                             </div>
-                            <p>เพิ่มรูปภาพ</p>
                         </div>
                     </div>
                     <div id="albumPreview" class="album-preview"></div>
@@ -72,8 +72,25 @@
 </div>
 
 <script>
+    function confirmCancel() {
+        Swal.fire({
+            title: "คุณแน่ใจหรือไม่?",
+            text: "หากยกเลิก ข้อมูลที่กรอกจะหายไป",
+            icon: "warning",
+            padding: "1.25rem",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "ใช่, ยกเลิกเลย!",
+            cancelButtonText: "ไม่, กลับไปแก้ไข"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{{ route('highlights.index') }}";
+            }
+        });
+    }
 
-function previewCoverImage(event) {
+    function previewCoverImage(event) {
         const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -140,14 +157,45 @@ function previewCoverImage(event) {
     }
 
     function removeImage(index) {
-        selectedFiles.splice(index, 1); 
-        updateAlbumPreview(); 
+        selectedFiles.splice(index, 1);
+        updateAlbumPreview();
     }
 
     function clearAllImages() {
-        selectedFiles = []; 
+        selectedFiles = [];
         document.getElementById("image_album").value = "";
         updateAlbumPreview();
+    }
+
+    document.getElementById("newsForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent immediate form submission
+
+        let category = document.getElementById("category").value;
+
+        if (!category) {
+            Swal.fire({
+                icon: "warning",
+                title: "กรุณาเลือกหมวดหมู่!",
+                text: "คุณต้องเลือกหมวดหมู่ก่อนส่งแบบฟอร์ม",
+                padding: "1.25rem",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#3085d6",
+            });
+        } else {
+            confirmCreate();
+        }
+    });
+
+    function confirmCreate() {
+        Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "สร้างข่าวสำเร็จ",
+            showConfirmButton: false,
+            timer: 1500
+        }).then(() => {
+            document.getElementById("newsForm").submit(); // Submit the form after SweetAlert closes
+        });
     }
 </script>
 
@@ -165,25 +213,45 @@ function previewCoverImage(event) {
         width: 100%;
         max-width: 500px;
         height: 250px;
-        background: #333;
+        background: #f3f3f3;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 8px;
         overflow: hidden;
-    }
-
-    .upload-placeholder {
-        text-align: center;
-        color: #fff;
+        border: 2px dashed #aaa;
         cursor: pointer;
     }
 
-    .upload-placeholder .icon {
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 50%;
-        padding: 10px;
-        display: inline-block;
+    .upload-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #666;
+    }
+
+    .placeholder-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .placeholder-content i {
+        font-size: 40px;
+        color: #999;
+        margin-bottom: 8px;
+    }
+
+    .placeholder-content p {
+        font-size: 14px;
+        color: #777;
+    }
+
+    .image-upload-box.small {
+        max-width: 200px;
+        height: 100px;
     }
 
     .image-preview {
