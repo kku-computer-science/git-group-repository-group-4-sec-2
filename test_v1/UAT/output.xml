@@ -1,271 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.1.1 (Python 3.13.1 on win32)" generated="2025-02-10T22:13:34.899771" rpa="false" schemaversion="5">
-<suite id="s1" name="Test V1 2" source="C:\work_2025\git-group-repository-group-4-sec-2\test_v1\UAT\test_v1_2.robot">
-<test id="s1-t1" name="Test Login Role Staff Unsuccess" line="9">
+<robot generator="Robot 7.1.1 (Python 3.13.1 on win32)" generated="2025-02-11T21:59:33.638221" rpa="false" schemaversion="5">
+<suite id="s1" name="Test V1 3" source="C:\work_2025\git-group-repository-group-4-sec-2\test_v1\UAT\test_v1_3.robot">
+<test id="s1-t1" name="Test Login Role Staff success" line="8">
 <kw name="Go to Login Page" owner="resource_v1">
 <kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:13:35.148592" level="INFO">Opening browser 'chrome' to base url 'http://localhost/'.</msg>
+<msg time="2025-02-11T21:59:33.908894" level="INFO">Opening browser 'chrome' to base url 'http://localhost/'.</msg>
 <arg>${URL}</arg>
 <arg>${BROWSER}</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2025-02-10T22:13:35.148401" elapsed="8.220366"/>
+<status status="PASS" start="2025-02-11T21:59:33.908500" elapsed="8.725685"/>
 </kw>
 <kw name="Maximize Browser Window" owner="SeleniumLibrary">
 <doc>Maximizes current browser window.</doc>
-<status status="PASS" start="2025-02-10T22:13:43.369092" elapsed="0.073382"/>
+<status status="PASS" start="2025-02-11T21:59:42.634531" elapsed="0.056421"/>
 </kw>
 <kw name="Location Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:13:43.457408" level="INFO">Current location is 'http://localhost/'.</msg>
+<msg time="2025-02-11T21:59:42.846528" level="INFO">Current location is 'http://localhost/'.</msg>
 <arg>${URL}</arg>
 <doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="PASS" start="2025-02-10T22:13:43.443284" elapsed="0.014251"/>
+<status status="PASS" start="2025-02-11T21:59:42.692497" elapsed="0.154191"/>
 </kw>
 <kw name="Click Link" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:13:43.458209" level="INFO">Clicking link 'xpath=//a[@class='btn btn-primary' and text()='Login']'.</msg>
+<msg time="2025-02-11T21:59:42.847320" level="INFO">Clicking link 'xpath=//a[@class='btn btn-primary' and text()='Login']'.</msg>
 <arg>xpath=//a[@class='btn btn-primary' and text()='Login']</arg>
 <doc>Clicks a link identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-10T22:13:43.457824" elapsed="5.463093"/>
+<status status="PASS" start="2025-02-11T21:59:42.846883" elapsed="5.502679"/>
 </kw>
 <kw name="Location Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:13:48.931226" level="INFO">Current location is 'http://localhost/login'.</msg>
+<msg time="2025-02-11T21:59:48.371960" level="INFO">Current location is 'http://localhost/login'.</msg>
 <arg>${LOGIN_URL}</arg>
 <doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="PASS" start="2025-02-10T22:13:48.921191" elapsed="0.010196"/>
+<status status="PASS" start="2025-02-11T21:59:48.349928" elapsed="0.022176"/>
 </kw>
 <kw name="Wait Until Page Contains" owner="SeleniumLibrary">
 <arg>Account Login</arg>
 <arg>${DELAY}</arg>
 <doc>Waits until ``text`` appears on the current page.</doc>
-<status status="PASS" start="2025-02-10T22:13:48.931754" elapsed="0.030453"/>
+<status status="PASS" start="2025-02-11T21:59:48.372335" elapsed="0.031672"/>
 </kw>
-<status status="PASS" start="2025-02-10T22:13:35.147912" elapsed="13.814755"/>
+<status status="PASS" start="2025-02-11T21:59:33.907717" elapsed="14.496678"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:13:48.964431" level="INFO">Typing text 'staff@gmail.com' into text field 'id=username'.</msg>
+<msg time="2025-02-11T21:59:48.406367" level="INFO">Typing text 'staff@gmail.com' into text field 'id=username'.</msg>
 <arg>id=username</arg>
 <arg>${STAFF_USERNAME}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-10T22:13:48.963767" elapsed="0.186113"/>
+<status status="PASS" start="2025-02-11T21:59:48.405265" elapsed="0.196489"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:13:49.151219" level="INFO">Typing text '111111111' into text field 'id=password'.</msg>
+<msg time="2025-02-11T21:59:48.602607" level="INFO">Typing text '123456789' into text field 'id=password'.</msg>
 <arg>id=password</arg>
-<arg>${INVALID_PASSWORD}</arg>
+<arg>${STAFF_PASSWORD}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-10T22:13:49.150701" elapsed="0.160569"/>
+<status status="PASS" start="2025-02-11T21:59:48.602247" elapsed="0.121004"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:13:49.311806" level="INFO">Clicking button 'xpath=//button[contains(text(),'Log In')]'.</msg>
+<msg time="2025-02-11T21:59:48.724019" level="INFO">Clicking button 'xpath=//button[contains(text(),'Log In')]'.</msg>
 <arg>xpath=//button[contains(text(),'Log In')]</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-10T22:13:49.311625" elapsed="5.307830"/>
+<status status="PASS" start="2025-02-11T21:59:48.723717" elapsed="8.904191"/>
 </kw>
 <kw name="Location Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:13:54.633361" level="INFO">Current location is 'http://localhost/login'.</msg>
-<arg>${LOGIN_URL}</arg>
+<msg time="2025-02-11T21:59:57.636956" level="INFO">Current location is 'http://localhost/dashboard'.</msg>
+<arg>${DASHBOARD_URL}</arg>
 <doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="PASS" start="2025-02-10T22:13:54.619839" elapsed="0.013713"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>xpath=//div[contains(@class, 'alert-danger')]</arg>
-<arg>${DELAY}</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2025-02-10T22:13:54.634295" elapsed="0.036571"/>
-</kw>
-<kw name="Element Text Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:13:54.672009" level="INFO">Verifying element 'xpath=//div[contains(@class, 'alert-danger')]' contains exact text 'Login Failed: Your user ID or password is incorrect'.</msg>
-<arg>xpath=//div[contains(@class, 'alert-danger')]</arg>
-<arg>${error_message}</arg>
-<doc>Verifies that element ``locator`` contains exact the text ``expected``.</doc>
-<status status="PASS" start="2025-02-10T22:13:54.671499" elapsed="0.030366"/>
-</kw>
-<kw name="Close Browser" owner="SeleniumLibrary">
-<doc>Closes the current browser.</doc>
-<status status="PASS" start="2025-02-10T22:13:54.702916" elapsed="2.234536"/>
+<status status="PASS" start="2025-02-11T21:59:57.628398" elapsed="0.008752"/>
 </kw>
 <doc>ทดสอบการ Login ของ Staff ไม่สำเร็จ</doc>
-<status status="PASS" start="2025-02-10T22:13:35.147093" elapsed="21.791506"/>
+<status status="PASS" start="2025-02-11T21:59:33.906734" elapsed="23.731118"/>
 </test>
-<test id="s1-t2" name="Test Login Role Admin Unsuccess" line="20">
-<kw name="Go to Login Page" owner="resource_v1">
-<kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:13:56.944497" level="INFO">Opening browser 'chrome' to base url 'http://localhost/'.</msg>
-<arg>${URL}</arg>
-<arg>${BROWSER}</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2025-02-10T22:13:56.944020" elapsed="8.224573"/>
+<test id="s1-t2" name="Test DASHBOARD To MANAGE HIGHLIGHTS" line="16">
+<kw name="Location Should Be" owner="SeleniumLibrary">
+<msg time="2025-02-11T21:59:57.650324" level="INFO">Current location is 'http://localhost/dashboard'.</msg>
+<arg>${DASHBOARD_URL}</arg>
+<doc>Verifies that the current URL is exactly ``url``.</doc>
+<status status="PASS" start="2025-02-11T21:59:57.640412" elapsed="0.010187"/>
 </kw>
-<kw name="Maximize Browser Window" owner="SeleniumLibrary">
-<doc>Maximizes current browser window.</doc>
-<status status="PASS" start="2025-02-10T22:14:05.168851" elapsed="0.075255"/>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2025-02-11T21:59:57.652087" level="INFO">Clicking element 'xpath=//a[contains(text(),'Manage Highlights')]'.</msg>
+<msg time="2025-02-11T21:59:57.790949" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-7.png"&gt;&lt;img src="selenium-screenshot-7.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2025-02-11T21:59:57.791262" level="FAIL">Element with locator 'xpath=//a[contains(text(),'Manage Highlights')]' not found.</msg>
+<arg>xpath=//a[contains(text(),'Manage Highlights')]</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="FAIL" start="2025-02-11T21:59:57.651484" elapsed="0.147536">Element with locator 'xpath=//a[contains(text(),'Manage Highlights')]' not found.</status>
 </kw>
 <kw name="Location Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:05.253217" level="INFO">Current location is 'http://localhost/'.</msg>
-<arg>${URL}</arg>
+<arg>${MANAGE_HIGHLIGHTS_URL}</arg>
 <doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="PASS" start="2025-02-10T22:14:05.244371" elapsed="0.008947"/>
+<status status="NOT RUN" start="2025-02-11T21:59:57.800560" elapsed="0.000129"/>
 </kw>
-<kw name="Click Link" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:05.253728" level="INFO">Clicking link 'xpath=//a[@class='btn btn-primary' and text()='Login']'.</msg>
-<arg>xpath=//a[@class='btn btn-primary' and text()='Login']</arg>
-<doc>Clicks a link identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-10T22:14:05.253533" elapsed="2.314580"/>
-</kw>
-<kw name="Location Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:07.582102" level="INFO">Current location is 'http://localhost/login'.</msg>
-<arg>${LOGIN_URL}</arg>
-<doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="PASS" start="2025-02-10T22:14:07.568331" elapsed="0.013898"/>
-</kw>
-<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
-<arg>Account Login</arg>
-<arg>${DELAY}</arg>
-<doc>Waits until ``text`` appears on the current page.</doc>
-<status status="PASS" start="2025-02-10T22:14:07.582466" elapsed="0.016615"/>
-</kw>
-<status status="PASS" start="2025-02-10T22:13:56.943518" elapsed="10.655733"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:07.599755" level="INFO">Typing text 'admin@gmail.com' into text field 'id=username'.</msg>
-<arg>id=username</arg>
-<arg>${ADMIN_USERNAME}</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-10T22:14:07.599560" elapsed="0.140110"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:07.740437" level="INFO">Typing text '111111111' into text field 'id=password'.</msg>
-<arg>id=password</arg>
-<arg>${INVALID_PASSWORD}</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-10T22:14:07.740078" elapsed="0.131761"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:07.872645" level="INFO">Clicking button 'xpath=//button[contains(text(),'Log In')]'.</msg>
-<arg>xpath=//button[contains(text(),'Log In')]</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-10T22:14:07.872290" elapsed="5.814659"/>
-</kw>
-<kw name="Location Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:13.712215" level="INFO">Current location is 'http://localhost/login'.</msg>
-<arg>${LOGIN_URL}</arg>
-<doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="PASS" start="2025-02-10T22:14:13.687385" elapsed="0.025116"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>xpath=//div[contains(@class, 'alert-danger')]</arg>
-<arg>${DELAY}</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2025-02-10T22:14:13.713185" elapsed="0.029340"/>
-</kw>
-<kw name="Element Text Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:13.743577" level="INFO">Verifying element 'xpath=//div[contains(@class, 'alert-danger')]' contains exact text 'Login Failed: Your user ID or password is incorrect'.</msg>
-<arg>xpath=//div[contains(@class, 'alert-danger')]</arg>
-<arg>${error_message}</arg>
-<doc>Verifies that element ``locator`` contains exact the text ``expected``.</doc>
-<status status="PASS" start="2025-02-10T22:14:13.743142" elapsed="0.026473"/>
-</kw>
-<kw name="Close Browser" owner="SeleniumLibrary">
-<doc>Closes the current browser.</doc>
-<status status="PASS" start="2025-02-10T22:14:13.770087" elapsed="2.238051"/>
-</kw>
-<doc>ทดสอบการ Login ของ Admin ไม่สำเร็จ</doc>
-<status status="PASS" start="2025-02-10T22:13:56.942012" elapsed="19.066757"/>
+<status status="FAIL" start="2025-02-11T21:59:57.639654" elapsed="0.161660">Element with locator 'xpath=//a[contains(text(),'Manage Highlights')]' not found.</status>
 </test>
-<test id="s1-t3" name="Test Login Role Researcher Unsuccess" line="31">
-<kw name="Go to Login Page" owner="resource_v1">
-<kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:16.011521" level="INFO">Opening browser 'chrome' to base url 'http://localhost/'.</msg>
-<arg>${URL}</arg>
-<arg>${BROWSER}</arg>
-<doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2025-02-10T22:14:16.011385" elapsed="8.211178"/>
-</kw>
-<kw name="Maximize Browser Window" owner="SeleniumLibrary">
-<doc>Maximizes current browser window.</doc>
-<status status="PASS" start="2025-02-10T22:14:24.222915" elapsed="0.036772"/>
-</kw>
-<kw name="Location Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:24.307278" level="INFO">Current location is 'http://localhost/'.</msg>
-<arg>${URL}</arg>
-<doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="PASS" start="2025-02-10T22:14:24.260380" elapsed="0.047340"/>
-</kw>
-<kw name="Click Link" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:24.308547" level="INFO">Clicking link 'xpath=//a[@class='btn btn-primary' and text()='Login']'.</msg>
-<arg>xpath=//a[@class='btn btn-primary' and text()='Login']</arg>
-<doc>Clicks a link identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-10T22:14:24.308199" elapsed="2.076072"/>
-</kw>
-<kw name="Location Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:26.400944" level="INFO">Current location is 'http://localhost/login'.</msg>
-<arg>${LOGIN_URL}</arg>
-<doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="PASS" start="2025-02-10T22:14:26.384724" elapsed="0.016396"/>
-</kw>
-<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
-<arg>Account Login</arg>
-<arg>${DELAY}</arg>
-<doc>Waits until ``text`` appears on the current page.</doc>
-<status status="PASS" start="2025-02-10T22:14:26.401356" elapsed="0.014133"/>
-</kw>
-<status status="PASS" start="2025-02-10T22:14:16.011189" elapsed="10.404443"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:26.416089" level="INFO">Typing text 'thanaphon@kku.ac.th' into text field 'id=username'.</msg>
-<arg>id=username</arg>
-<arg>${RESEARCHER_USERNAME}</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-10T22:14:26.415902" elapsed="0.146981"/>
-</kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:26.563628" level="INFO">Typing text '111111111' into text field 'id=password'.</msg>
-<arg>id=password</arg>
-<arg>${INVALID_PASSWORD}</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-10T22:14:26.563331" elapsed="0.122596"/>
-</kw>
-<kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:26.686507" level="INFO">Clicking button 'xpath=//button[contains(text(),'Log In')]'.</msg>
-<arg>xpath=//button[contains(text(),'Log In')]</arg>
-<doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-10T22:14:26.686296" elapsed="3.240245"/>
-</kw>
-<kw name="Location Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:29.963728" level="INFO">Current location is 'http://localhost/login'.</msg>
-<arg>${LOGIN_URL}</arg>
-<doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="PASS" start="2025-02-10T22:14:29.926981" elapsed="0.037211"/>
-</kw>
-<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
-<arg>xpath=//div[contains(@class, 'alert-danger')]</arg>
-<arg>${DELAY}</arg>
-<doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2025-02-10T22:14:29.965850" elapsed="0.035001"/>
-</kw>
-<kw name="Element Text Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-10T22:14:30.002224" level="INFO">Verifying element 'xpath=//div[contains(@class, 'alert-danger')]' contains exact text 'Login Failed: Your user ID or password is incorrect'.</msg>
-<arg>xpath=//div[contains(@class, 'alert-danger')]</arg>
-<arg>${error_message}</arg>
-<doc>Verifies that element ``locator`` contains exact the text ``expected``.</doc>
-<status status="PASS" start="2025-02-10T22:14:30.001695" elapsed="0.026541"/>
-</kw>
-<kw name="Close Browser" owner="SeleniumLibrary">
-<doc>Closes the current browser.</doc>
-<status status="PASS" start="2025-02-10T22:14:30.028753" elapsed="2.276067"/>
-</kw>
-<doc>ทดสอบการ Login ของ Researcher ไม่สำเร็จ</doc>
-<status status="PASS" start="2025-02-10T22:14:16.010374" elapsed="16.295036"/>
-</test>
-<status status="PASS" start="2025-02-10T22:13:34.901022" elapsed="57.406347"/>
+<status status="FAIL" start="2025-02-11T21:59:33.639366" elapsed="24.165362"/>
 </suite>
 <statistics>
 <total>
-<stat pass="3" fail="0" skip="0">All Tests</stat>
+<stat pass="1" fail="1" skip="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat pass="3" fail="0" skip="0" id="s1" name="Test V1 2">Test V1 2</stat>
+<stat pass="1" fail="1" skip="0" id="s1" name="Test V1 3">Test V1 3</stat>
 </suite>
 </statistics>
 <errors>
