@@ -15,6 +15,9 @@ ${URL}           http://${LOCALHOST}/
 ${LOGIN_URL}     http://${LOCALHOST}/login
 ${DASHBOARD_URL}  http://${LOCALHOST}/dashboard
 ${MANAGE_HIGHLIGHTS_URL}    http://${LOCALHOST}/highlights
+
+${HIGHLIGHTS_CREATE_URL}    http://${LOCALHOST}/highlights/create
+
 # สำหรับทดสอบ host จริง
 # ${HOST}          cs04sec267.cpkkuhost.com
 # ${URL}           https://${HOST}/
@@ -60,7 +63,7 @@ Go To Login Page
     Location Should Be    ${URL}
     # 2. คลิกปุ่ม Login
     # Click Link    xpath=//a[@class='btn-solid-sm' and text()='Login']
-    Click Link    xpath=//a[@class='btn btn-primary' and text()='Login']
+    Click Link    xpath=//a[contains(@class, 'btn-primary') and contains(., 'Login')]
     # <a class="btn btn-primary" href="http://localhost/login">Login</a>
     # สลับไปยังแท็บใหม่ถ้ามี target="_blank"
     # Switch Window    NEW
