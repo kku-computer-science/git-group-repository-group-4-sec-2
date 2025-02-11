@@ -70,7 +70,7 @@
         </tbody>
     </table>
 
-    <!-- ✅ ตาราง News (ข้างล่าง) -->
+    <!-- ✅ ตาราง News-->
     <h2>News</h2>
     <a href="{{ route('highlights.create') }}" class="btn btn-primary mb-3">+ Create</a>
     <table id="news-table" class="table table-striped">
@@ -124,7 +124,9 @@
         </tbody>
     </table>
 </div>
-
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.12.0/js/dataTables.bootstrap4.min.js" defer></script>
 <script>
     $(document).ready(function() {
         function updateHighlightCount() {
@@ -261,14 +263,11 @@
 
         updateHighlightCount();
     });
+
+    $(document).ready(function() {
+    // Initialize DataTables for both tables
+    $('#highlight-table').DataTable();
+    $('#news-table').DataTable();
+});
 </script>
-
-
-
-
-
-
-
-
-
 @endsection
