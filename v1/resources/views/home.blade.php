@@ -49,10 +49,14 @@
             <!-- Carousel Items -->
             <div class="carousel-inner">
                 @foreach($heads as $index => $head)
+                
                 <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                    <img src="{{ asset('storage/' . $head->image) }}" class="d-block w-200" 
-                    style="height: 400px; object-fit: cover;" alt="...">
+                    <a href="{{ route('highlight.show', $head->id) }}">
+                        <img src="{{ asset('storage/' . $head->image) }}" class="d-block w-200"
+                            style="height: 400px; object-fit: cover;" alt="...">
+                    </a>
                 </div>
+                
                 @endforeach
             </div>
 
@@ -79,8 +83,8 @@
                 @foreach($highlights as $highlight)
                 <li class="card-item">
                     <a href="{{ route('highlight.show', $highlight->id) }}" class="card-link">
-                        <img src="{{ asset('storage/' . $highlight->image) }}" class="d-block w-100" 
-                        style="height: 200px; object-fit: cover;" alt="Card Image" class="card-image">
+                        <img src="{{ asset('storage/' . $highlight->image) }}" class="d-block w-100"
+                            style="height: 200px; object-fit: cover;" alt="Card Image" class="card-image">
                         <p class="tag">{{ $highlight->category->name }}</p>
                         <h6 class="card-title">{{ $highlight->title }}</h6>
                         <p class="card-description">{{ Str::limit($highlight->description, 100) }}</p>

@@ -4,7 +4,7 @@
 <div class="head-img">
     @if($highlights->isNotEmpty())
     @foreach($highlights as $highlight)
-    <img src="{{ asset('storage/' . $highlight->image) }}" sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 100vw" srcset="" style="width: 100%; height: 100%;">
+    <img src="{{ asset('storage/' . $highlight->image) }}" class="w-100" style="height: 600px; object-fit: cover;">
 </div>
 
 <div class="container">
@@ -33,21 +33,23 @@
             <h2>{{ $highlight->title }}</h2>
         </div>
         <div class="py-2 col-12">
-            <span style="font-size:12pt"><span style="font-family:Aptos,sans-serif">
+            <span style="font-size: 1.3em;"><span style="font-family:Aptos,sans-serif">
                     {{ $highlight->description }}
                 </span>
             </span>
         </div>
-
-        <div class="py-2 col-12"><span class="text-muted">
+        <br>
+        <div class="py-2 col-12">
+            <span class="text-muted">
                 อัลบั้ม รูปภาพ
             </span>
+
             <div class="px-2 container-fluid">
                 <div class="row">
                     @foreach($highlight->images as $image)
                     <div class="my-2 col-sm-12 col-md-6 col-lg-2">
-                        <img src="{{ asset('storage/' . $image->image) }}" class="img-thumbnail w-100" 
-                        style="height: 150px; object-fit: cover; border-radius: 8px;"   class="img-thumbnail" role="button" tabindex="0">
+                        <img src="{{ asset('storage/' . $image->image) }}" class="img-thumbnail w-100"
+                            style="height: 150px; object-fit: cover; border-radius: 8px;" role="button" tabindex="0">
                     </div>
                     @endforeach
                 </div>
@@ -78,9 +80,10 @@
 <div class="container">
     <div class="row mx-0 mb-4">
         <div class="d-flex col-12">
-            ข่าวที่เกี่ยวข้อง &nbsp;
-            <a href="/content/news/category/{{ $highlight->category->name }}" class="">
-                {{ $highlight->category->name }}
+            <h4>ข่าวที่เกี่ยวข้อง &nbsp;</h4>
+
+            <a href="/content/news/category/{{ $highlight->category->name }}" style="text-decoration: none ">
+                <h4>{{ $highlight->category->name }} </h4>
             </a>
         </div>
         @if($news->isNotEmpty())

@@ -3,12 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-// use App\Models\Highlight;
-// use App\Models\Category;
-// use App\Models\ImageCollection;
-// use Intervention\Image\ImageManager;
-// use Illuminate\Support\Facades\Storage;
-// use Intervention\Image\Drivers\Imagick\Driver;
 use App\Models\Paper;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
