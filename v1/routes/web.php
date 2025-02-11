@@ -54,13 +54,19 @@ Route::prefix('highlights')->group(function () {
     Route::post('/', [HighlightController::class, 'store'])->name('highlights.store');
     Route::get('/{id}/edit', [HighlightController::class, 'edit'])->name('highlights.edit');
     Route::put('/{id}', [HighlightController::class, 'update'])->name('highlights.update');
+
     Route::put('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.add'); // ✅ เพิ่มฟังก์ชันนี้
     Route::put('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.remove'); // ✅ เพิ่มฟังก์ชันนี้
+
+    Route::post('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.add');
+    Route::post('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.remove');
+
     Route::delete('/image-collection/{id}', [HighlightController::class, 'deleteImage'])->name('image.delete');
     // DELETE route สำหรับลบ Highlight
-    Route::delete('//{id}', [HighlightController::class, 'destroy'])->name('highlights.destroy');
+    Route::delete('/{id}', [HighlightController::class, 'destroy'])->name('highlights.destroy');
     Route::get('/data', [HighlightController::class, 'dataTable'])->name('highlights.data');
 });
+
 
 
 Route::get('highlightdetail', [HighlightdetailController::class, 'index'])->name('highlightdetail');

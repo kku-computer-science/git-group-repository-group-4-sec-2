@@ -127,7 +127,7 @@
                 @auth
                 <!-- เพิ่ม space และกำหนดสีไอคอนเป็นสีเทาด้วย text-secondary -->
                 <a href="{{ url('/profile') }}" class="ms-3 me-3 text-secondary">
-                    <i class="fa fa-user-circle fa-2x"></i>
+                    <i class="fa fa-user-circle fa-2x" style="color: gray;"></i>
                 </a>
 
                 <!-- ปุ่ม Logout -->

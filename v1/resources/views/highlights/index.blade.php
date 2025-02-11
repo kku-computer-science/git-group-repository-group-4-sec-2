@@ -1,14 +1,25 @@
 @extends('dashboards.users.layouts.user-dash-layout')
 
 @section('content')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <div class="container">
+    <!-- แสดงข้อความแจ้งเตือน -->
     @if ($message = Session::get('success'))
     <div class="alert alert-success">{{ $message }}</div>
     @endif
+    @if ($message = Session::get('error'))
+    <div class="alert alert-danger">{{ $message }}</div>
+    @endif
 
-    <!-- ตาราง Highlights -->
+    <!-- ซ่อนค่า Count ของ Highlights -->
+    <input type="hidden" id="highlight-count" value="{{ $highlights->where('status', 1)->count() }}">
+
+    <!-- ✅ ตาราง Highlights (ข้างบน) -->
     <h2>Highlights</h2>
-    <table id="example1" class="table table-striped">
+    <table id="highlight-table" class="table table-striped">
+
         <thead>
             <tr>
                 <th>ID</th>
@@ -23,7 +34,7 @@
         </thead>
         <tbody>
             @foreach ($highlights as $highlight)
-            <tr>
+            <tr id="highlight-row-{{ $highlight->id }}">
                 <td>{{ $highlight->id }}</td>
                 <td>
                     @if($highlight->image)
@@ -45,32 +56,25 @@
                     </a>
 
                     <!-- ปุ่ม Delete -->
-                    <form action="{{ route('highlights.destroy', $highlight->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this highlight?')">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </form>
-
-                    
+                    <button type="button" class="btn btn-danger btn-delete" data-id="{{ $highlight->id }}">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
                 </td>
+
                 <td>
                     <!-- ปุ่ม Remove from Highlight -->
-                    <form action="{{ route('highlights.remove', $highlight->id) }}" method="POST" style="display:inline;">
-                        @csrf @method('PUT')
-                        <button type="submit" class="btn btn-warning">REMOVE</button>
-                    </form>
+                    <button type="button" class="btn btn-warning btn-remove" data-id="{{ $highlight->id }}">REMOVE</button>
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
 
-    <!-- ตาราง News -->
+    <!-- ✅ ตาราง News (ข้างล่าง) -->
     <h2>News</h2>
     <a href="{{ route('highlights.create') }}" class="btn btn-primary mb-3">+ Create</a>
-    <table id="example2" class="table table-striped">
+    <table id="news-table" class="table table-striped">
+
         <thead>
             <tr>
                 <th>ID</th>
@@ -85,7 +89,7 @@
         </thead>
         <tbody>
             @foreach ($news as $highlight)
-            <tr>
+            <tr id="news-row-{{ $highlight->id }}">
                 <td>{{ $highlight->id }}</td>
                 <td>
                     @if($highlight->image)
@@ -101,28 +105,19 @@
                     {{ optional($highlight->user)->fname_th ?? 'Unknown' }} {{ optional($highlight->user)->lname_th ?? '' }}
                 </td>
                 <td>
-                    <!-- ปุ่ม Edit -->
                     <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary">
                         <i class="fas fa-edit"></i>
                     </a>
 
                     <!-- ปุ่ม Delete -->
-                    <form action="{{ route('highlights.destroy', $highlight->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this news?')">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </form>
-
-                    
+                    <button type="button" class="btn btn-danger btn-delete" data-id="{{ $highlight->id }}">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
                 </td>
+
                 <td>
                     <!-- ปุ่ม Add to Highlight -->
-                    <form action="{{ route('highlights.add', $highlight->id) }}" method="POST" style="display:inline;">
-                        @csrf @method('PUT')
-                        <button type="submit" class="btn btn-success">ADD</button>
-                    </form>
+                    <button type="button" class="btn btn-success btn-add" data-id="{{ $highlight->id }}">ADD</button>
                 </td>
             </tr>
             @endforeach
@@ -130,19 +125,150 @@
     </table>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
-<script src="https://cdn.datatables.net/1.12.0/js/dataTables.bootstrap4.min.js" defer></script>
 <script>
     $(document).ready(function() {
-        $('#example1').DataTable();
-        $('#example2').DataTable();
-    });
+        function updateHighlightCount() {
+            let count = $("#highlight-table tbody tr").length;
+            $("#highlight-count").val(count);
 
-    $(document).ready(function() {
-        setTimeout(function() {
-            $(".alert-success").fadeOut("slow");
-        }, 2000);
+            // ปิดปุ่ม ADD ถ้าครบ 5 ไฮไลท์
+            if (count >= 5) {
+                $(".btn-add").prop("disabled", true);
+            } else {
+                $(".btn-add").prop("disabled", false);
+            }
+        }
+
+        // ✅ ฟังก์ชันกดปุ่ม ADD → ย้ายไปตาราง Highlights
+        $(document).on("click", ".btn-add", function() {
+            let row = $(this).closest("tr");
+            let highlightId = $(this).attr("data-id");
+
+            let highlightCount = $("#highlight-table tbody tr").length;
+            if (highlightCount >= 5) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "เพิ่มไม่ได้!",
+                    text: "คุณมี 5 รายการใน Highlights แล้ว กรุณาลบรายการเก่าก่อนเพิ่มใหม่",
+                    confirmButtonText: "ตกลง",
+                    confirmButtonColor: "#3085d6",
+                });
+                return;
+            }
+
+            $.ajax({
+                url: "/highlights/" + highlightId + "/add",
+                type: "POST",
+                data: { _token: "{{ csrf_token() }}", _method: "PUT" },
+                success: function(response) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "เพิ่มลงใน Highlights แล้ว!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    $("#highlight-table tbody").append(row);
+
+                    row.find(".btn-add")
+                        .removeClass("btn-success btn-add")
+                        .addClass("btn-warning btn-remove")
+                        .text("REMOVE");
+
+                    updateHighlightCount();
+                },
+                error: function(xhr) {
+                    Swal.fire("ผิดพลาด!", "เกิดข้อผิดพลาดบางอย่าง!", "error");
+                }
+            });
+        });
+
+        // ✅ ฟังก์ชันกดปุ่ม REMOVE → ย้ายไปตาราง News (ไม่ได้ลบ)
+        $(document).on("click", ".btn-remove", function() {
+            let row = $(this).closest("tr");
+            let highlightId = $(this).attr("data-id");
+
+            $.ajax({
+                url: "/highlights/" + highlightId + "/remove",
+                type: "POST",
+                data: { _token: "{{ csrf_token() }}", _method: "PUT" },
+                success: function(response) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "นำออกจาก Highlights แล้ว!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    $("#news-table tbody").append(row);
+
+                    row.find(".btn-remove")
+                        .removeClass("btn-warning btn-remove")
+                        .addClass("btn-success btn-add")
+                        .text("ADD");
+
+                    updateHighlightCount();
+                },
+                error: function(xhr) {
+                    Swal.fire("ผิดพลาด!", "เกิดข้อผิดพลาดบางอย่าง!", "error");
+                }
+            });
+        });
+
+        // ✅ ฟังก์ชันกดปุ่ม DELETE → ลบจาก Database
+        $(document).on("click", ".btn-delete", function() {
+            let row = $(this).closest("tr");
+            let highlightId = $(this).attr("data-id");
+
+            Swal.fire({
+                title: "คุณแน่ใจหรือไม่?",
+                text: "หากลบแล้วจะไม่สามารถกู้คืนได้!",
+                icon: "warning",
+                padding: "1.25rem",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "ใช่, ลบเลย!",
+                cancelButtonText: "ยกเลิก"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/highlights/" + highlightId,
+                        type: "POST",
+                        data: { _token: "{{ csrf_token() }}", _method: "DELETE" },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: "success",
+                                title: "ลบสำเร็จ!",
+                                padding: "1.25rem",
+                                text: "รายการนี้ถูกลบออกจากระบบแล้ว",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+
+                            row.remove();
+                            updateHighlightCount();
+                        },
+                        error: function(xhr) {
+                            Swal.fire("ผิดพลาด!", "เกิดข้อผิดพลาดบางอย่าง!", "error");
+                        }
+                    });
+                }
+            });
+        });
+
+        updateHighlightCount();
     });
 </script>
+
+
+
+
+
+
+
+
+
 @endsection

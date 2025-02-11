@@ -56,9 +56,9 @@
                 <!-- ✅ Image Album -->
                 <div class="form-group">
                     <label for="image_album">Image Album</label>
-                    <div class="image-upload-box small" id="imageAlbumBox">
+                    <div class="image-upload-box small" id="imageAlbumBox" onclick="document.getElementById('image_album').click();">
                         <input type="file" name="images[]" id="image_album" class="d-none" multiple accept="image/*">
-                        <div class="upload-placeholder" onclick="document.getElementById('image_album').click();">
+                        <div class="upload-placeholder" >
                             <div class="placeholder-content">
                                 <i class="mdi mdi-cloud-upload-outline"></i>
                                 <p>Click to upload images</p>

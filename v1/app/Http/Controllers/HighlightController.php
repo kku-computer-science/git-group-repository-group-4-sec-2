@@ -185,11 +185,19 @@ class HighlightController extends Controller
 
     public function addToHighlights($id)
     {
+        // Count current highlights with status 1
+        $highlightCount = Highlight::where('status', 1)->count();
+
+        // Check if the limit has been reached
+        if ($highlightCount >= 5) {
+            return redirect()->back()->with('error', 'Cannot add more than 5 highlights.');
+        }
+        // Find the news item and update status
         $highlight = Highlight::findOrFail($id);
-        $highlight->status = 1;
+        $highlight->status = 1; // Set as highlight
         $highlight->save();
 
-        return redirect()->route('highlights.index')->with('success', 'Added to Highlights!');
+        return redirect()->back()->with('success', 'Highlight added successfully.');
     }
 
     public function removeFromHighlights($id)
@@ -225,21 +233,22 @@ class HighlightController extends Controller
 
     public function destroy($id)
     {
-        $highlight = Highlight::findOrFail($id); // หาไฮไลท์จาก ID
+        $highlight = Highlight::findOrFail($id);
+
         if ($highlight->image) {
-            Storage::disk('public')->delete($highlight->image); // ลบไฟล์รูปภาพ
+            Storage::disk('public')->delete($highlight->image);
         }
 
-        // ลบภาพทั้งหมดที่เกี่ยวข้อง
         foreach ($highlight->images as $image) {
             Storage::disk('public')->delete($image->image);
             $image->delete();
         }
 
-        $highlight->delete(); // ลบข้อมูลไฮไลท์ออกจากฐานข้อมูล
+        $highlight->delete(); // ✅ ลบออกจาก Database
 
-        return redirect()->route('highlights.index')->with('success', 'Highlight deleted successfully.');
+        return response()->json(['success' => true, 'message' => 'Highlight deleted successfully.']);
     }
+
 
     public function dataTable(Request $request)
     {
