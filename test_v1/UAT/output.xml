@@ -1,248 +1,439 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.1.1 (Python 3.13.1 on win32)" generated="2025-02-12T04:44:10.773189" rpa="false" schemaversion="5">
-<suite id="s1" name="Test V1 6" source="C:\work_2025\git-group-repository-group-4-sec-2\test_v1\UAT\test_v1_6.robot">
-<test id="s1-t1" name="Test Create News Unsuccess Empty Cover Image" line="10">
+<robot generator="Robot 7.1.1 (Python 3.13.1 on win32)" generated="2025-02-12T05:57:34.502961" rpa="false" schemaversion="5">
+<suite id="s1" name="Test V1 7" source="C:\work_2025\git-group-repository-group-4-sec-2\test_v1\UAT\test_v1_7.robot">
+<test id="s1-t1" name="Test Create News Unsuccess Empty Title" line="10">
 <kw name="Go To Manage Highlights Page" owner="resource_v1">
 <kw name="Go To Login Page" owner="resource_v1">
 <kw name="Open Browser" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:11.032977" level="INFO">Opening browser 'chrome' to base url 'http://localhost/'.</msg>
+<msg time="2025-02-12T05:57:34.797639" level="INFO">Opening browser 'chrome' to base url 'http://localhost/'.</msg>
 <arg>${URL}</arg>
 <arg>${BROWSER}</arg>
 <doc>Opens a new browser instance to the optional ``url``.</doc>
-<status status="PASS" start="2025-02-12T04:44:11.032678" elapsed="8.361898"/>
+<status status="PASS" start="2025-02-12T05:57:34.797435" elapsed="8.461687"/>
 </kw>
 <kw name="Maximize Browser Window" owner="SeleniumLibrary">
 <doc>Maximizes current browser window.</doc>
-<status status="PASS" start="2025-02-12T04:44:19.394972" elapsed="0.091353"/>
+<status status="PASS" start="2025-02-12T05:57:43.259557" elapsed="0.138140"/>
 </kw>
 <kw name="Location Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:19.503263" level="INFO">Current location is 'http://localhost/'.</msg>
+<msg time="2025-02-12T05:57:43.419015" level="INFO">Current location is 'http://localhost/'.</msg>
 <arg>${URL}</arg>
 <doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="PASS" start="2025-02-12T04:44:19.486683" elapsed="0.017025"/>
+<status status="PASS" start="2025-02-12T05:57:43.398671" elapsed="0.020445"/>
 </kw>
 <kw name="Click Link" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:19.506147" level="INFO">Clicking link 'xpath=//a[contains(@class, 'btn-primary') and contains(., 'Login')]'.</msg>
+<msg time="2025-02-12T05:57:43.419612" level="INFO">Clicking link 'xpath=//a[contains(@class, 'btn-primary') and contains(., 'Login')]'.</msg>
 <arg>xpath=//a[contains(@class, 'btn-primary') and contains(., 'Login')]</arg>
 <doc>Clicks a link identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-12T04:44:19.504335" elapsed="3.866259"/>
+<status status="PASS" start="2025-02-12T05:57:43.419264" elapsed="1.659149"/>
 </kw>
 <kw name="Location Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:23.380138" level="INFO">Current location is 'http://localhost/login'.</msg>
+<msg time="2025-02-12T05:57:45.097621" level="INFO">Current location is 'http://localhost/login'.</msg>
 <arg>${LOGIN_URL}</arg>
 <doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="PASS" start="2025-02-12T04:44:23.370910" elapsed="0.009389"/>
+<status status="PASS" start="2025-02-12T05:57:45.078677" elapsed="0.019416"/>
 </kw>
 <kw name="Wait Until Page Contains" owner="SeleniumLibrary">
 <arg>Account Login</arg>
 <arg>${DELAY}</arg>
 <doc>Waits until ``text`` appears on the current page.</doc>
-<status status="PASS" start="2025-02-12T04:44:23.380598" elapsed="0.043316"/>
+<status status="PASS" start="2025-02-12T05:57:45.098513" elapsed="0.021327"/>
 </kw>
-<status status="PASS" start="2025-02-12T04:44:11.032165" elapsed="12.392457"/>
+<status status="PASS" start="2025-02-12T05:57:34.796981" elapsed="10.322976"/>
 </kw>
 <kw name="Login Staff" owner="resource_v1">
 <kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:23.427380" level="INFO">Typing text 'staff@gmail.com' into text field 'id=username'.</msg>
+<msg time="2025-02-12T05:57:45.120786" level="INFO">Typing text 'staff@gmail.com' into text field 'id=username'.</msg>
 <arg>id=username</arg>
 <arg>${STAFF_USERNAME}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-12T04:44:23.426876" elapsed="0.203828"/>
+<status status="PASS" start="2025-02-12T05:57:45.120491" elapsed="0.158821"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:23.631449" level="INFO">Typing text '123456789' into text field 'id=password'.</msg>
+<msg time="2025-02-12T05:57:45.280019" level="INFO">Typing text '123456789' into text field 'id=password'.</msg>
 <arg>id=password</arg>
 <arg>${STAFF_PASSWORD}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-12T04:44:23.631045" elapsed="0.169960"/>
+<status status="PASS" start="2025-02-12T05:57:45.279581" elapsed="0.159698"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:23.801609" level="INFO">Clicking button 'xpath=//button[contains(text(),'Log In')]'.</msg>
+<msg time="2025-02-12T05:57:45.439954" level="INFO">Clicking button 'xpath=//button[contains(text(),'Log In')]'.</msg>
 <arg>xpath=//button[contains(text(),'Log In')]</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-12T04:44:23.801275" elapsed="10.973102"/>
+<status status="PASS" start="2025-02-12T05:57:45.439587" elapsed="15.139390"/>
 </kw>
 <kw name="Wait Until Location Is" owner="SeleniumLibrary">
 <arg>${DASHBOARD_URL}</arg>
 <arg>${DELAY}</arg>
 <doc>Waits until the current URL is ``expected``.</doc>
-<status status="PASS" start="2025-02-12T04:44:34.774631" elapsed="0.006180"/>
+<status status="PASS" start="2025-02-12T05:58:00.579283" elapsed="0.014518"/>
 </kw>
 <kw name="Wait Until Page Contains" owner="SeleniumLibrary">
 <arg>Dashboard</arg>
 <arg>${DELAY}</arg>
 <doc>Waits until ``text`` appears on the current page.</doc>
-<status status="PASS" start="2025-02-12T04:44:34.781182" elapsed="0.020285"/>
+<status status="PASS" start="2025-02-12T05:58:00.594384" elapsed="0.019359"/>
 </kw>
-<status status="PASS" start="2025-02-12T04:44:23.425959" elapsed="11.375729"/>
+<status status="PASS" start="2025-02-12T05:57:45.120172" elapsed="15.494136"/>
 </kw>
 <kw name="Verify Staff Dashboard" owner="resource_v1">
 <kw name="Page Should Contain" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:34.823929" level="INFO">Current page contains text 'Departments'.</msg>
+<msg time="2025-02-12T05:58:00.639790" level="INFO">Current page contains text 'Departments'.</msg>
 <arg>Departments</arg>
 <doc>Verifies that current page contains ``text``.</doc>
-<status status="PASS" start="2025-02-12T04:44:34.802875" elapsed="0.021215"/>
+<status status="PASS" start="2025-02-12T05:58:00.615375" elapsed="0.024571"/>
 </kw>
 <kw name="Page Should Contain" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:34.842651" level="INFO">Current page contains text 'Manage Programs'.</msg>
+<msg time="2025-02-12T05:58:00.675138" level="INFO">Current page contains text 'Manage Programs'.</msg>
 <arg>Manage Programs</arg>
 <doc>Verifies that current page contains ``text``.</doc>
-<status status="PASS" start="2025-02-12T04:44:34.824302" elapsed="0.018552"/>
+<status status="PASS" start="2025-02-12T05:58:00.640214" elapsed="0.035394"/>
 </kw>
 <kw name="Page Should Contain" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:34.862016" level="INFO">Current page contains text 'Manage Highlights'.</msg>
+<msg time="2025-02-12T05:58:00.699664" level="INFO">Current page contains text 'Manage Highlights'.</msg>
 <arg>Manage Highlights</arg>
 <doc>Verifies that current page contains ``text``.</doc>
-<status status="PASS" start="2025-02-12T04:44:34.843217" elapsed="0.018914"/>
+<status status="PASS" start="2025-02-12T05:58:00.675938" elapsed="0.023944"/>
 </kw>
-<status status="PASS" start="2025-02-12T04:44:34.802070" elapsed="0.060205"/>
+<status status="PASS" start="2025-02-12T05:58:00.614887" elapsed="0.085141"/>
 </kw>
 <kw name="Click Link" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:34.862797" level="INFO">Clicking link 'xpath=//a[@class='nav-link' and contains(span, 'Manage Highlights')]'.</msg>
+<msg time="2025-02-12T05:58:00.700515" level="INFO">Clicking link 'xpath=//a[@class='nav-link' and contains(span, 'Manage Highlights')]'.</msg>
 <arg>xpath=//a[@class='nav-link' and contains(span, 'Manage Highlights')]</arg>
 <doc>Clicks a link identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-12T04:44:34.862444" elapsed="5.439087"/>
+<status status="PASS" start="2025-02-12T05:58:00.700236" elapsed="7.298109"/>
 </kw>
 <kw name="Wait Until Location Is" owner="SeleniumLibrary">
 <arg>${MANAGE_HIGHLIGHTS_URL}</arg>
 <arg>${DELAY}</arg>
 <doc>Waits until the current URL is ``expected``.</doc>
-<status status="PASS" start="2025-02-12T04:44:40.301830" elapsed="0.008245"/>
+<status status="PASS" start="2025-02-12T05:58:07.998583" elapsed="0.008199"/>
 </kw>
 <kw name="Page Should Contain" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:40.330925" level="INFO">Current page contains text 'Manage Highlights'.</msg>
+<msg time="2025-02-12T05:58:08.023753" level="INFO">Current page contains text 'Manage Highlights'.</msg>
 <arg>Manage Highlights</arg>
 <doc>Verifies that current page contains ``text``.</doc>
-<status status="PASS" start="2025-02-12T04:44:40.310312" elapsed="0.020737"/>
+<status status="PASS" start="2025-02-12T05:58:08.007183" elapsed="0.016957"/>
 </kw>
-<status status="PASS" start="2025-02-12T04:44:11.031704" elapsed="29.299503"/>
+<status status="PASS" start="2025-02-12T05:57:34.796658" elapsed="33.228004"/>
 </kw>
 <kw name="Location Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:40.339025" level="INFO">Current location is 'http://localhost/highlights'.</msg>
+<msg time="2025-02-12T05:58:08.034892" level="INFO">Current location is 'http://localhost/highlights'.</msg>
 <arg>${MANAGE_HIGHLIGHTS_URL}</arg>
 <doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="PASS" start="2025-02-12T04:44:40.331678" elapsed="0.007485"/>
+<status status="PASS" start="2025-02-12T05:58:08.025927" elapsed="0.009083"/>
 </kw>
 <kw name="Click Link" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:40.340057" level="INFO">Clicking link 'xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]'.</msg>
+<msg time="2025-02-12T05:58:08.035645" level="INFO">Clicking link 'xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]'.</msg>
 <arg>xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]</arg>
 <doc>Clicks a link identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-12T04:44:40.339753" elapsed="3.008930"/>
+<status status="PASS" start="2025-02-12T05:58:08.035410" elapsed="3.101222"/>
 </kw>
 <kw name="Wait Until Location Is" owner="SeleniumLibrary">
 <arg>${CREATE_NEWS_URL}</arg>
 <arg>${DELAY}</arg>
 <doc>Waits until the current URL is ``expected``.</doc>
-<status status="PASS" start="2025-02-12T04:44:43.349057" elapsed="0.008645"/>
+<status status="PASS" start="2025-02-12T05:58:11.136922" elapsed="0.005117"/>
 </kw>
 <kw name="Location Should Be" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:43.364135" level="INFO">Current location is 'http://localhost/highlights/create'.</msg>
+<msg time="2025-02-12T05:58:11.146840" level="INFO">Current location is 'http://localhost/highlights/create'.</msg>
 <arg>${CREATE_NEWS_URL}</arg>
 <doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="PASS" start="2025-02-12T04:44:43.358127" elapsed="0.006124"/>
+<status status="PASS" start="2025-02-12T05:58:11.142464" elapsed="0.004459"/>
 </kw>
-<status status="PASS" start="2025-02-12T04:44:11.030937" elapsed="32.333690"/>
+<status status="PASS" start="2025-02-12T05:57:34.796065" elapsed="36.351146"/>
 </test>
-<test id="s1-t2" name="Test input data" line="22">
-<kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:43.366701" level="INFO">Typing text 'โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่' into text field 'id=title'.</msg>
-<arg>id=title</arg>
-<arg>โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-12T04:44:43.366311" elapsed="0.309627"/>
+<test id="s1-t2" name="Test load cover img" line="17">
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2025-02-12T05:58:11.148832" level="INFO">Clicking element 'id=coverImageBox'.</msg>
+<arg>id=coverImageBox</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-02-12T05:58:11.148650" elapsed="0.073020"/>
 </kw>
-<kw name="Select From List By Value" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:43.676845" level="INFO">Selecting options from selection list 'id=category' by value 1.</msg>
+<kw name="Choose File" owner="SeleniumLibrary">
+<msg time="2025-02-12T05:58:11.222484" level="INFO">Sending C:\work_2025\git-group-repository-group-4-sec-2\test_v1\Test-Data\1_1.jpeg to browser.</msg>
+<arg>xpath=//input[@type='file']</arg>
+<arg>C:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg</arg>
+<doc>Inputs the ``file_path`` into the file input field ``locator``.</doc>
+<status status="PASS" start="2025-02-12T05:58:11.222265" elapsed="0.038677"/>
+</kw>
+<status status="PASS" start="2025-02-12T05:58:11.148168" elapsed="0.113303"/>
+</test>
+<test id="s1-t3" name="Test input data" line="22">
+<kw name="Select From List By Label" owner="SeleniumLibrary">
+<msg time="2025-02-12T05:58:11.263468" level="INFO">Selecting options from selection list 'id=category' by label 1.</msg>
+<msg time="2025-02-12T05:58:11.630700" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-9.png"&gt;&lt;img src="selenium-screenshot-9.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2025-02-12T05:58:11.630885" level="FAIL">NoSuchElementException: Message: Could not locate element with visible text: 1; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+</msg>
 <arg>id=category</arg>
 <arg>1</arg>
-<doc>Selects options from selection list ``locator`` by ``values``.</doc>
-<status status="PASS" start="2025-02-12T04:44:43.676378" elapsed="0.119641"/>
+<doc>Selects options from selection list ``locator`` by ``labels``.</doc>
+<status status="FAIL" start="2025-02-12T05:58:11.263182" elapsed="0.369779">NoSuchElementException: Message: Could not locate element with visible text: 1; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+</status>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:43.796603" level="INFO">Typing text 'เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ' into text field 'id=description'.</msg>
 <arg>id=description</arg>
 <arg>เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-12T04:44:43.796403" elapsed="0.441733"/>
+<status status="NOT RUN" start="2025-02-12T05:58:11.633393" elapsed="0.000049"/>
 </kw>
-<status status="PASS" start="2025-02-12T04:44:43.365613" elapsed="0.873270"/>
+<status status="FAIL" start="2025-02-12T05:58:11.262641" elapsed="0.371189">NoSuchElementException: Message: Could not locate element with visible text: 1; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
+</status>
 </test>
-<test id="s1-t3" name="Test load album" line="26">
+<test id="s1-t4" name="Test load album" line="26">
 <kw name="Execute Javascript" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:44.241574" level="INFO">Executing JavaScript:
+<msg time="2025-02-12T05:58:11.636735" level="INFO">Executing JavaScript:
 document.getElementById("image_album").classList.remove("d-none");
 Without any arguments.</msg>
 <arg>document.getElementById("image_album").classList.remove("d-none");</arg>
 <doc>Executes the given JavaScript code with possible arguments.</doc>
-<status status="PASS" start="2025-02-12T04:44:44.240886" elapsed="0.014502"/>
+<status status="PASS" start="2025-02-12T05:58:11.636072" elapsed="0.010870"/>
 </kw>
 <kw name="Execute Javascript" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:44.257045" level="INFO">Executing JavaScript:
+<msg time="2025-02-12T05:58:11.647619" level="INFO">Executing JavaScript:
 document.getElementById("image_album").style.display = "block";
 Without any arguments.</msg>
 <arg>document.getElementById("image_album").style.display = "block";</arg>
 <doc>Executes the given JavaScript code with possible arguments.</doc>
-<status status="PASS" start="2025-02-12T04:44:44.256387" elapsed="0.007821"/>
+<status status="PASS" start="2025-02-12T05:58:11.647243" elapsed="0.008198"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
 <arg>id=image_album</arg>
 <arg>timeout=10s</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="PASS" start="2025-02-12T04:44:44.264552" elapsed="0.029657"/>
+<status status="PASS" start="2025-02-12T05:58:11.656304" elapsed="0.042239"/>
 </kw>
-<kw name="Input Text" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:44.295021" level="INFO">Typing text 'C:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg' into text field 'id=image_album'.</msg>
+<kw name="Click Element" owner="SeleniumLibrary">
+<msg time="2025-02-12T05:58:11.699317" level="INFO">Clicking element 'id=imageAlbumBox'.</msg>
+<msg time="2025-02-12T05:58:12.974785" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-10.png"&gt;&lt;img src="selenium-screenshot-10.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2025-02-12T05:58:12.974945" level="FAIL">ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (428, 1010)
+  (Session info: chrome=132.0.6834.196)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6334202F5+28725]
+	(No symbol) [0x00007FF633382AE0]
+	(No symbol) [0x00007FF63321510A]
+	(No symbol) [0x00007FF6332710F8]
+	(No symbol) [0x00007FF63326EB42]
+	(No symbol) [0x00007FF63326BC51]
+	(No symbol) [0x00007FF63326ABB1]
+	(No symbol) [0x00007FF63325C6B4]
+	(No symbol) [0x00007FF63328FFAA]
+	(No symbol) [0x00007FF63325BF86]
+	(No symbol) [0x00007FF6332901C0]
+	(No symbol) [0x00007FF6332B0181]
+	(No symbol) [0x00007FF63328FD53]
+	(No symbol) [0x00007FF63325A0E3]
+	(No symbol) [0x00007FF63325B471]
+	GetHandleVerifier [0x00007FF63374F30D+3366989]
+	GetHandleVerifier [0x00007FF6337612F0+3440688]
+	GetHandleVerifier [0x00007FF6337578FD+3401277]
+	GetHandleVerifier [0x00007FF6334EAAAB+858091]
+	(No symbol) [0x00007FF63338E74F]
+	(No symbol) [0x00007FF63338A304]
+	(No symbol) [0x00007FF63338A49D]
+	(No symbol) [0x00007FF633378B69]
+	BaseThreadInitThunk [0x00007FFDE1D7259D+29]
+	RtlUserThreadStart [0x00007FFDE33EAF38+40]
+</msg>
+<arg>id=imageAlbumBox</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="FAIL" start="2025-02-12T05:58:11.699034" elapsed="1.277739">ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (428, 1010)
+  (Session info: chrome=132.0.6834.196)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6334202F5+28725]
+	(No symbol) [0x00007FF633382AE0]
+	(No symbol) [0x00007FF63321510A]
+	(No symbol) [0x00007FF6332710F8]
+	(No symbol) [0x00007FF63326EB42]
+	(No symbol) [0x00007FF63326BC51]
+	(No symbol) [0x00007FF63326ABB1]
+	(No symbol) [0x00007FF63325C6B4]
+	(No symbol) [0x00007FF63328FFAA]
+	(No symbol) [0x00007FF63325BF86]
+	(No symbol) [0x00007FF6332901C0]
+	(No symbol) [0x00007FF6332B0181]
+	(No symbol) [0x00007FF63328FD53]
+	(No symbol) [0x00007FF63325A0E3]
+	(No symbol) [0x00007FF63325B471]
+	GetHandleVerifier [0x00007FF63374F30D+3366989]
+	GetHandleVerifier [0x00007FF6337612F0+3440688]
+	GetHandleVerifier [0x00007FF6337578FD+3401277]
+	GetHandleVerifier [0x00007FF6334EAAAB+858091]
+	(No symbol) [0x00007FF63338E74F]
+	(No symbol) [0x00007FF63338A304]
+	(No symbol) [0x00007FF63338A49D]
+	(No symbol) [0x00007FF633378B69]
+	BaseThreadInitThunk [0x00007FFDE1D7259D+29]
+	RtlUserThreadStart [0x00007FFDE33EAF38+40]
+</status>
+</kw>
+<kw name="Choose File" owner="SeleniumLibrary">
 <arg>id=image_album</arg>
 <arg>C:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg</arg>
-<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-12T04:44:44.294764" elapsed="0.090498"/>
+<doc>Inputs the ``file_path`` into the file input field ``locator``.</doc>
+<status status="NOT RUN" start="2025-02-12T05:58:12.977246" elapsed="0.000040"/>
 </kw>
-<status status="PASS" start="2025-02-12T04:44:44.240253" elapsed="0.145593"/>
+<status status="FAIL" start="2025-02-12T05:58:11.635417" elapsed="1.342599">ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (428, 1010)
+  (Session info: chrome=132.0.6834.196)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6334202F5+28725]
+	(No symbol) [0x00007FF633382AE0]
+	(No symbol) [0x00007FF63321510A]
+	(No symbol) [0x00007FF6332710F8]
+	(No symbol) [0x00007FF63326EB42]
+	(No symbol) [0x00007FF63326BC51]
+	(No symbol) [0x00007FF63326ABB1]
+	(No symbol) [0x00007FF63325C6B4]
+	(No symbol) [0x00007FF63328FFAA]
+	(No symbol) [0x00007FF63325BF86]
+	(No symbol) [0x00007FF6332901C0]
+	(No symbol) [0x00007FF6332B0181]
+	(No symbol) [0x00007FF63328FD53]
+	(No symbol) [0x00007FF63325A0E3]
+	(No symbol) [0x00007FF63325B471]
+	GetHandleVerifier [0x00007FF63374F30D+3366989]
+	GetHandleVerifier [0x00007FF6337612F0+3440688]
+	GetHandleVerifier [0x00007FF6337578FD+3401277]
+	GetHandleVerifier [0x00007FF6334EAAAB+858091]
+	(No symbol) [0x00007FF63338E74F]
+	(No symbol) [0x00007FF63338A304]
+	(No symbol) [0x00007FF63338A49D]
+	(No symbol) [0x00007FF633378B69]
+	BaseThreadInitThunk [0x00007FFDE1D7259D+29]
+	RtlUserThreadStart [0x00007FFDE33EAF38+40]
+</status>
 </test>
-<test id="s1-t4" name="Test save" line="36">
+<test id="s1-t5" name="Test save" line="38">
 <kw name="Sleep" owner="BuiltIn">
-<msg time="2025-02-12T04:44:46.388524" level="INFO">Slept 2 seconds.</msg>
+<msg time="2025-02-12T05:58:14.983227" level="INFO">Slept 2 seconds.</msg>
 <arg>2s</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2025-02-12T04:44:44.387729" elapsed="2.000926"/>
+<status status="PASS" start="2025-02-12T05:58:12.982413" elapsed="2.000919"/>
 </kw>
 <kw name="Click Button" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:46.389222" level="INFO">Clicking button 'xpath=//button[contains(text(),'Save')]'.</msg>
+<msg time="2025-02-12T05:58:14.983924" level="INFO">Clicking button 'xpath=//button[contains(text(),'Save')]'.</msg>
+<msg time="2025-02-12T05:58:16.231852" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-11.png"&gt;&lt;img src="selenium-screenshot-11.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2025-02-12T05:58:16.232036" level="FAIL">ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (1391, 1116)
+  (Session info: chrome=132.0.6834.196)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6334202F5+28725]
+	(No symbol) [0x00007FF633382AE0]
+	(No symbol) [0x00007FF63321510A]
+	(No symbol) [0x00007FF6332710F8]
+	(No symbol) [0x00007FF63326EB42]
+	(No symbol) [0x00007FF63326BC51]
+	(No symbol) [0x00007FF63326ABB1]
+	(No symbol) [0x00007FF63325C6B4]
+	(No symbol) [0x00007FF63328FFAA]
+	(No symbol) [0x00007FF63325BF86]
+	(No symbol) [0x00007FF6332901C0]
+	(No symbol) [0x00007FF6332B0181]
+	(No symbol) [0x00007FF63328FD53]
+	(No symbol) [0x00007FF63325A0E3]
+	(No symbol) [0x00007FF63325B471]
+	GetHandleVerifier [0x00007FF63374F30D+3366989]
+	GetHandleVerifier [0x00007FF6337612F0+3440688]
+	GetHandleVerifier [0x00007FF6337578FD+3401277]
+	GetHandleVerifier [0x00007FF6334EAAAB+858091]
+	(No symbol) [0x00007FF63338E74F]
+	(No symbol) [0x00007FF63338A304]
+	(No symbol) [0x00007FF63338A49D]
+	(No symbol) [0x00007FF633378B69]
+	BaseThreadInitThunk [0x00007FFDE1D7259D+29]
+	RtlUserThreadStart [0x00007FFDE33EAF38+40]
+</msg>
 <arg>xpath=//button[contains(text(),'Save')]</arg>
 <doc>Clicks the button identified by ``locator``.</doc>
-<status status="PASS" start="2025-02-12T04:44:46.389015" elapsed="0.096337"/>
+<status status="FAIL" start="2025-02-12T05:58:14.983687" elapsed="1.249494">ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (1391, 1116)
+  (Session info: chrome=132.0.6834.196)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6334202F5+28725]
+	(No symbol) [0x00007FF633382AE0]
+	(No symbol) [0x00007FF63321510A]
+	(No symbol) [0x00007FF6332710F8]
+	(No symbol) [0x00007FF63326EB42]
+	(No symbol) [0x00007FF63326BC51]
+	(No symbol) [0x00007FF63326ABB1]
+	(No symbol) [0x00007FF63325C6B4]
+	(No symbol) [0x00007FF63328FFAA]
+	(No symbol) [0x00007FF63325BF86]
+	(No symbol) [0x00007FF6332901C0]
+	(No symbol) [0x00007FF6332B0181]
+	(No symbol) [0x00007FF63328FD53]
+	(No symbol) [0x00007FF63325A0E3]
+	(No symbol) [0x00007FF63325B471]
+	GetHandleVerifier [0x00007FF63374F30D+3366989]
+	GetHandleVerifier [0x00007FF6337612F0+3440688]
+	GetHandleVerifier [0x00007FF6337578FD+3401277]
+	GetHandleVerifier [0x00007FF6334EAAAB+858091]
+	(No symbol) [0x00007FF63338E74F]
+	(No symbol) [0x00007FF63338A304]
+	(No symbol) [0x00007FF63338A49D]
+	(No symbol) [0x00007FF633378B69]
+	BaseThreadInitThunk [0x00007FFDE1D7259D+29]
+	RtlUserThreadStart [0x00007FFDE33EAF38+40]
+</status>
 </kw>
-<kw name="Element Should Contain" owner="SeleniumLibrary">
-<msg time="2025-02-12T04:44:46.514337" level="INFO">Element 'xpath=//h2[@id='swal2-title']' contains text 'กรุณาอัปโหลดรูปภาพ!'.</msg>
-<arg>xpath=//h2[@id='swal2-title']</arg>
-<arg>กรุณาอัปโหลดรูปภาพ!</arg>
-<doc>Verifies that element ``locator`` contains text ``expected``.</doc>
-<status status="PASS" start="2025-02-12T04:44:46.485836" elapsed="0.028607"/>
-</kw>
-<kw name="Wait Until Location Is" owner="SeleniumLibrary">
-<arg>${CREATE_NEWS_URL}</arg>
-<arg>${DELAY}</arg>
-<doc>Waits until the current URL is ``expected``.</doc>
-<status status="PASS" start="2025-02-12T04:44:46.514856" elapsed="0.006439"/>
-</kw>
-<kw name="Sleep" owner="BuiltIn">
-<msg time="2025-02-12T04:44:48.522684" level="INFO">Slept 2 seconds.</msg>
-<arg>2s</arg>
-<doc>Pauses the test executed for the given time.</doc>
-<status status="PASS" start="2025-02-12T04:44:46.521907" elapsed="2.000912"/>
-</kw>
-<status status="PASS" start="2025-02-12T04:44:44.387151" elapsed="4.136192"/>
+<status status="FAIL" start="2025-02-12T05:58:12.982101" elapsed="3.251725">ElementClickInterceptedException: Message: element click intercepted: Element is not clickable at point (1391, 1116)
+  (Session info: chrome=132.0.6834.196)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6334202F5+28725]
+	(No symbol) [0x00007FF633382AE0]
+	(No symbol) [0x00007FF63321510A]
+	(No symbol) [0x00007FF6332710F8]
+	(No symbol) [0x00007FF63326EB42]
+	(No symbol) [0x00007FF63326BC51]
+	(No symbol) [0x00007FF63326ABB1]
+	(No symbol) [0x00007FF63325C6B4]
+	(No symbol) [0x00007FF63328FFAA]
+	(No symbol) [0x00007FF63325BF86]
+	(No symbol) [0x00007FF6332901C0]
+	(No symbol) [0x00007FF6332B0181]
+	(No symbol) [0x00007FF63328FD53]
+	(No symbol) [0x00007FF63325A0E3]
+	(No symbol) [0x00007FF63325B471]
+	GetHandleVerifier [0x00007FF63374F30D+3366989]
+	GetHandleVerifier [0x00007FF6337612F0+3440688]
+	GetHandleVerifier [0x00007FF6337578FD+3401277]
+	GetHandleVerifier [0x00007FF6334EAAAB+858091]
+	(No symbol) [0x00007FF63338E74F]
+	(No symbol) [0x00007FF63338A304]
+	(No symbol) [0x00007FF63338A49D]
+	(No symbol) [0x00007FF633378B69]
+	BaseThreadInitThunk [0x00007FFDE1D7259D+29]
+	RtlUserThreadStart [0x00007FFDE33EAF38+40]
+</status>
 </test>
-<status status="PASS" start="2025-02-12T04:44:10.774718" elapsed="37.750738"/>
+<test id="s1-t6" name="Test Tooltip Error Message" line="47">
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<msg time="2025-02-12T05:58:21.453261" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="selenium-screenshot-12.png"&gt;&lt;img src="selenium-screenshot-12.png" width="800px"&gt;&lt;/a&gt;</msg>
+<msg time="2025-02-12T05:58:21.453448" level="FAIL">Element 'xpath=//div[contains(text(),'please fill out this field')]' not visible after 5 seconds.</msg>
+<arg>xpath=//div[contains(text(),'please fill out this field')]</arg>
+<arg>timeout=5s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="FAIL" start="2025-02-12T05:58:16.236597" elapsed="5.218481">Element 'xpath=//div[contains(text(),'please fill out this field')]' not visible after 5 seconds.</status>
+</kw>
+<status status="FAIL" start="2025-02-12T05:58:16.236282" elapsed="5.219374">Element 'xpath=//div[contains(text(),'please fill out this field')]' not visible after 5 seconds.</status>
+</test>
+<test id="s1-t7" name="Test อยู่หน้าเดิม" line="49">
+<kw name="Location Should Be" owner="SeleniumLibrary">
+<msg time="2025-02-12T05:58:21.467104" level="INFO">Current location is 'http://localhost/highlights/create'.</msg>
+<arg>${CREATE_NEWS_URL}</arg>
+<doc>Verifies that the current URL is exactly ``url``.</doc>
+<status status="PASS" start="2025-02-12T05:58:21.458185" elapsed="0.009033"/>
+</kw>
+<status status="PASS" start="2025-02-12T05:58:21.457086" elapsed="0.010516"/>
+</test>
+<status status="FAIL" start="2025-02-12T05:57:34.505209" elapsed="46.963607"/>
 </suite>
 <statistics>
 <total>
-<stat pass="4" fail="0" skip="0">All Tests</stat>
+<stat pass="3" fail="4" skip="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat pass="4" fail="0" skip="0" id="s1" name="Test V1 6">Test V1 6</stat>
+<stat pass="3" fail="4" skip="0" id="s1" name="Test V1 7">Test V1 7</stat>
 </suite>
 </statistics>
 <errors>
