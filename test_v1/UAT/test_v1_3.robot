@@ -2,32 +2,86 @@
 Resource          ./resource_v1.robot
 Library           SeleniumLibrary
 
+
 *** Variables ***
-
+${COVER_IMAGE_PATH}    ${EXECDIR}/.../1_1.jpg
+${ALBUM_IMAGE_PATH}    ${EXECDIR}/.../1_1.jpg
 *** Test Cases ***
-Test Login Role Staff success
-    [Documentation]    ทดสอบการ Login ของ Staff สำเร็จ
-    Go To Login Page
-    Input Text    id=username    ${STAFF_USERNAME}
-    Input Text    id=password    ${STAFF_PASSWORD}
-    Click Button    xpath=//button[contains(text(),'Log In')]
-    Wait Until Location Is    ${DASHBOARD_URL}    timeout=5s
-
-Test DASHBOARD To MANAGE HIGHLIGHTS
-    Location Should Be    ${DASHBOARD_URL}
-    Click Element    xpath=//span[contains(text(),'Manage Highlights')]
-    Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}   
-
-Test Click +Create MANAGE HIGHLIGHTS
+# Test Scenario ID:	UAT-V1-03
+Test Create News Success
+    Go To Manage Highlights Page
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
     Click Link    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
-    Wait Until Location Is    ${HIGHLIGHTS_CREATE_URL}    ${DELAY}
-
-Test Create HIGHLIGHTS
+    Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
+    Location Should Be    ${CREATE_NEWS_URL}
     Click Element    id=coverImageBox
-    Choose File    id=cover_image
-    Select From List By Value    id=category
-    Input Text    id=title
-    Input Text    id=detail
+    Choose File    id=cover_image    ${COVER_IMAGE_PATH}
+    Wait Until Element Is Visible    id=coverPreviewImg    ${DELAY}
+    Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
+    Select From List By Value    id=category    1
+    Input Text    id=detail    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
+    Click Element    id=imageAlbumBox
+    Choose File    id=image_album    ${ALBUM_IMAGE_PATH}
+    Wait Until Element Is Visible    id=albumPreviewImg    ${DELAY}
     Click Button    xpath=//button[contains(text(),'Save')]
-     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    ${DELAY}
+    Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    ${DELAY}
+
+# *** Settings ***
+# Resource          ./resource_v1.robot
+# Library           SeleniumLibrary
+
+
+# *** Variables ***
+# ${COVER_IMAGE_PATH}    ${EXECDIR}\\test_v1\\Test-Data\\1.png
+# ${ALBUM_IMAGE_PATH}    ${EXECDIR}\\test_v1\\Test-Data\\1_1.png
+# *** Test Cases ***
+# # Test Scenario ID:	UAT-V1-03
+# Test Login Role Staff success
+#     [Documentation]    ทดสอบการ Login ของ Staff สำเร็จ
+#     Go To Login Page
+#     Input Text    id=username    ${STAFF_USERNAME}
+#     Input Text    id=password    ${STAFF_PASSWORD}
+#     Click Button    xpath=//button[contains(text(),'Log In')]
+#     Wait Until Location Is    ${DASHBOARD_URL}    
+
+# Test DASHBOARD To MANAGE HIGHLIGHTS
+#     Location Should Be    ${DASHBOARD_URL}
+#     Click Element    xpath=//span[contains(text(),'Manage Highlights')]
+#     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}   
+
+# Test Click +Create MANAGE HIGHLIGHTS
+#     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
+#     Click Link    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
+#     Wait Until Location Is    ${HIGHLIGHTS_CREATE_URL}    ${DELAY}
+
+# Test Create News Success
+#     Location Should Be    ${HIGHLIGHTS_CREATE_URL}
+
+#     # คลิกที่ coverImageBox
+#     Click Element    id=coverImageBox
+    
+#     # ใช้ SeleniumLibrary เพื่อเลือกไฟล์จาก input file
+#     Choose File    id=cover_image    ${COVER_IMAGE_PATH}
+    
+#     # รอจนกว่าภาพตัวอย่างจะปรากฏ (ตรวจสอบว่าไฟล์ถูกเลือก)
+#     Wait Until Element Is Visible    id=coverPreviewImg    ${DELAY}
+
+#     # กรอกข้อมูลฟอร์ม
+#     Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
+#     Select From List By Value    id=category    1
+#     Input Text    id=detail    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
+    
+#     # คลิกที่ imageAlbumBox
+#     Click Element    id=imageAlbumBox
+    
+#     # ใช้ SeleniumLibrary เพื่อเลือกไฟล์จาก input file
+#     Choose File    ${ALBUM_IMAGE_PATH}
+    
+#     # รอจนกว่าภาพในอัลบัมจะปรากฏ
+#     Wait Until Element Is Visible    id=albumPreviewImg    ${DELAY}
+    
+#     # กดบันทึก
+#     Click Button    xpath=//button[contains(text(),'Save')]
+    
+#     # รอจนกว่าจะถึงหน้าการจัดการ
+#     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    ${DELAY}

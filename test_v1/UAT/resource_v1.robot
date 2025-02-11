@@ -16,7 +16,7 @@ ${LOGIN_URL}     http://${LOCALHOST}/login
 ${DASHBOARD_URL}  http://${LOCALHOST}/dashboard
 ${MANAGE_HIGHLIGHTS_URL}    http://${LOCALHOST}/highlights
 
-${HIGHLIGHTS_CREATE_URL}    http://${LOCALHOST}/highlights/create
+${CREATE_NEWS_URL}    http://${LOCALHOST}/highlights/create
 
 # สำหรับทดสอบ host จริง
 # ${HOST}          cs04sec267.cpkkuhost.com
@@ -69,6 +69,15 @@ Go To Login Page
     # Switch Window    NEW
     Location Should Be    ${LOGIN_URL}
     Wait Until Page Contains    Account Login    ${DELAY}
+
+Go To Manage Highlights Page
+    Go To Login Page
+    Login Staff
+    Verify Staff Dashboard
+    # 7. คลิกปุ่ม Manage Highlights
+    Click Link    xpath=//a[@class='nav-link' and contains(span, 'Manage Highlights')]
+    Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    ${DELAY}
+    Page Should Contain    Manage Highlights
 
 Login Admin
     Input Text    id=username    ${ADMIN_USERNAME}
