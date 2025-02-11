@@ -53,7 +53,7 @@ Verify Researcher Dashboard
     Page Should Not Contain    Manage Programs
     Page Should Not Contain    Manage Highlights
 
-Go to Login Page
+Go To Login Page
     Open Browser    ${URL}    ${BROWSER}
     Maximize Browser Window
     # 1. เปิดเว็บไซต์ที่หน้าแรก
