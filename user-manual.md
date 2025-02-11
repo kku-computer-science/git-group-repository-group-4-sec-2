@@ -25,7 +25,7 @@ The **Research Information Management System (RIMS)** is a comprehensive platfor
 
 ### Step 1: Log in to RIMS
 1. Open a web browser and navigate to the **RIMS login page**.
-2. Enter your **username** and **password**.
+2. Enter your **username** and **password** (for staff or admin accounts).
 3. Click **Login** to access your dashboard.
 
 ### Step 2: Navigate to Highlights Management
@@ -34,35 +34,54 @@ The **Research Information Management System (RIMS)** is a comprehensive platfor
 
 ---
 
-## 3. Adding a New Highlight
-1. Click the **Add Highlight** button.
+## 3. Create a New News
+1. Click the **Create** button.
 2. Enter the following details:
-   - **Title**: A concise title for the highlight.
-   - **Description**: A brief summary of the highlight.
-   - **Category**: Select an appropriate category (e.g., *Research Project, Award, Publication*).
-   - **Date**: Specify the relevant date for the highlight.
-   - **Attachments** *(if applicable)*: Upload any related documents or images.
-3. Click **Save** to store the highlight.
+   - **Cover Image**: Upload a cover image for the news.
+   - **Title**: A concise title for the news.
+   - **Category**: Select an appropriate category (e.g., News, Activities, Staff).
+   - **Description**: Enter the content of the news.
+   - **Additional Images** *(if applicable)*: Upload any related images.
+3. Click **Save** to store the news.
 
 ---
 
-## 4. Editing an Existing Highlight
-1. Locate the highlight you wish to edit from the list.
-2. Click the **Edit** button next to the highlight.
+## 4. Editing an Existing News
+1. Locate the News you wish to edit from the list.
+2. Click the **Edit** button.
 3. Modify the necessary details.
 4. Click **Update** to save changes.
 
 ---
 
-## 5. Deleting a Highlight
-1. Locate the highlight you wish to remove.
+## 5. Deleting a News
+1. Locate the News you wish to remove.
 2. Click the **Delete** button.
 3. Confirm the deletion when prompted.
 
 ---
 
-## 6. Viewing and Searching Highlights
-- Use the **Search Bar** to find specific highlights by *title* or *category*.
-- Apply **Filters** to narrow down results based on *date range, category, or keywords*.
+## 6. Add News to Highlights
+1. Select the news you want to add.
+2. Click the **ADD** button in the News table.
+3. Once added, a notification will appear confirming that the news has been added to Highlights.
+4. The added news will appear in the Highlights section on the homepage.
 
 ---
+
+## 7. Remove News from Highlights
+1. Select the news you want to remove.
+2. Click the **REMOVE** button in the Highlights table.
+3. Once removed, a notification will appear confirming that the news has been removed from Highlights.
+4. The removed news will no longer appear in the Highlights section on the home page.
+
+---
+
+## 8. Search Highlights and News
+1. Click the **Search** button.
+2. You can search by Title and Category.
+
+---
+
+## 3. Viewing News and Hightlights Information on the Home Page
+On the home page, both highlighted news and all news will be displayed. You can click on any news to view its details.
