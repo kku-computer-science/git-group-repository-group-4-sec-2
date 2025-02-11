@@ -4,8 +4,7 @@ Library           SeleniumLibrary
 
 
 *** Variables ***
-${COVER_IMAGE_PATH}    ${EXECDIR}/.../1_1.jpg
-${ALBUM_IMAGE_PATH}    ${EXECDIR}/.../1_1.jpg
+
 *** Test Cases ***
 # Test Scenario ID:	UAT-V1-03
 Test Create News Success
@@ -14,16 +13,31 @@ Test Create News Success
     Click Link    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
     Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
     Location Should Be    ${CREATE_NEWS_URL}
+Test load cover img
     Click Element    id=coverImageBox
-    Choose File    id=cover_image    ${COVER_IMAGE_PATH}
-    Wait Until Element Is Visible    id=coverPreviewImg    ${DELAY}
+    Choose File    xpath=//input[@type='file']    C:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg
+   
+    
+Test input data
     Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
     Select From List By Value    id=category    1
-    Input Text    id=detail    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
-    Click Element    id=imageAlbumBox
-    Choose File    id=image_album    ${ALBUM_IMAGE_PATH}
-    Wait Until Element Is Visible    id=albumPreviewImg    ${DELAY}
+    Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
+Test load album
+    # ลบ class 'd-none' จาก element และทำให้ input file แสดงขึ้น
+    Execute JavaScript    document.getElementById("image_album").classList.remove("d-none");
+    Execute JavaScript    document.getElementById("image_album").style.display = "block";
+
+    # รอให้ input file ปรากฏจริง
+    Wait Until Element Is Visible    id=image_album    timeout=10s
+
+    # ใช้ Send Keys แทนการใช้ Choose File
+    Input Text    id=image_album    C:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg
+Test save
+    Sleep    2s
+
+    # รอจนกว่าจะมีการบันทึก
     Click Button    xpath=//button[contains(text(),'Save')]
+
     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    ${DELAY}
 
 # *** Settings ***

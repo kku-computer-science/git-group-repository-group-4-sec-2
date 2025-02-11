@@ -6,6 +6,7 @@ Library           SeleniumLibrary
 
 *** Test Cases ***
 Test Add News to Highlights
+    [Documentation]    แสดง popup “สร้างข่าวสำเร็จ” กลับไปยังหน้า Manage Highlights และข่าวที่สร้างถูกเพิ่มไปยังตาราง News
     Go To Manage Highlights Page
     
     # ค้นหาข้อมูล News ที่ต้องการเพิ่มไปยัง Highlights (เลือกอันแรกสุด)
