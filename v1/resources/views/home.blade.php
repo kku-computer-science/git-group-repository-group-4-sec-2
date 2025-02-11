@@ -127,7 +127,7 @@
 
         width: 100%;
         /* Set your desired width */
-        height: 400px;
+        height: 600px;
         /* Set your desired height */
         margin: auto;
         /* Center the carousel */
@@ -187,7 +187,7 @@
                 @foreach($heads as $index => $head)
                 <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                     <a href="{{ route('highlight.show', $head->id) }}">
-                        <img src="{{ asset('storage/' . $head->image) }}" class="d-block w-100" style="height: 400px; object-fit: cover;" alt="...">
+                        <img src="{{ asset('storage/' . $head->image) }}" class="d-block w-100" alt="...">
                     </a>
                 </div>
                 @endforeach

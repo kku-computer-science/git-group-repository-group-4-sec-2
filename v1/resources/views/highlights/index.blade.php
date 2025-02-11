@@ -286,5 +286,29 @@
             $(".alert-danger").fadeOut("slow");
         }, 2000);
     });
+
+    $(document).ready(function() {
+        // ซ่อนข้อความที่ยาวเกิน 25 ตัวอักษรในคอลัมน์ Title
+        $('#highlight-table tbody tr').each(function() {
+            var titleCell = $(this).find('td:nth-child(3)'); // คอลัมน์ Title
+            var titleText = titleCell.text().trim();
+
+            if (titleText.length > 25) {
+                var shortenedTitle = titleText.substring(0, 25) + '...'; // ย่อข้อความและเพิ่ม ...
+                titleCell.text(shortenedTitle); // อัพเดตข้อความที่แสดงในตาราง
+            }
+        });
+
+        $('#news-table tbody tr').each(function() {
+            var titleCell = $(this).find('td:nth-child(3)'); // คอลัมน์ Title
+            var titleText = titleCell.text().trim();
+
+            if (titleText.length > 25) {
+                var shortenedTitle = titleText.substring(0, 25) + '...'; // ย่อข้อความและเพิ่ม ...
+                titleCell.text(shortenedTitle); // อัพเดตข้อความที่แสดงในตาราง
+            }
+        });
+    });
 </script>
+
 @endsection
