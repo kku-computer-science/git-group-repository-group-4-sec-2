@@ -49,7 +49,7 @@
 
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
 
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 </head>
 
@@ -125,20 +125,25 @@
                 @endif -->
                 @if (Route::has('login'))
                 @auth
-                <!-- ถ้าล็อกอินแล้ว ให้แสดงปุ่ม Logout -->
+                <!-- เพิ่ม space และกำหนดสีไอคอนเป็นสีเทาด้วย text-secondary -->
+                <a href="{{ url('/profile') }}" class="ms-3 me-3 text-secondary">
+                    <i class="fa fa-user-circle fa-2x" style="color: gray;"></i>
+                </a>
 
-                <a href="{{ route('logout') }}"
+                <!-- ปุ่ม Logout -->
+                <a href="{{ route('logout') }}" class="btn btn-danger"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    Logout <i class="mdi mdi-logout"></i>
+                    <i class="fa fa-sign-out-alt fa-lg"></i> Logout
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
 
                 @else
-                <!-- ถ้ายังไม่ได้ล็อกอิน ให้แสดงปุ่ม Login -->
-
-                <a class="btn btn-primary" href="{{ route('login') }}">Login</a>
+                <!-- ปุ่ม Login -->
+                <a class="btn btn-primary" href="{{ route('login') }}">
+                    <i class="fa fa-sign-in-alt fa-lg"></i> Login
+                </a>
 
                 @endauth
                 @endif

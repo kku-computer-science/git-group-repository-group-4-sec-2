@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.40, for macos14 (arm64)
 --
--- Host: 127.0.0.1    Database: cs04sec2_mysql
+-- Host: localhost    Database: cs04sec2_mysql
 -- ------------------------------------------------------
 -- Server version	8.0.41
 
@@ -144,7 +144,7 @@ CREATE TABLE `category` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +153,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'News'),(2,'Activities'),(3,'Staff');
+INSERT INTO `category` VALUES (1,'ทุนวิจัยและโอกาสสนับสนุน'),(2,'ผลงานวิจัยเด่นและรางวัล'),(3,'งานประชุมและสัมมนาวิชาการ'),(4,'ข่าวสารและประกาศสำคัญ');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -373,8 +373,8 @@ DROP TABLE IF EXISTS `highlight`;
 CREATE TABLE `highlight` (
   `id` int NOT NULL AUTO_INCREMENT,
   `image` varchar(255) DEFAULT NULL,
-  `title` varchar(45) DEFAULT NULL,
-  `description` varchar(45) DEFAULT NULL,
+  `title` varchar(8000) DEFAULT NULL,
+  `description` varchar(8000) DEFAULT NULL,
   `status` tinyint DEFAULT NULL,
   `category_id` int NOT NULL,
   `user_id` bigint unsigned DEFAULT NULL,
@@ -386,7 +386,7 @@ CREATE TABLE `highlight` (
   KEY `fk_highlight_user` (`user_id`),
   CONSTRAINT `fk_highlight_category1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
   CONSTRAINT `fk_highlight_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -407,7 +407,7 @@ DROP TABLE IF EXISTS `image_collection`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `image_collection` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `image` varchar(45) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `highlight_id` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -415,7 +415,7 @@ CREATE TABLE `image_collection` (
   UNIQUE KEY `idimage_collection_UNIQUE` (`id`),
   KEY `fk_image_collection_highlight1_idx` (`highlight_id`),
   CONSTRAINT `fk_image_collection_highlight1` FOREIGN KEY (`highlight_id`) REFERENCES `highlight` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1128,4 +1128,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-10 14:17:15
+-- Dump completed on 2025-02-11 20:25:25

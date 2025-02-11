@@ -41,12 +41,12 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\TcicallController;
 
 use App\Http\Controllers\HighlightController;
+use App\Http\Controllers\HighlightdetailController;
+
 
 Route::get('/test-permission', function () {
     return \Illuminate\Support\Facades\Gate::allows('manage-highlights') ? 'Allowed' : 'Denied';
 });
-
-
 
 Route::prefix('highlights')->group(function () {
     Route::get('/', [HighlightController::class, 'index'])->name('highlights.index');
@@ -54,13 +54,25 @@ Route::prefix('highlights')->group(function () {
     Route::post('/', [HighlightController::class, 'store'])->name('highlights.store');
     Route::get('/{id}/edit', [HighlightController::class, 'edit'])->name('highlights.edit');
     Route::put('/{id}', [HighlightController::class, 'update'])->name('highlights.update');
-    Route::put('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.add'); // ✅ เพิ่มฟังก์ชันนี้
-    Route::put('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.remove'); // ✅ เพิ่มฟังก์ชันนี้
+
+    Route::put('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.addd'); // ✅ เพิ่มฟังก์ชันนี้
+    Route::put('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.removee'); // ✅ เพิ่มฟังก์ชันนี้
+
+    Route::post('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.add');
+    Route::post('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.remove');
+
     Route::delete('/image-collection/{id}', [HighlightController::class, 'deleteImage'])->name('image.delete');
+    // DELETE route สำหรับลบ Highlight
+    Route::delete('/{id}', [HighlightController::class, 'destroy'])->name('highlights.destroy');
+    Route::get('/data', [HighlightController::class, 'dataTable'])->name('highlights.data');
 });
 
 
 
+Route::get('highlightdetail', [HighlightdetailController::class, 'index'])->name('highlightdetail');
+Route::get('/highlight/{id}', [HighlightdetailController::class, 'show'])->name('highlight.show');
+
+// Route::get('/news/{id}', [HighlightdetailController::class, 'show'])->name('news.show');
 
 
 /*
@@ -131,6 +143,8 @@ Route::get('loadindex', [PDFController::class, 'index']);
 Route::get('pdf', [PDFController::class, 'generateInvoicePDF'])->name('pdf');
 Route::get('docx', [PDFController::class, 'generateInvoiceDOCX'])->name('docx');
 Route::get('excel', [PDFController::class, 'generateInvoiceExcel'])->name('excel');
+
+
 
 Route::get('detail/{id}', [ProfileController::class, 'request'])->name('detail');
 Route::get('index', [LocalizationController::class, 'index']);
