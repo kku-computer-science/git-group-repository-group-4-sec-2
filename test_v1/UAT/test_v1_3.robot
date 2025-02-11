@@ -6,14 +6,14 @@ Library           SeleniumLibrary
 
 *** Test Cases ***
 Test Login Role Staff success
-    [Documentation]    ทดสอบการ Login ของ Staff ไม่สำเร็จ
+    [Documentation]    ทดสอบการ Login ของ Staff สำเร็จ
     Go to Login Page
     Input Text    id=username    ${STAFF_USERNAME}
     Input Text    id=password    ${STAFF_PASSWORD}
     Click Button    xpath=//button[contains(text(),'Log In')]
-    Location Should Be    ${DASHBOARD_URL}
+    Wait Until Location Is    ${DASHBOARD_URL}    timeout=5s
 
 Test DASHBOARD To MANAGE HIGHLIGHTS
     Location Should Be    ${DASHBOARD_URL}
-    Click Element    xpath=//a[contains(text(),'Manage Highlights')]
-    Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
+    Click Element    xpath=//span[contains(text(),'Manage Highlights')]
+    Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    timeout=5s
