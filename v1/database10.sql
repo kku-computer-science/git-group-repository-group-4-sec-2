@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.40, for macos14 (arm64)
 --
--- Host: 127.0.0.1    Database: cs04sec2_mysql
+-- Host: localhost    Database: cs04sec2_mysql
 -- ------------------------------------------------------
 -- Server version	8.0.41
 
@@ -144,7 +144,7 @@ CREATE TABLE `category` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +153,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'News'),(2,'Activities'),(3,'Staff');
+INSERT INTO `category` VALUES (1,'ทุนวิจัยและโอกาสสนับสนุน'),(2,'ผลงานวิจัยเด่นและรางวัล'),(3,'งานประชุมและสัมมนาวิชาการ'),(4,'ข่าวสารและประกาศสำคัญ');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -373,8 +373,8 @@ DROP TABLE IF EXISTS `highlight`;
 CREATE TABLE `highlight` (
   `id` int NOT NULL AUTO_INCREMENT,
   `image` varchar(255) DEFAULT NULL,
-  `title` varchar(45) DEFAULT NULL,
-  `description` varchar(45) DEFAULT NULL,
+  `title` varchar(8000) DEFAULT NULL,
+  `description` varchar(8000) DEFAULT NULL,
   `status` tinyint DEFAULT NULL,
   `category_id` int NOT NULL,
   `user_id` bigint unsigned DEFAULT NULL,
@@ -395,7 +395,6 @@ CREATE TABLE `highlight` (
 
 LOCK TABLES `highlight` WRITE;
 /*!40000 ALTER TABLE `highlight` DISABLE KEYS */;
-INSERT INTO `highlight` VALUES (2,'highlightImage/rPY4ve84QjuWxawdIB96jWUTtRdd0WkdTwLf1TKq.png','555555','า่า',NULL,2,35,'2025-02-11 01:25:46','2025-02-11 03:13:18'),(3,'highlightImage/67aa44eb2fc62.jpg','2','3',NULL,3,35,'2025-02-11 01:26:51','2025-02-11 01:26:51');
 /*!40000 ALTER TABLE `highlight` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -425,7 +424,6 @@ CREATE TABLE `image_collection` (
 
 LOCK TABLES `image_collection` WRITE;
 /*!40000 ALTER TABLE `image_collection` DISABLE KEYS */;
-INSERT INTO `image_collection` VALUES (18,'imageCollection/Koa09YnIIa7qHx5PVQlWhg2S4dkzJBQOE3AWoEQ9.jpg',2,'2025-02-11 03:12:32','2025-02-11 03:12:32');
 /*!40000 ALTER TABLE `image_collection` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1130,4 +1128,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-11  3:14:42
+-- Dump completed on 2025-02-11 20:25:25

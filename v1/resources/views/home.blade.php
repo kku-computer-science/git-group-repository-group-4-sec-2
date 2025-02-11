@@ -176,36 +176,34 @@
 
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
             <!-- Carousel Indicators -->
-            <div class="carousel-indicators">
+            <ol class="carousel-indicators">
                 @foreach($heads as $index => $head)
-                <button type="button" data-bs-target="#carouselExampleIndicators"
-                    data-bs-slide-to="{{ $index }}" class="{{ $loop->first ? 'active' : '' }}"
-                    aria-label="Slide {{ $index + 1 }}"></button>
+                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $index }}" class="{{ $loop->first ? 'active' : '' }}"></li>
                 @endforeach
-            </div>
+            </ol>
 
             <!-- Carousel Items -->
             <div class="carousel-inner">
                 @foreach($heads as $index => $head)
                 <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                     <a href="{{ route('highlight.show', $head->id) }}">
-                        <img src="{{ asset('storage/' . $head->image) }}" class="d-block w-200"
-                            style="height: 400px; object-fit: cover;" alt="...">
+                        <img src="{{ asset('storage/' . $head->image) }}" class="d-block w-100" style="height: 400px; object-fit: cover;" alt="...">
                     </a>
                 </div>
                 @endforeach
             </div>
 
             <!-- Navigation Buttons -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
-            </button>
+            </a>
         </div>
+
     </div>
 
 

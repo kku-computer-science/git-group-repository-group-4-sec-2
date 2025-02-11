@@ -171,19 +171,30 @@
         event.preventDefault(); // Prevent immediate form submission
 
         let category = document.getElementById("category").value;
+let coverPreview = document.getElementById("coverPreview").classList.contains("d-none");
 
-        if (!category) {
-            Swal.fire({
-                icon: "warning",
-                title: "กรุณาเลือกหมวดหมู่!",
-                text: "คุณต้องเลือกหมวดหมู่ก่อนส่งแบบฟอร์ม",
-                padding: "1.25rem",
-                confirmButtonText: "ตกลง",
-                confirmButtonColor: "#3085d6",
-            });
-        } else {
-            confirmCreate();
-        }
+if (!category) {
+    Swal.fire({
+        icon: "warning",
+        title: "กรุณาเลือกหมวดหมู่!",
+        text: "คุณต้องเลือกหมวดหมู่ก่อนส่งแบบฟอร์ม",
+        padding: "1.25rem",
+        confirmButtonText: "ตกลง",
+        confirmButtonColor: "#3085d6",
+    });
+} else if (coverPreview) {  // เช็คว่าไม่ได้อัปโหลดรูปภาพ
+    Swal.fire({
+        icon: "warning",
+        title: "กรุณาอัปโหลดรูปภาพ!",
+        text: "คุณต้องเลือกอัปโหลดรูปภาพก่อนส่งแบบฟอร์ม",
+        padding: "1.25rem",
+        confirmButtonText: "ตกลง",
+        confirmButtonColor: "#3085d6",
+    });
+} else {
+    confirmCreate();
+}
+
     });
 
     function confirmCreate() {
