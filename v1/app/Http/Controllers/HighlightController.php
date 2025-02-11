@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Log;
+
 use App\Models\ImageCollection;
 use Illuminate\Http\Request;
 use App\Models\Highlight;
@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Imagick\Driver;
 // use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Encoders\JpegEncoder;
+use Illuminate\Support\Facades\Log;
 
 use Intervention\Image\Encoders\PngEncoder;
 use Intervention\Image\Encoders\GifEncoder;
@@ -122,189 +123,65 @@ class HighlightController extends Controller
         return view('highlights.edit', compact('highlight', 'categories'));
     }
 
-    // public function update(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'title' => 'required|string|max:255',
-    //         'category_id' => 'required|exists:category,id',
-    //         'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
-    //         'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
-    //     ]);
-    //     Log::info('------=----1');
-    //     $highlight = Highlight::findOrFail($id);
-    //     $manager = new ImageManager(new Driver());
-    //     $coverImagePath = $highlight->image;
-        
-    //     Log::info('------=----2');
-    //     // ✅ อัปเดต Cover Image (เก็บใน `highlightImage/`)
-    //     if ($request->hasFile('cover_image')) {
-    //         if ($highlight->image) {
-    //             Storage::disk('public')->delete($highlight->image); // ลบรูปเก่า
-    //         }
-    //         $image = $manager->read($request->file('cover_image')->getPathname())
-    //         ->scale(width: 1200)
-    //         ->encode(new JpegEncoder(80));
-            
-    //         $fileName = 'highlightImage/' . uniqid() . '.jpg';
-    //         Storage::disk('public')->put($fileName, $image->toString());
-    //         $coverImagePath = $fileName;
-    //     }
-    //     Log::info('------=----3');
-        
-    //     // ✅ อัปเดตข้อมูลในฐานข้อมูล
-    //     $highlight->update([
-    //         'title' => $request->title,
-    //         'description' => $request->description,
-    //         'category_id' => $request->category_id,
-    //         'image' => $coverImagePath,
-    //     ]);
-    //     Log::info('------=----4');
-        
-    //     // ✅ อัปเดต Image Album (เก็บใน `imageCollection/`)
-    //     if ($request->hasFile('images')) {
-    //         // ลบรูปเก่าทั้งหมดก่อน
-    //         foreach ($highlight->images as $image) {
-    //             Storage::disk('public')->delete($image->image);
-    //             $image->delete();
-    //         }
-            
-    //         // อัปโหลดรูปใหม่
-    //         foreach ($request->file('images') as $imageFile) {
-    //             $image = $manager->read($imageFile->getPathname())
-    //             ->scale(width: 1200)
-    //             ->encode(new JpegEncoder(80));
-                
-    //             $fileName = 'imageCollection/' . uniqid() . '.jpg';
-    //             Storage::disk('public')->put($fileName, $image->toString());
-                
-    //             ImageCollection::create([
-    //                 'image' => $fileName,
-    //                 'highlight_id' => $highlight->id,
-    //             ]);
-    //         }
-    //     }
-        
-    //     Log::info('------=----5');
-    //     return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
-    // }
+    public function update(Request $request, $id)
+    {
+        Log::info("🛠 UPDATE FUNCTION CALLED FOR HIGHLIGHT ID: " . $id);
+        Log::info("🔍 REQUEST DATA:", $request->all());
 
-//     public function update(Request $request, $id)
-// {
-//     $request->validate([
-//         'title' => 'required|string|max:255',
-//         'category_id' => 'required|exists:category,id',
-//         'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
-//         'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
-//     ]);
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'category_id' => 'required|exists:category,id',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+        ]);
 
-//     $highlight = Highlight::findOrFail($id);
-//     $coverImagePath = $highlight->image;
-    
-//     // ✅ ลบรูปภาพที่ถูกเลือกให้ลบเมื่อกด "Update"
-//     if ($request->deleted_images) {
-//         $deletedImageIds = json_decode($request->deleted_images, true);
-        
-//         foreach ($deletedImageIds as $imageId) {
-//             $image = ImageCollection::find($imageId);
-//             if ($image) {
-//                 Storage::disk('public')->delete($image->image);
-//                 $image->delete();
-//             }
-//         }
-//     }
+        Log::info('Starting update process...');
+        $highlight = Highlight::findOrFail($id);
+        $coverImagePath = $highlight->image;
 
-//     // ✅ อัปเดต Cover Image
-//     if ($request->hasFile('cover_image')) {
-//         if ($highlight->image) {
-//             Storage::disk('public')->delete($highlight->image);
-//         }
-//         $coverImagePath = $request->file('cover_image')->store('highlightImage', 'public');
-//     }
-
-//     // ✅ อัปเดตข้อมูล Highlight
-//     $highlight->update([
-//         'title' => $request->title,
-//         'description' => $request->description,
-//         'category_id' => $request->category_id,
-//         'image' => $coverImagePath,
-//     ]);
-
-//     // ✅ อัปโหลดรูปใหม่ที่ถูกเพิ่มเข้ามา
-//     if ($request->hasFile('images')) {
-//         foreach ($request->file('images') as $imageFile) {
-//             $fileName = $imageFile->store('imageCollection', 'public');
-
-//             ImageCollection::create([
-//                 'image' => $fileName,
-//                 'highlight_id' => $highlight->id,
-//             ]);
-//         }
-//     }
-
-//     return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
-// }
-
-public function update(Request $request, $id)
-{
-    Log::info("🛠 UPDATE FUNCTION CALLED FOR HIGHLIGHT ID: " . $id);
-    Log::info("🔍 REQUEST DATA:", $request->all());
-
-    $request->validate([
-        'title' => 'required|string|max:255',
-        'category_id' => 'required|exists:category,id',
-        'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
-        'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
-    ]);
-
-    Log::info('Starting update process...');
-    $highlight = Highlight::findOrFail($id);
-    $coverImagePath = $highlight->image;
-
-    // ✅ Update Cover Image
-    if ($request->hasFile('cover_image')) {
-        if ($highlight->image) {
-            Storage::disk('public')->delete($highlight->image);
+        // ✅ Update Cover Image
+        if ($request->hasFile('cover_image')) {
+            if ($highlight->image) {
+                Storage::disk('public')->delete($highlight->image);
+            }
+            $coverImagePath = $request->file('cover_image')->store('highlightImage', 'public');
         }
-        $coverImagePath = $request->file('cover_image')->store('highlightImage', 'public');
-    }
 
-    // ✅ Update Highlight Data
-    $highlight->update([
-        'title' => $request->title,
-        'description' => $request->description,
-        'category_id' => $request->category_id,
-        'image' => $coverImagePath,
-    ]);
+        // ✅ Update Highlight Data
+        $highlight->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'category_id' => $request->category_id,
+            'image' => $coverImagePath,
+        ]);
 
-    // ✅ Remove images marked for deletion
-    if ($request->deleted_images) {
-        $deletedImageIds = json_decode($request->deleted_images, true);
-        foreach ($deletedImageIds as $imageId) {
-            $image = ImageCollection::find($imageId);
-            if ($image) {
-                Storage::disk('public')->delete($image->image);
-                $image->delete();
+        // ✅ Remove images marked for deletion
+        if ($request->deleted_images) {
+            $deletedImageIds = json_decode($request->deleted_images, true);
+            foreach ($deletedImageIds as $imageId) {
+                $image = ImageCollection::find($imageId);
+                if ($image) {
+                    Storage::disk('public')->delete($image->image);
+                    $image->delete();
+                }
             }
         }
-    }
 
-    // ✅ Upload New Images (If Any)
-    if ($request->hasFile('images')) {
-        foreach ($request->file('images') as $imageFile) {
-            $fileName = $imageFile->store('imageCollection', 'public');
+        // ✅ Upload New Images (If Any)
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $imageFile) {
+                $fileName = $imageFile->store('imageCollection', 'public');
 
-            ImageCollection::create([
-                'image' => $fileName,
-                'highlight_id' => $highlight->id,
-            ]);
+                ImageCollection::create([
+                    'image' => $fileName,
+                    'highlight_id' => $highlight->id,
+                ]);
+            }
         }
+
+        Log::info('Highlight updated successfully.');
+        return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
     }
-
-    Log::info('Highlight updated successfully.');
-    return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
-}
-
-
 
     public function addToHighlights($id)
     {
@@ -329,15 +206,15 @@ public function update(Request $request, $id)
         Log::info('++++++++++++++++1');
         $image = ImageCollection::find($id);
         Log::info('++++++++++++++++2');
-        
+
         if (!$image) {
             return response()->json(['error' => 'Image not found'], 404);
         }
         Log::info('++++++++++++++++3');
-        
+
         // ลบไฟล์ออกจาก Storage
         Storage::disk('public')->delete($image->image);
-        
+
         Log::info('++++++++++++++++4');
         // ลบจาก Database
         $image->delete();
@@ -346,20 +223,61 @@ public function update(Request $request, $id)
         return response()->json(['success' => true]);
     }
 
-    public function deleteHighlightById($id)
+    public function destroy($id)
     {
-    $highlight = Highlight::findOrFail($id);
+        $highlight = Highlight::findOrFail($id); // หาไฮไลท์จาก ID
+        if ($highlight->image) {
+            Storage::disk('public')->delete($highlight->image); // ลบไฟล์รูปภาพ
+        }
 
-    // ลบข้อมูลใน ImageCollection ที่เกี่ยวข้อง
-    foreach ($highlight->images as $image) {
-        Storage::disk('public')->delete($image->image); // ลบไฟล์จาก storage
-        $image->delete(); // ลบข้อมูลจาก database
+        // ลบภาพทั้งหมดที่เกี่ยวข้อง
+        foreach ($highlight->images as $image) {
+            Storage::disk('public')->delete($image->image);
+            $image->delete();
+        }
+
+        $highlight->delete(); // ลบข้อมูลไฮไลท์ออกจากฐานข้อมูล
+
+        return redirect()->route('highlights.index')->with('success', 'Highlight deleted successfully.');
     }
 
-    // ลบ Highlight
-    $highlight->delete();
+    public function dataTable(Request $request)
+    {
+        $type = $request->query('type');
 
-    return redirect()->back()->with("success", "Highlight deleted successfully.");
+        $query = Highlight::with(['category', 'user'])
+            ->when($type === 'highlights', function ($q) {
+                return $q->where('status', 1)->latest()->take(5);
+            })
+            ->when($type === 'news', function ($q) {
+                return $q->whereNull('status')->latest()->take(5);
+            });
+
+        return datatables()->eloquent($query)
+            ->addColumn('category', function ($highlight) {
+                return $highlight->category->name ?? 'No Category';
+            })
+            ->addColumn('created_by', function ($highlight) {
+                return optional($highlight->user)->fname_th . ' ' . optional($highlight->user)->lname_th ?? 'Unknown';
+            })
+            ->addColumn('actions', function ($highlight) use ($type) {
+                $editUrl = route('highlights.edit', $highlight->id);
+                $deleteUrl = route('highlights.destroy', $highlight->id);
+                $toggleUrl = ($type === 'highlights') ? route('highlights.remove', $highlight->id) : route('highlights.add', $highlight->id);
+                $toggleText = ($type === 'highlights') ? 'REMOVE' : 'ADD';
+
+                return '
+                    <a href="' . $editUrl . '" class="btn btn-outline-primary btn-sm"><i class="fas fa-edit"></i></a>
+                    <button class="btn btn-danger btn-sm delete-btn" data-url="' . $deleteUrl . '">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <form action="' . $toggleUrl . '" method="POST" style="display:inline;">
+                        ' . csrf_field() . method_field('PUT') . '
+                        <button type="submit" class="btn btn-warning btn-sm">' . $toggleText . '</button>
+                    </form>
+                ';
+            })
+            ->rawColumns(['image', 'actions'])
+            ->make(true);
     }
-
 }
