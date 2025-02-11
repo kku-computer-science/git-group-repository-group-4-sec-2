@@ -55,8 +55,8 @@ Route::prefix('highlights')->group(function () {
     Route::get('/{id}/edit', [HighlightController::class, 'edit'])->name('highlights.edit');
     Route::put('/{id}', [HighlightController::class, 'update'])->name('highlights.update');
 
-    Route::put('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.add'); // ✅ เพิ่มฟังก์ชันนี้
-    Route::put('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.remove'); // ✅ เพิ่มฟังก์ชันนี้
+    Route::put('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.addd'); // ✅ เพิ่มฟังก์ชันนี้
+    Route::put('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.removee'); // ✅ เพิ่มฟังก์ชันนี้
 
     Route::post('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.add');
     Route::post('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.remove');
