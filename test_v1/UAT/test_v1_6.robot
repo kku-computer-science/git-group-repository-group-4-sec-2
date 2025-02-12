@@ -40,4 +40,4 @@ Test Create News Unsuccess Empty Cover Image
     Element Should Contain    xpath=//h2[@id='swal2-title']    กรุณาอัปโหลดรูปภาพ!
     # เช็คว่าเราอยู่ในหน้า Create News หลังจากแสดงป๊อปอัพ
     Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
-    Sleep    2s
+    Close Browser

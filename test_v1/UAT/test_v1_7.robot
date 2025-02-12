@@ -45,4 +45,5 @@ Test Create News Unsuccess Empty Title
     Run Keyword And Continue On Failure    Element Should Be Visible    xpath=//input[@id='title'][@required]
     # เช็คว่าเราอยู่ในหน้า Create News หลังจากแสดงป๊อปอัพ
     Location Should Be    ${CREATE_NEWS_URL}  
+    Close Browser
    
