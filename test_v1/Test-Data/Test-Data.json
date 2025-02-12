@@ -1,42 +1,62 @@
 {
-    "browser": "chrome",
-    "localhost": {
-      "ip": "127.0.0.1:8000",
-      "url": "http://localhost/",
-      "login_url": "http://localhost/login",
-      "dashboard_url": "http://localhost/dashboard",
-      "manage_highlights_url": "http://localhost/highlights"
+  "browser": "chrome",
+  "localhost": {
+    "ip": "127.0.0.1:8000",
+    "url": "http://localhost/",
+    "login_url": "http://localhost/login",
+    "dashboard_url": "http://localhost/dashboard",
+    "manage_highlights_url": "http://localhost/highlights",
+    "create_news_url": "http://localhost/highlights/create"
+  },
+  "host": {
+    "domain": "cs04sec267.cpkkuhost.com",
+    "url": "https://cs04sec267.cpkkuhost.com/",
+    "login_url": "https://cs04sec267.cpkkuhost.com/login",
+    "dashboard_url": "https://cs04sec267.cpkkuhost.com/dashboard",
+    "manage_highlights_url": "https://cs04sec267.cpkkuhost.com/highlights"
+  },
+  "accounts": {
+    "admin": {
+      "email": "admin@gmail.com",
+      "password": "12345678"
     },
-    "host": {
-      "domain": "cs04sec267.cpkkuhost.com",
-      "url": "https://cs04sec267.cpkkuhost.com/",
-      "login_url": "https://cs04sec267.cpkkuhost.com/login",
-      "dashboard_url": "https://cs04sec267.cpkkuhost.com/dashboard",
-      "manage_highlights_url": "https://cs04sec267.cpkkuhost.com/highlights"
+    "staff": {
+      "email": "staff@gmail.com",
+      "password": "123456789"
     },
-    "accounts": {
-      "admin": {
-        "email": "admin@gmail.com",
-        "password": "12345678"
-      },
-      "staff": {
-        "email": "staff@gmail.com",
-        "password": "123456789"
-      },
-      "researcher": {
-        "email": "thanaphon@kku.ac.th",
-        "password": "123456789"
-      }
-    },
-    "invalid_credentials": {
-      "invalid_password": "111111111",
-      "error_message": "Login Failed: Your user ID or password is incorrect"
-    },
-    "test_news_data": {
-      "title": "ตัวอย่างข่าวสาร",
-      "content": "เนื้อหาของข่าวสารตัวอย่าง",
-      "author": "เจ้าหน้าที่ฝ่ายบริหาร",
-      "publish_date": "2025-02-11"
+    "researcher": {
+      "email": "thanaphon@kku.ac.th",
+      "password": "123456789"
     }
+  },
+  "invalid_credentials": {
+    "invalid_password": "111111111",
+    "error_message": "Login Failed: Your user ID or password is incorrect"
+  },
+  "test_news_data": {
+    "title": "โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่",
+    "content": "เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ",
+    "author": "เจ้าหน้าที่ฝ่ายบริหาร",
+    "publish_date": "2025-02-11"
+  },
+  "robot_variables": {
+    "BROWSER": "chrome",
+    "LOCALHOST": "localhost",
+    "URL": "http://localhost/",
+    "LOGIN_URL": "http://localhost/login",
+    "DASHBOARD_URL": "http://localhost/dashboard",
+    "MANAGE_HIGHLIGHTS_URL": "http://localhost/highlights",
+    "CREATE_NEWS_URL": "http://localhost/highlights/create",
+    "ADMIN_USERNAME": "admin@gmail.com",
+    "ADMIN_PASSWORD": "12345678",
+    "STAFF_USERNAME": "staff@gmail.com",
+    "STAFF_PASSWORD": "123456789",
+    "RESEARCHER_USERNAME": "thanaphon@kku.ac.th",
+    "RESEARCHER_PASSWORD": "123456789",
+    "INVALID_PASSWORD": "111111111",
+    "error_message": "Login Failed: Your user ID or password is incorrect",
+    "DELAY": 2,
+    "TITLE": "โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่",
+    "DESCRIPTION": "เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ"
   }
-  
+}
