@@ -18,8 +18,8 @@
         "popper.js": "^1.12",
         "postcss": "^8.1.14",
         "resolve-url-loader": "^4.0.0",
-        "sass": "^1.15.2",
-        "sass-loader": "^8.0.0"
+        "sass": "^1.84.0",
+        "sass-loader": "^8.0.2"
     },
     "dependencies": {
         "flag-icon-css": "^4.1.7"

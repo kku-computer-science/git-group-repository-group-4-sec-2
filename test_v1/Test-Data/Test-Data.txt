@@ -1,0 +1,37 @@
+### Test Data สำหรับการทดสอบระบบ ###
+
+# ข้อมูลเบราว์เซอร์ (Browser)
+BROWSER: chrome
+
+# ข้อมูลสำหรับการทดสอบบน Localhost
+LOCALHOST_IP: 127.0.0.1:8000
+LOCALHOST_URL: http://localhost/
+LOGIN_URL: http://localhost/login
+DASHBOARD_URL: http://localhost/dashboard
+MANAGE_HIGHLIGHTS_URL: http://localhost/highlights
+
+# ข้อมูลสำหรับการทดสอบบน Host จริง
+HOST: cs04sec267.cpkkuhost.com
+HOST_URL: https://cs04sec267.cpkkuhost.com/
+LOGIN_URL: https://cs04sec267.cpkkuhost.com/login
+DASHBOARD_URL: https://cs04sec267.cpkkuhost.com/dashboard
+MANAGE_HIGHLIGHTS_URL: https://cs04sec267.cpkkuhost.com/highlights
+
+# ข้อมูลบัญชีผู้ใช้สำหรับการทดสอบ
+[Admin]
+EMAIL: admin@gmail.com
+PASSWORD: 12345678
+
+[Staff]
+EMAIL: staff@gmail.com
+PASSWORD: 123456789
+
+[Researcher]
+EMAIL: thanaphon@kku.ac.th
+PASSWORD: 123456789
+
+INVALID_PASSWORD: 111111111
+error_message: Login Failed: Your user ID or password is incorrect
+# ข้อมูลที่ใช้สำหรับทดสอบการสร้างข่าวสาร
+
+

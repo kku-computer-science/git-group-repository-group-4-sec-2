@@ -31,43 +31,213 @@
         display: table;
         color: #4ad1e5;
     }
+
+    #highlightNews {
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        display: flex;
+        white-space: nowrap;
+        padding-bottom: 10px;
+    }
+
+    /* ซ่อน scrollbar ในเบราว์เซอร์ */
+    #highlightNews::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* ปรับสไตล์ของแถบไฮไลท์ */
+    .highlight-container {
+        position: relative;
+        max-width: 100%;
+        padding: 20px 0;
+    }
+
+    .highlight-wrapper {
+        display: flex;
+        gap: 15px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding-bottom: 10px;
+    }
+
+    /* ซ่อน Scrollbar */
+    .highlight-wrapper::-webkit-scrollbar {
+        display: none;
+    }
+
+    .highlight-card {
+        flex: 0 0 18rem;
+        /* ขนาดของการ์ด */
+        min-width: 18rem;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .highlight-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .highlight-card img {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    /* ปุ่มเลื่อน */
+    .highlight-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 15px 20px;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: background 0.3s;
+        z-index: 10;
+        /* ทำให้ปุ่มอยู่หน้าสุด */
+    }
+
+    .highlight-nav:hover {
+        background: rgba(0, 0, 0, 0.8);
+    }
+
+    /* ป้องกันการโดนกดบัง */
+    .highlight-nav i {
+        pointer-events: none;
+        /* ป้องกันการบังการกด */
+    }
+
+    .highlight-prev {
+        left: 5px;
+    }
+
+    .highlight-next {
+        right: 5px;
+    }
+
+
+    /* Fix the carousel size */
+    #carouselExampleIndicators {
+        max-width: 100%;
+        border-radius: 20px;
+        /* Add rounded corners */
+
+        width: 100%;
+        /* Set your desired width */
+        height: 600px;
+        /* Set your desired height */
+        margin: auto;
+        /* Center the carousel */
+        overflow: hidden;
+        /* Prevent image overflow */
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+        /* Add soft shadow */
+
+
+    }
+
+    .carousel-inner {
+        width: 100%;
+        height: 100%;
+    }
+
+    .carousel-item {
+        width: 10%;
+        height: 100%;
+    }
+
+    .carousel-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 20px;
+        /* Ensure the image covers the box */
+    }
+
+    /* Custom styling for arrows */
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        filter: invert(100%);
+        /* Makes arrows white */
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        opacity: 1 !important;
+        /* Ensure arrows are fully visible */
+    }
 </style>
 @section('content')
 <div class="container home">
     <div class="container d-sm-flex justify-content-center mt-5">
+
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <!-- <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-                aria-label="Slide 3"></button> -->
-            </div>
+            <!-- Carousel Indicators -->
+            <ol class="carousel-indicators">
+                @foreach($heads as $index => $head)
+                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $index }}" class="{{ $loop->first ? 'active' : '' }}"></li>
+                @endforeach
+            </ol>
+
+            <!-- Carousel Items -->
             <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="{{asset('img/Banner1.png')}}" class="d-block w-100" alt="...">
+                @foreach($heads as $index => $head)
+                <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                    <a href="{{ route('highlight.show', $head->id) }}">
+                        <img src="{{ asset('storage/' . $head->image) }}" class="d-block w-100" alt="...">
+                    </a>
                 </div>
-                <div class="carousel-item">
-                    <img src="{{asset('img/Banner2.png')}}" class="d-block w-100" alt="...">
-                </div>
-                <!-- <div class="carousel-item">
-                <img src="..." class="d-block w-100" alt="...">
-            </div> -->
+                @endforeach
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+
+            <!-- Navigation Buttons -->
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
-            </button>
+            </a>
         </div>
+
     </div>
 
 
+    <!-- News -->
+
+    <div class="container news mt-5">
+        <h3 class="mb-4">HIGHLIGHT NEWS</h3>
+
+        <div class="highlight-container">
+
+            <!-- รายการข่าว -->
+            <div class="highlight-wrapper" id="highlightNews">
+                @foreach($highlights as $highlight)
+                <div class="highlight-card">
+                    <a href="{{ route('highlight.show', $highlight->id) }}">
+                        <img src="{{ asset('storage/' . $highlight->image) }}" class="card-img-top" alt="Highlight Image">
+                    </a>
+                    <div class="card-body">
+                        <span class="badge bg-primary">{{ $highlight->tag->name }}</span>
+                        <h6 class="card-title mt-2">{{ $highlight->title }}</h6>
+                        <p class="card-text">{{ Str::limit($highlight->description, 100) }}</p>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            <div class="d-flex justify-content-end mt-3">
+                <button class="btn btn-outline-primary me-2" id="scrollLeft"><i class="fas fa-chevron-left"></i></button>
+                <button class="btn btn-outline-primary" id="scrollRight"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal -->
-
-
 
     <div class="container card-cart d-sm-flex justify-content-center mt-5">
         <div class="col-md-8">
@@ -128,8 +298,6 @@
     </div>
 
 
-
-
     <div class="container mixpaper pb-10 mt-3">
         <h3>{{ trans('message.publications') }}</h3>
         @foreach($papers as $n => $pe)
@@ -161,7 +329,7 @@
                                     <!-- <a href="{{ route('bibtex',['id'=>$p['id']])}}">
                                         [อ้างอิง]
                                     </a> -->
-                                    <button style="padding: 0;"class="btn btn-link open_modal" value="{{$p['id']}}">[อ้างอิง]</button>
+                                    <button style="padding: 0;" class="btn btn-link open_modal" value="{{$p['id']}}">[อ้างอิง]</button>
                                 </p>
                             </div>
                         </div>
@@ -174,7 +342,34 @@
         </div>
         @endforeach
     </div>
+
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const highlightNews = document.getElementById("highlightNews");
+        const scrollLeft = document.getElementById("scrollLeft");
+        const scrollRight = document.getElementById("scrollRight");
+
+        // คำนวณความกว้างของการ์ด + ระยะห่าง
+        const cardWidth = document.querySelector(".highlight-card").offsetWidth + 15;
+
+        // เลื่อนไปทางซ้าย
+        scrollLeft.addEventListener("click", function() {
+            highlightNews.scrollBy({
+                left: -cardWidth,
+                behavior: "smooth"
+            });
+        });
+
+        // เลื่อนไปทางขวา
+        scrollRight.addEventListener("click", function() {
+            highlightNews.scrollBy({
+                left: cardWidth,
+                behavior: "smooth"
+            });
+        });
+    });
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 
 <script>
@@ -192,6 +387,7 @@
         });
     });
 </script>
+
 <script>
     var year = <?php echo $year; ?>;
     var paper_tci = <?php echo $paper_tci; ?>;
@@ -300,7 +496,7 @@
     let sumsco = paper_scopus;
     let sumwos = paper_wos;
     (function($) {
-        
+
         let sum = paper_wos + paper_tci + paper_scopus;
         //console.log(sum);
         //$("#scopus").append('data-to="100"');
@@ -419,6 +615,8 @@
         }
     });
 </script>
+
+
 <script>
     $(document).on('click', '.open_modal', function() {
         //var url = "domain.com/yoururl";
@@ -426,7 +624,7 @@
         $.get('/bib/' + tour_id, function(data) {
             //success data
             console.log(data);
-            $( ".bibtex-biblio" ).remove();
+            $(".bibtex-biblio").remove();
             document.getElementById("name").innerHTML += `${data}`
             // $('#tour_id').val(data.id);
             // $('#name').val(data);
@@ -435,5 +633,40 @@
             $('#myModal').modal('show');
         })
     });
+</script>
+<script>
+    const cardList = document.querySelector('.card-list');
+    const leftArrow = document.querySelector('.arrow.left');
+    const rightArrow = document.querySelector('.arrow.right');
+
+    const cardWidth = document.querySelector('.card-item').offsetWidth + 24;
+    const visibleCards = 3;
+    const totalCards = document.querySelectorAll('.card-item').length;
+    let position = 0;
+
+    function moveSlider(direction) {
+        const maxScroll = cardWidth * (totalCards - visibleCards);
+
+        if (direction === 'right') {
+            position -= cardWidth;
+            if (Math.abs(position) > maxScroll) {
+                position = 0;
+            }
+        } else {
+            position += cardWidth;
+            if (position > 0) {
+                position = -maxScroll;
+            }
+        }
+
+        cardList.style.transform = `translateX(${position}px)`;
+    }
+    window.addEventListener('resize', () => {
+        position = 0;
+        cardList.style.transform = `translateX(${position}px)`;
+    });
+
+    rightArrow.addEventListener('click', () => moveSlider('right'));
+    leftArrow.addEventListener('click', () => moveSlider('left'));
 </script>
 @endsection

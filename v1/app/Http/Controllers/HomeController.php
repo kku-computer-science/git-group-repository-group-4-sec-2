@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+// use App\Models\Highlight;
+// use App\Models\Tag;
+// use App\Models\ImageCollection;
+// use Intervention\Image\ImageManager;
+// use Illuminate\Support\Facades\Storage;
+// use Intervention\Image\Drivers\Imagick\Driver;
 use App\Models\Paper;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Bibtex;
+use App\Models\Highlight;
 use RenanBr\BibTexParser\Listener;
 use RenanBr\BibTexParser\Parser;
 use RenanBr\BibTexParser\Processor;
@@ -16,6 +23,19 @@ class HomeController extends Controller
 
     public function index()
     {
+        $highlights = Highlight::with(['tag:id,name', 'user:id,fname_th,lname_th', 'images'])
+        ->get(['id', 'image', 'title', 'description', 'tag_id', 'user_id', 'created_at', 'updated_at']);
+
+        $heads = Highlight::with(['tag:id,name', 'user:id,fname_th,lname_th', 'images'])
+        ->where('status', 1)
+        ->get(['id', 'image', 'title', 'description', 'tag_id', 'user_id', 'created_at', 'updated_at']);
+
+        $news = Highlight::whereNull('status')
+        ->with(['tag:id,name', 'user:id,fname_th,lname_th', 'images'])
+        ->get(['id', 'image', 'title', 'tag_id', 'user_id', 'created_at']);
+
+
+
         //$papers = Paper::all()->orderBy, 'DESC');
         $papers = [];
         $year = range(Carbon::now()->year - 4, Carbon::now()->year);
@@ -67,6 +87,7 @@ class HomeController extends Controller
             );
         }, $p2);
         //return $paper2;
+        
 
 
         foreach ($years as $key => $value) {
@@ -144,6 +165,15 @@ class HomeController extends Controller
             })->whereIn('paper_type', ['Conference Proceeding', 'Journal'])
                 ->where(DB::raw('(paper_yearpub)'), $value)->count();
         }
+
+        //Test Query highlight
+        // $highlights = Highlight::with(['tag:id,name', 'user:id,fname_th,lname_th', 'images'])
+        //     ->where('status', 1)
+        //     ->get(['id', 'image', 'title', 'tag_id', 'user_id', 'created_at']);
+
+        // return view('home', compact('highlights'));
+        //Test Query highlight
+
         //return $paper_tci;
         //---------------------------------//
 
@@ -179,14 +209,13 @@ class HomeController extends Controller
 
         //$key="watchara";
         //return response()->json($bb);
-        return view('home', compact('papers'))->with('year', json_encode($year, JSON_NUMERIC_CHECK))
+        return view('home', compact('papers', 'highlights', 'heads', 'news'))->with('year', json_encode($year, JSON_NUMERIC_CHECK))
             ->with('paper_tci', json_encode($paper_tci, JSON_NUMERIC_CHECK))
             ->with('paper_scopus', json_encode($paper_scopus, JSON_NUMERIC_CHECK))
             ->with('paper_wos', json_encode($paper_wos, JSON_NUMERIC_CHECK))
             ->with('paper_tci_numall', json_encode($paper_tci_numall, JSON_NUMERIC_CHECK))
             ->with('paper_scopus_numall', json_encode($paper_scopus_numall, JSON_NUMERIC_CHECK))
             ->with('paper_wos_numall', json_encode($paper_wos_numall, JSON_NUMERIC_CHECK));
-
 
 
         // return $papers;
