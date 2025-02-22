@@ -2,11 +2,14 @@
 
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 <div class="container">
     <div class="card" style="padding: 16px;">
         <div class="card-body">
-            <h4 class="card-title">Create News</h4>
+            <h4 class="card-title">Create Highlight</h4>
             <form id="newsForm" action="{{ route('highlights.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
@@ -33,17 +36,31 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="tag">Tags</label>
-                    <select name="tag_id[]" id="tag" class="form-control" multiple> <!-- ✅ เปลี่ยน name="tag_id" เป็น name="tag_id[]" และเพิ่ม multiple -->
+                    <label for="tag">Select Tag</label>
+                    <select name="tag_id[]" id="tag" class="form-control" multiple="multiple">
                         @foreach ($categories as $tag)
                         <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                         @endforeach
                     </select>
                 </div>
 
+                <button type="button" class="btn btn-primary" onclick="addSelectedTags()">Select</button>
+
+                <div class="form-group">
+                    <label for="selectedTags">Selected Tags</label>
+                    <div id="selectedTags" class="selected-tags-box">
+                        <!-- Selected tags will appear here -->
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea name="description" id="description" class="form-control description-box" rows="6"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="research_link">Link Research</label>
+                    <input type="url" class="form-control" id="research_link" name="research_link" placeholder="Enter the link to your research">
                 </div>
 
                 <div class="form-group">
@@ -167,14 +184,12 @@
     }
 
     document.getElementById("newsForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+        event.preventDefault(); // Prevent immediate form submission
 
-        let tagSelect = document.getElementById("tag");
-        let selectedTags = [...tagSelect.selectedOptions].map(option => option.value); // ✅ แก้ตรงนี้ (รองรับหลายค่า)
-
+        let tag = document.getElementById("tag").value;
         let coverPreview = document.getElementById("coverPreview").classList.contains("d-none");
 
-        if (selectedTags.length === 0) { // ✅ ตรวจสอบว่ามีการเลือก Tag อย่างน้อย 1 ค่า
+        if (!tag) {
             Swal.fire({
                 icon: "warning",
                 title: "กรุณาเลือกหมวดหมู่!",
@@ -183,7 +198,7 @@
                 confirmButtonText: "ตกลง",
                 confirmButtonColor: "#3085d6",
             });
-        } else if (coverPreview) {
+        } else if (coverPreview) { // เช็คว่าไม่ได้อัปโหลดรูปภาพ
             Swal.fire({
                 icon: "warning",
                 title: "กรุณาอัปโหลดรูปภาพ!",
@@ -195,6 +210,7 @@
         } else {
             confirmCreate();
         }
+
     });
 
     function confirmCreate() {
@@ -207,6 +223,55 @@
         }).then(() => {
             document.getElementById("newsForm").submit(); // Submit the form after SweetAlert closes
         });
+    }
+
+    let selectedTagIds = [];
+
+    function addSelectedTags() {
+        const tagElement = document.getElementById("tag");
+        const selectedOptions = Array.from(tagElement.options).filter(option => option.selected);
+
+        selectedOptions.forEach(option => {
+            if (!selectedTagIds.includes(option.value)) {
+                selectedTagIds.push(option.value);
+            }
+        });
+
+        updateSelectedTagsDisplay();
+    }
+
+    function updateSelectedTagsDisplay() {
+        const selectedTagsBox = document.getElementById("selectedTags");
+        selectedTagsBox.innerHTML = '';
+
+        selectedTagIds.forEach(tagId => {
+            const option = document.querySelector(`#tag option[value="${tagId}"]`);
+            const tagElement = document.createElement("div");
+            tagElement.classList.add("selected-tag");
+
+            const tagText = document.createElement("span");
+            tagText.textContent = option ? option.text : "แท็กที่ไม่รู้จัก";
+
+            const removeBtn = document.createElement("span");
+            removeBtn.textContent = "✖";
+            removeBtn.classList.add("remove-tag");
+            removeBtn.onclick = () => {
+                removeTag(tagId);
+            };
+
+            tagElement.appendChild(tagText);
+            tagElement.appendChild(removeBtn);
+            selectedTagsBox.appendChild(tagElement);
+        });
+
+        Array.from(document.getElementById("tag").options).forEach(option => {
+            option.selected = selectedTagIds.includes(option.value);
+        });
+    }
+
+    function removeTag(tagId) {
+        selectedTagIds = selectedTagIds.filter(id => id !== tagId);
+        updateSelectedTagsDisplay();
     }
 </script>
 
@@ -324,10 +389,30 @@
         font-size: 12px;
     }
 
-    #tag {
-        height: auto;
-        /* ✅ ปรับให้ขยายตามจำนวนที่เลือก */
-        min-height: 100px;
+    .selected-tags-box {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .selected-tag {
+        background-color: #ddd;
+        border-radius: 15px;
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .selected-tag span {
+        margin-right: 5px;
+    }
+
+    .selected-tag .remove-tag {
+        cursor: pointer;
+        font-size: 14px;
+        color: red;
+        margin-left: 5px;
     }
 </style>
 
