@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\ImageCollection;
 use Illuminate\Http\Request;
 use App\Models\Highlight;
-use App\Models\Category;
+use App\Models\Tag;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Imagick\Driver;
@@ -23,20 +23,20 @@ class HighlightController extends Controller
 {
     public function index()
     {
-        $highlights = Highlight::with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
+        $highlights = Highlight::with(['tag:id,name', 'user:id,fname_th,lname_th', 'images'])
             ->where('status', 1)
-            ->get(['id', 'image', 'title', 'category_id', 'user_id', 'created_at']);
+            ->get(['id', 'image', 'title', 'tag_id', 'user_id', 'created_at']);
 
         $news = Highlight::whereNull('status')
-            ->with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
-            ->get(['id', 'image', 'title', 'category_id', 'user_id', 'created_at']);
+            ->with(['tag:id,name', 'user:id,fname_th,lname_th', 'images'])
+            ->get(['id', 'image', 'title', 'tag_id', 'user_id', 'created_at']);
 
         return view('highlights.index', compact('highlights', 'news'));
     }
 
     public function create()
     {
-        $categories = Category::all();
+        $categories = Tag::all();
         return view('highlights.create', compact('categories'));
     }
 
@@ -44,7 +44,7 @@ class HighlightController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:category,id',
+            'tag_id' => 'required|exists:tag,id',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
@@ -78,7 +78,7 @@ class HighlightController extends Controller
         $highlight = Highlight::create([
             'title' => $request->title,
             'description' => $request->description,
-            'category_id' => $request->category_id,
+            'tag_id' => $request->tag_id,
             'image' => $coverImagePath,
             'status' => null,
             'user_id' => auth()->id(),
@@ -118,7 +118,7 @@ class HighlightController extends Controller
         Log::info('Edit Highlight ID: 1');
         $highlight = Highlight::with('images')->findOrFail($id);
         Log::info('Edit Highlight ID: 2');
-        $categories = Category::all();
+        $categories = Tag::all();
         Log::info('Edit Highlight ID: 3');
         return view('highlights.edit', compact('highlight', 'categories'));
     }
@@ -130,7 +130,7 @@ class HighlightController extends Controller
 
         $request->validate([
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:category,id',
+            'tag_id' => 'required|exists:tag,id',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
@@ -151,7 +151,7 @@ class HighlightController extends Controller
         $highlight->update([
             'title' => $request->title,
             'description' => $request->description,
-            'category_id' => $request->category_id,
+            'tag_id' => $request->tag_id,
             'image' => $coverImagePath,
         ]);
 
@@ -254,7 +254,7 @@ class HighlightController extends Controller
     {
         $type = $request->query('type');
 
-        $query = Highlight::with(['category', 'user'])
+        $query = Highlight::with(['tag', 'user'])
             ->when($type === 'highlights', function ($q) {
                 return $q->where('status', 1)->latest()->take(5);
             })
@@ -263,8 +263,8 @@ class HighlightController extends Controller
             });
 
         return datatables()->eloquent($query)
-            ->addColumn('category', function ($highlight) {
-                return $highlight->category->name ?? 'No Category';
+            ->addColumn('tag', function ($highlight) {
+                return $highlight->tag->name ?? 'No Tag';
             })
             ->addColumn('created_by', function ($highlight) {
                 return optional($highlight->user)->fname_th . ' ' . optional($highlight->user)->lname_th ?? 'Unknown';

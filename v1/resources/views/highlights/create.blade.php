@@ -33,11 +33,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="category">Category</label>
-                    <select name="category_id" id="category" class="form-control">
-                        <option value="">Select Category</option>
-                        @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <label for="tag">Tag</label>
+                    <select name="tag_id" id="tag" class="form-control">
+                        <option value="">Select Tag</option>
+                        @foreach ($categories as $tag)
+                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -170,10 +170,10 @@
     document.getElementById("newsForm").addEventListener("submit", function (event) {
         event.preventDefault(); // Prevent immediate form submission
 
-        let category = document.getElementById("category").value;
+        let tag = document.getElementById("tag").value;
 let coverPreview = document.getElementById("coverPreview").classList.contains("d-none");
 
-if (!category) {
+if (!tag) {
     Swal.fire({
         icon: "warning",
         title: "กรุณาเลือกหมวดหมู่!",

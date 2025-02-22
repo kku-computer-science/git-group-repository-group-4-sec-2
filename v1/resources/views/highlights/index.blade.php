@@ -25,7 +25,7 @@
                 <th>ID</th>
                 <th>Image</th>
                 <th>Title</th>
-                <th>Category</th>
+                <th>Tag</th>
                 <th>Date Time</th>
                 <th>Created By</th>
                 <th>Actions</th>
@@ -44,7 +44,7 @@
                     @endif
                 </td>
                 <td>{{ $highlight->title }}</td>
-                <td>{{ $highlight->category->name ?? 'No Category' }}</td>
+                <td>{{ $highlight->tag->name ?? 'No Tag' }}</td>
                 <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
                 <td>
                     {{ optional($highlight->user)->fname_th ?? 'Unknown' }} {{ optional($highlight->user)->lname_th ?? '' }}
@@ -80,7 +80,7 @@
                 <th>ID</th>
                 <th>Image</th>
                 <th>Title</th>
-                <th>Category</th>
+                <th>Tag</th>
                 <th>Date Time</th>
                 <th>Created By</th>
                 <th>Actions</th>
@@ -99,7 +99,7 @@
                     @endif
                 </td>
                 <td>{{ $highlight->title }}</td>
-                <td>{{ $highlight->category->name ?? 'No Category' }}</td>
+                <td>{{ $highlight->tag->name ?? 'No Tag' }}</td>
                 <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
                 <td>
                     {{ optional($highlight->user)->fname_th ?? 'Unknown' }} {{ optional($highlight->user)->lname_th ?? '' }}

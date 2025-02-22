@@ -222,7 +222,7 @@
                         <img src="{{ asset('storage/' . $highlight->image) }}" class="card-img-top" alt="Highlight Image">
                     </a>
                     <div class="card-body">
-                        <span class="badge bg-primary">{{ $highlight->category->name }}</span>
+                        <span class="badge bg-primary">{{ $highlight->tag->name }}</span>
                         <h6 class="card-title mt-2">{{ $highlight->title }}</h6>
                         <p class="card-text">{{ Str::limit($highlight->description, 100) }}</p>
                     </div>

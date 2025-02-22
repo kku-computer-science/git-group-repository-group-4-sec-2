@@ -58,8 +58,8 @@
                 <div class="px-2 d-flex col-lg-8">
                     <div class="d-flex px-1 align-items-center" style="width: fit-content;">
                         <span>หมวดหมู่:</span>
-                        <!-- <a href="/content/news/category/{{ $highlight->category->name }}"> -->
-                            <span>&nbsp;{{ $highlight->category->name }}</span>
+                        <!-- <a href="/content/news/tag/{{ $highlight->tag->name }}"> -->
+                            <span>&nbsp;{{ $highlight->tag->name }}</span>
                         <!-- </a> -->
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                     <img src="{{ asset('storage/' . $new->image) }}" class="card-img-top" alt="Related News Image">
                 </a>
                 <div class="card-body">
-                    <span class="badge bg-primary">{{ $new->category->name }}</span>
+                    <span class="badge bg-primary">{{ $new->tag->name }}</span>
                     <h6 class="card-title mt-2">{{ $new->title }}</h6>
                     <p class="card-text">{{ Str::limit($new->description, 100) }}</p>
                 </div>

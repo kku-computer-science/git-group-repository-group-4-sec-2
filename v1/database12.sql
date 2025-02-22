@@ -134,30 +134,6 @@ INSERT INTO `authors` VALUES (1,'Loan Thi-Thuy','Ho','2022-04-30 13:03:17','2022
 UNLOCK TABLES;
 
 --
--- Table structure for table `category`
---
-
-DROP TABLE IF EXISTS `category`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `category` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `category`
---
-
-LOCK TABLES `category` WRITE;
-/*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'ทุนวิจัยและโอกาสสนับสนุน'),(2,'ผลงานวิจัยเด่นและรางวัล'),(3,'งานประชุมและสัมมนาวิชาการ'),(4,'ข่าวสารและประกาศสำคัญ');
-/*!40000 ALTER TABLE `category` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `degrees`
 --
 
@@ -373,20 +349,22 @@ DROP TABLE IF EXISTS `highlight`;
 CREATE TABLE `highlight` (
   `id` int NOT NULL AUTO_INCREMENT,
   `image` varchar(255) DEFAULT NULL,
-  `title` varchar(8000) DEFAULT NULL,
+  `title` varchar(800) DEFAULT NULL,
   `description` varchar(8000) DEFAULT NULL,
   `status` tinyint DEFAULT NULL,
-  `category_id` int NOT NULL,
+  `tag_id` int NOT NULL,
   `user_id` bigint unsigned DEFAULT NULL,
+  `priority` int DEFAULT NULL,
+  `link` varchar(500) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`,`category_id`),
+  PRIMARY KEY (`id`,`tag_id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_highlight_category1_idx` (`category_id`),
+  KEY `fk_highlight_category1_idx` (`tag_id`),
   KEY `fk_highlight_user` (`user_id`),
-  CONSTRAINT `fk_highlight_category1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
+  CONSTRAINT `fk_highlight_category1` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`),
   CONSTRAINT `fk_highlight_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -415,7 +393,7 @@ CREATE TABLE `image_collection` (
   UNIQUE KEY `idimage_collection_UNIQUE` (`id`),
   KEY `fk_image_collection_highlight1_idx` (`highlight_id`),
   CONSTRAINT `fk_image_collection_highlight1` FOREIGN KEY (`highlight_id`) REFERENCES `highlight` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -896,6 +874,30 @@ INSERT INTO `source_papers` VALUES (3262,1,1),(3263,1,2),(3264,1,3),(3265,1,4),(
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tag`
+--
+
+DROP TABLE IF EXISTS `tag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tag` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tag`
+--
+
+LOCK TABLES `tag` WRITE;
+/*!40000 ALTER TABLE `tag` DISABLE KEYS */;
+INSERT INTO `tag` VALUES (1,'ทุนวิจัยและโอกาสสนับสนุน'),(2,'ผลงานวิจัยเด่นและรางวัล'),(3,'งานประชุมและสัมมนาวิชาการ'),(4,'ข่าวสารและประกาศสำคัญ');
+/*!40000 ALTER TABLE `tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_of_academicworks`
 --
 
@@ -1128,4 +1130,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-11 20:25:25
+-- Dump completed on 2025-02-22 17:35:42

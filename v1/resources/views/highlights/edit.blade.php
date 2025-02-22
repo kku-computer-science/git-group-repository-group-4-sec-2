@@ -34,14 +34,14 @@
                     <input type="text" name="title" id="title" class="form-control" value="{{ $highlight->title }}" required>
                 </div>
 
-                <!-- ✅ Category -->
+                <!-- ✅ Tag -->
                 <div class="form-group">
-                    <label for="category">Category</label>
-                    <select name="category_id" id="category" class="form-control" required>
-                        <option value="">Select Category</option>
-                        @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" {{ $highlight->category_id == $category->id ? 'selected' : '' }}>
-                            {{ $category->name }}
+                    <label for="tag">Tag</label>
+                    <select name="tag_id" id="tag" class="form-control" required>
+                        <option value="">Select Tag</option>
+                        @foreach ($categories as $tag)
+                        <option value="{{ $tag->id }}" {{ $highlight->tag_id == $tag->id ? 'selected' : '' }}>
+                            {{ $tag->name }}
                         </option>
                         @endforeach
                     </select>

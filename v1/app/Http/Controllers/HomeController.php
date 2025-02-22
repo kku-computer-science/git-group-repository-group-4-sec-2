@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 // use App\Models\Highlight;
-// use App\Models\Category;
+// use App\Models\Tag;
 // use App\Models\ImageCollection;
 // use Intervention\Image\ImageManager;
 // use Illuminate\Support\Facades\Storage;
@@ -23,16 +23,16 @@ class HomeController extends Controller
 
     public function index()
     {
-        $highlights = Highlight::with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
-        ->get(['id', 'image', 'title', 'description', 'category_id', 'user_id', 'created_at', 'updated_at']);
+        $highlights = Highlight::with(['tag:id,name', 'user:id,fname_th,lname_th', 'images'])
+        ->get(['id', 'image', 'title', 'description', 'tag_id', 'user_id', 'created_at', 'updated_at']);
 
-        $heads = Highlight::with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
+        $heads = Highlight::with(['tag:id,name', 'user:id,fname_th,lname_th', 'images'])
         ->where('status', 1)
-        ->get(['id', 'image', 'title', 'description', 'category_id', 'user_id', 'created_at', 'updated_at']);
+        ->get(['id', 'image', 'title', 'description', 'tag_id', 'user_id', 'created_at', 'updated_at']);
 
         $news = Highlight::whereNull('status')
-        ->with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
-        ->get(['id', 'image', 'title', 'category_id', 'user_id', 'created_at']);
+        ->with(['tag:id,name', 'user:id,fname_th,lname_th', 'images'])
+        ->get(['id', 'image', 'title', 'tag_id', 'user_id', 'created_at']);
 
 
 
@@ -167,9 +167,9 @@ class HomeController extends Controller
         }
 
         //Test Query highlight
-        // $highlights = Highlight::with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
+        // $highlights = Highlight::with(['tag:id,name', 'user:id,fname_th,lname_th', 'images'])
         //     ->where('status', 1)
-        //     ->get(['id', 'image', 'title', 'category_id', 'user_id', 'created_at']);
+        //     ->get(['id', 'image', 'title', 'tag_id', 'user_id', 'created_at']);
 
         // return view('home', compact('highlights'));
         //Test Query highlight

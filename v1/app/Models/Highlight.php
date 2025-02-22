@@ -13,12 +13,21 @@ class Highlight extends Model
     protected $primaryKey = 'id';
     public $timestamps = true; // มี `created_at` และ `updated_at`
 
-    protected $fillable = ['image', 'title', 'description', 'status', 'category_id', 'user_id'];
+    protected $fillable = [
+        'image', 
+        'title', 
+        'description', 
+        'status', 
+        'tag_id', 
+        'user_id', 
+        'priority', 
+        'link'
+    ];
 
-    // ความสัมพันธ์กับ Category (Highlight หนึ่งอันมีหนึ่ง Category)
-    public function category()
+    // ความสัมพันธ์กับ Tag (Highlight หนึ่งอันมีหนึ่ง Tag)
+    public function tag()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Tag::class, 'tag_id');
     }
 
     // ความสัมพันธ์กับ User (Highlight หนึ่งอันถูกสร้างโดยหนึ่ง User)
