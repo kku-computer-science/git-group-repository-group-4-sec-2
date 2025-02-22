@@ -11,32 +11,28 @@ class Highlight extends Model
 
     protected $table = 'highlight';
     protected $primaryKey = 'id';
-    public $timestamps = true; // มี `created_at` และ `updated_at`
+    public $timestamps = true;
 
     protected $fillable = [
         'image', 
         'title', 
         'description', 
         'status', 
-        'tag_id', 
         'user_id', 
         'priority', 
         'link'
     ];
 
-    // ความสัมพันธ์กับ Tag (Highlight หนึ่งอันมีหนึ่ง Tag)
-    public function tag()
+    public function tags()
     {
-        return $this->belongsTo(Tag::class, 'tag_id');
+        return $this->belongsToMany(Tag::class, 'highlight_has_tag', 'highlight_id', 'tag_id');
     }
 
-    // ความสัมพันธ์กับ User (Highlight หนึ่งอันถูกสร้างโดยหนึ่ง User)
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // ความสัมพันธ์กับ ImageCollection (Highlight หนึ่งอันมีหลาย ImageCollection)
     public function images()
     {
         return $this->hasMany(ImageCollection::class, 'highlight_id');
