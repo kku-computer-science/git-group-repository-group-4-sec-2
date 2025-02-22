@@ -352,19 +352,16 @@ CREATE TABLE `highlight` (
   `title` varchar(800) DEFAULT NULL,
   `description` varchar(8000) DEFAULT NULL,
   `status` tinyint DEFAULT NULL,
-  `tag_id` int NOT NULL,
   `user_id` bigint unsigned DEFAULT NULL,
   `priority` int DEFAULT NULL,
   `link` varchar(500) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`,`tag_id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
-  KEY `fk_highlight_category1_idx` (`tag_id`),
   KEY `fk_highlight_user` (`user_id`),
-  CONSTRAINT `fk_highlight_category1` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`),
   CONSTRAINT `fk_highlight_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -374,6 +371,33 @@ CREATE TABLE `highlight` (
 LOCK TABLES `highlight` WRITE;
 /*!40000 ALTER TABLE `highlight` DISABLE KEYS */;
 /*!40000 ALTER TABLE `highlight` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `highlight_has_tag`
+--
+
+DROP TABLE IF EXISTS `highlight_has_tag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `highlight_has_tag` (
+  `highlight_id` int NOT NULL,
+  `tag_id` int NOT NULL,
+  PRIMARY KEY (`highlight_id`,`tag_id`),
+  KEY `fk_highlight_has_tag_tag1_idx` (`tag_id`),
+  KEY `fk_highlight_has_tag_highlight1_idx` (`highlight_id`),
+  CONSTRAINT `fk_highlight_has_tag_highlight1` FOREIGN KEY (`highlight_id`) REFERENCES `highlight` (`id`),
+  CONSTRAINT `fk_highlight_has_tag_tag1` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `highlight_has_tag`
+--
+
+LOCK TABLES `highlight_has_tag` WRITE;
+/*!40000 ALTER TABLE `highlight_has_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `highlight_has_tag` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1130,4 +1154,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-22 17:35:42
+-- Dump completed on 2025-02-22 21:35:59

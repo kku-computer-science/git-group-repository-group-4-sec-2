@@ -9,15 +9,14 @@ class Tag extends Model
 {
     use HasFactory;
 
-    protected $table = 'tag'; // ชื่อตารางในฐานข้อมูล
+    protected $table = 'tag'; // ✅ ใช้ `tag` (ไม่มี `s`)
     protected $primaryKey = 'id';
-    public $timestamps = false; // ไม่มี `created_at` และ `updated_at`
+    public $timestamps = false; // ✅ ไม่มี `created_at` และ `updated_at`
 
     protected $fillable = ['name'];
 
-    // ความสัมพันธ์กับ Highlight (หนึ่ง Tag มีหลาย Highlight)
     public function highlights()
     {
-        return $this->hasMany(Highlight::class, 'tag_id');
+        return $this->belongsToMany(Highlight::class, 'highlight_has_tag', 'tag_id', 'highlight_id');
     }
 }

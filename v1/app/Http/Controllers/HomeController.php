@@ -23,16 +23,16 @@ class HomeController extends Controller
 
     public function index()
     {
-        $highlights = Highlight::with(['tag:id,name', 'user:id,fname_th,lname_th', 'images'])
-        ->get(['id', 'image', 'title', 'description', 'tag_id', 'user_id', 'created_at', 'updated_at']);
+        $highlights = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) // ✅ เปลี่ยน 'tag' เป็น 'tags'
+            ->get(['id', 'image', 'title', 'description', 'user_id', 'created_at', 'updated_at']); // ❌ ลบ 'tag_id'
 
-        $heads = Highlight::with(['tag:id,name', 'user:id,fname_th,lname_th', 'images'])
-        ->where('status', 1)
-        ->get(['id', 'image', 'title', 'description', 'tag_id', 'user_id', 'created_at', 'updated_at']);
+        $heads = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) // ✅ เปลี่ยน 'tag' เป็น 'tags'
+            ->where('status', 1)
+            ->get(['id', 'image', 'title', 'description', 'user_id', 'created_at', 'updated_at']); // ❌ ลบ 'tag_id'
 
         $news = Highlight::whereNull('status')
-        ->with(['tag:id,name', 'user:id,fname_th,lname_th', 'images'])
-        ->get(['id', 'image', 'title', 'tag_id', 'user_id', 'created_at']);
+            ->with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) // ✅ เปลี่ยน 'tag' เป็น 'tags'
+            ->get(['id', 'image', 'title', 'user_id', 'created_at']); // ❌ ลบ 'tag_id'
 
 
 
@@ -87,7 +87,7 @@ class HomeController extends Controller
             );
         }, $p2);
         //return $paper2;
-        
+
 
 
         foreach ($years as $key => $value) {
@@ -201,7 +201,7 @@ class HomeController extends Controller
         $paper_scopus_numall = $num['paper_scopus'];
         $paper_wos_numall = $num['paper_wos'];
         //return $paper_scopus_numall;
-        
+
 
         //$id = 0
 
@@ -244,7 +244,7 @@ class HomeController extends Controller
             return $query->where('source_data_id', '=', 2);
         })->whereIn('paper_type', ['Conference Proceeding', 'Journal'])->count();
 
-        return compact('paper_scopus','paper_tci','paper_wos');
+        return compact('paper_scopus', 'paper_tci', 'paper_wos');
     }
     public function bibtex($id)
     {
