@@ -210,13 +210,12 @@
 
 
     <!-- News -->
-
+<!-- 
     <div class="container news mt-5">
         <h3 class="mb-4">HIGHLIGHT NEWS</h3>
 
         <div class="highlight-container">
 
-            <!-- รายการข่าว -->
             <div class="highlight-wrapper" id="highlightNews">
                 @foreach($highlights as $highlight)
                 <li class="card-item">
@@ -241,7 +240,7 @@
                 <button class="btn btn-outline-primary" id="scrollRight"><i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Modal -->
 
