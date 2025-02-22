@@ -43,6 +43,11 @@ use App\Http\Controllers\TcicallController;
 use App\Http\Controllers\HighlightController;
 use App\Http\Controllers\HighlightdetailController;
 
+use App\Http\Controllers\AllHighlightsController;
+
+Route::get('/allhighlights', [AllHighlightsController::class, 'index'])->name('allhighlights.index');
+Route::get('/allhighlights/{id}', [AllHighlightsController::class, 'show'])->name('allhighlights.show');
+
 
 
 Route::prefix('highlights')->group(function () {
