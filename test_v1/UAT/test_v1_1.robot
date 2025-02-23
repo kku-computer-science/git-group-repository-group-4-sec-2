@@ -10,7 +10,7 @@ Resource          ./resource_v1.robot
 Test Open Home Page
      # ✅ Passed
     [Documentation]    ทดสอบการเปิดเว็บไซต์
-    Open Browser    ${URL}    ${BROWSER}
+    Open Browser
     Maximize Browser Window
     Close Browser
 
