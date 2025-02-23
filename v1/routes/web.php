@@ -43,10 +43,12 @@ use App\Http\Controllers\TcicallController;
 use App\Http\Controllers\HighlightController;
 use App\Http\Controllers\HighlightdetailController;
 
+use App\Http\Controllers\AllHighlightsController;
 
-Route::get('/test-permission', function () {
-    return \Illuminate\Support\Facades\Gate::allows('manage-highlights') ? 'Allowed' : 'Denied';
-});
+Route::get('/allhighlights', [AllHighlightsController::class, 'index'])->name('allhighlights.index');
+Route::get('/allhighlights/{id}', [AllHighlightsController::class, 'show'])->name('allhighlights.show');
+
+
 
 Route::prefix('highlights')->group(function () {
     Route::get('/', [HighlightController::class, 'index'])->name('highlights.index');
@@ -123,6 +125,39 @@ Route::get('/clear-all', function () {
         'optimize' => 'Class loader optimized'
     ], 200);
 });
+
+Route::get('/clear-storage', function () {
+    // ลบโฟลเดอร์ public/storage
+    exec('rm -rf public/storage', $output, $return_var);
+
+    // สร้าง symlink ใหม่สำหรับ storage
+    Artisan::call('storage:link');
+
+    // ตรวจสอบผลลัพธ์ของคำสั่ง
+    if ($return_var !== 0) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to remove storage folder',
+            'output' => $output
+        ], 500);
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Storage folder removed and symlink created successfully',
+    ], 200);
+});
+
+Route::get('/storage-link', function () {
+    // รันคำสั่ง php artisan storage:link
+    Artisan::call('storage:link');
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Storage symlink created successfully',
+    ], 200);
+});
+
 
 
 Route::middleware(['middleware' => 'PreventBackHistory'])->group(function () {

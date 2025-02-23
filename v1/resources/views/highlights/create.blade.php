@@ -14,7 +14,7 @@
                     <label for="cover_image">Cover Image</label>
                     <div class="image-upload-box" id="coverImageBox" onclick="document.getElementById('cover_image').click();">
                         <input type="file" name="cover_image" id="cover_image" class="d-none" accept="image/*" onchange="previewCoverImage(event)">
-                        <div class="upload-placeholder" id="coverPlaceholder" >
+                        <div class="upload-placeholder" id="coverPlaceholder">
                             <div class="placeholder-content">
                                 <i class="mdi mdi-cloud-upload-outline"></i>
                                 <p>คลิกเพื่อเพิ่มรูปภาพ</p>
@@ -33,11 +33,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="category">Category</label>
-                    <select name="category_id" id="category" class="form-control">
-                        <option value="">Select Category</option>
-                        @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <label for="tag">Tags</label>
+                    <select name="tag_id[]" id="tag" class="form-control" multiple> <!-- ✅ เปลี่ยน name="tag_id" เป็น name="tag_id[]" และเพิ่ม multiple -->
+                        @foreach ($categories as $tag)
+                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -51,7 +50,7 @@
                     <label for="image_album">Image Album</label>
                     <div class="image-upload-box small" id="imageAlbumBox" onclick="document.getElementById('image_album').click();">
                         <input type="file" name="images[]" id="image_album" class="d-none" multiple accept="image/*">
-                        <div class="upload-placeholder" id="albumPlaceholder" >
+                        <div class="upload-placeholder" id="albumPlaceholder">
                             <div class="placeholder-content">
                                 <i class="mdi mdi-cloud-upload-outline"></i>
                                 <p>คลิกเพื่อเพิ่มรูปภาพ</p>
@@ -167,34 +166,35 @@
         updateAlbumPreview();
     }
 
-    document.getElementById("newsForm").addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent immediate form submission
+    document.getElementById("newsForm").addEventListener("submit", function(event) {
+        event.preventDefault();
 
-        let category = document.getElementById("category").value;
-let coverPreview = document.getElementById("coverPreview").classList.contains("d-none");
+        let tagSelect = document.getElementById("tag");
+        let selectedTags = [...tagSelect.selectedOptions].map(option => option.value); // ✅ แก้ตรงนี้ (รองรับหลายค่า)
 
-if (!category) {
-    Swal.fire({
-        icon: "warning",
-        title: "กรุณาเลือกหมวดหมู่!",
-        text: "คุณต้องเลือกหมวดหมู่ก่อนส่งแบบฟอร์ม",
-        padding: "1.25rem",
-        confirmButtonText: "ตกลง",
-        confirmButtonColor: "#3085d6",
-    });
-} else if (coverPreview) {  // เช็คว่าไม่ได้อัปโหลดรูปภาพ
-    Swal.fire({
-        icon: "warning",
-        title: "กรุณาอัปโหลดรูปภาพ!",
-        text: "คุณต้องเลือกอัปโหลดรูปภาพก่อนส่งแบบฟอร์ม",
-        padding: "1.25rem",
-        confirmButtonText: "ตกลง",
-        confirmButtonColor: "#3085d6",
-    });
-} else {
-    confirmCreate();
-}
+        let coverPreview = document.getElementById("coverPreview").classList.contains("d-none");
 
+        if (selectedTags.length === 0) { // ✅ ตรวจสอบว่ามีการเลือก Tag อย่างน้อย 1 ค่า
+            Swal.fire({
+                icon: "warning",
+                title: "กรุณาเลือกหมวดหมู่!",
+                text: "คุณต้องเลือกหมวดหมู่ก่อนส่งแบบฟอร์ม",
+                padding: "1.25rem",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#3085d6",
+            });
+        } else if (coverPreview) {
+            Swal.fire({
+                icon: "warning",
+                title: "กรุณาอัปโหลดรูปภาพ!",
+                text: "คุณต้องเลือกอัปโหลดรูปภาพก่อนส่งแบบฟอร์ม",
+                padding: "1.25rem",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#3085d6",
+            });
+        } else {
+            confirmCreate();
+        }
     });
 
     function confirmCreate() {
@@ -322,6 +322,12 @@ if (!category) {
         padding: 5px;
         border-radius: 50%;
         font-size: 12px;
+    }
+
+    #tag {
+        height: auto;
+        /* ✅ ปรับให้ขยายตามจำนวนที่เลือก */
+        min-height: 100px;
     }
 </style>
 

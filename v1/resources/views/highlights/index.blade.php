@@ -25,7 +25,7 @@
                 <th>ID</th>
                 <th>Image</th>
                 <th>Title</th>
-                <th>Category</th>
+                <th>Tags</th>
                 <th>Date Time</th>
                 <th>Created By</th>
                 <th>Actions</th>
@@ -44,25 +44,22 @@
                     @endif
                 </td>
                 <td>{{ $highlight->title }}</td>
-                <td>{{ $highlight->category->name ?? 'No Category' }}</td>
+                <td>{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}</td>
                 <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
                 <td>
                     {{ optional($highlight->user)->fname_th ?? 'Unknown' }} {{ optional($highlight->user)->lname_th ?? '' }}
                 </td>
                 <td>
-                    <!-- ปุ่ม Edit -->
                     <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary">
                         <i class="fas fa-edit"></i>
                     </a>
 
-                    <!-- ปุ่ม Delete -->
                     <button type="button" class="btn btn-danger btn-delete" data-id="{{ $highlight->id }}">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </td>
 
                 <td>
-                    <!-- ปุ่ม Remove from Highlight -->
                     <button type="button" class="btn btn-warning btn-remove" data-id="{{ $highlight->id }}">REMOVE</button>
                 </td>
             </tr>
@@ -80,7 +77,7 @@
                 <th>ID</th>
                 <th>Image</th>
                 <th>Title</th>
-                <th>Category</th>
+                <th>Tags</th>
                 <th>Date Time</th>
                 <th>Created By</th>
                 <th>Actions</th>
@@ -99,7 +96,7 @@
                     @endif
                 </td>
                 <td>{{ $highlight->title }}</td>
-                <td>{{ $highlight->category->name ?? 'No Category' }}</td>
+                <td>{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}</td>
                 <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
                 <td>
                     {{ optional($highlight->user)->fname_th ?? 'Unknown' }} {{ optional($highlight->user)->lname_th ?? '' }}
@@ -109,14 +106,12 @@
                         <i class="fas fa-edit"></i>
                     </a>
 
-                    <!-- ปุ่ม Delete -->
                     <button type="button" class="btn btn-danger btn-delete" data-id="{{ $highlight->id }}">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </td>
 
                 <td>
-                    <!-- ปุ่ม Add to Highlight -->
                     <button type="button" class="btn btn-success btn-add" data-id="{{ $highlight->id }}">ADD</button>
                 </td>
             </tr>
@@ -124,6 +119,14 @@
         </tbody>
     </table>
 </div>
+
+
+
+
+
+
+
+
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
 <script src="https://cdn.datatables.net/1.12.0/js/dataTables.bootstrap4.min.js" defer></script>
@@ -286,5 +289,29 @@
             $(".alert-danger").fadeOut("slow");
         }, 2000);
     });
+
+    $(document).ready(function() {
+        // ซ่อนข้อความที่ยาวเกิน 25 ตัวอักษรในคอลัมน์ Title
+        $('#highlight-table tbody tr').each(function() {
+            var titleCell = $(this).find('td:nth-child(3)'); // คอลัมน์ Title
+            var titleText = titleCell.text().trim();
+
+            if (titleText.length > 25) {
+                var shortenedTitle = titleText.substring(0, 25) + '...'; // ย่อข้อความและเพิ่ม ...
+                titleCell.text(shortenedTitle); // อัพเดตข้อความที่แสดงในตาราง
+            }
+        });
+
+        $('#news-table tbody tr').each(function() {
+            var titleCell = $(this).find('td:nth-child(3)'); // คอลัมน์ Title
+            var titleText = titleCell.text().trim();
+
+            if (titleText.length > 25) {
+                var shortenedTitle = titleText.substring(0, 25) + '...'; // ย่อข้อความและเพิ่ม ...
+                titleCell.text(shortenedTitle); // อัพเดตข้อความที่แสดงในตาราง
+            }
+        });
+    });
 </script>
+
 @endsection

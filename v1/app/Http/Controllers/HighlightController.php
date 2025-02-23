@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\ImageCollection;
 use Illuminate\Http\Request;
 use App\Models\Highlight;
-use App\Models\Category;
+use App\Models\Tag;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Imagick\Driver;
@@ -23,20 +23,20 @@ class HighlightController extends Controller
 {
     public function index()
     {
-        $highlights = Highlight::with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
+        $highlights = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) // ✅ เปลี่ยนจาก 'tag' เป็น 'tags'
             ->where('status', 1)
-            ->get(['id', 'image', 'title', 'category_id', 'user_id', 'created_at']);
-
+            ->get(['id', 'image', 'title', 'user_id', 'created_at']); // ✅ 'tag_id' ไม่จำเป็นแล้ว
+    
         $news = Highlight::whereNull('status')
-            ->with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
-            ->get(['id', 'image', 'title', 'category_id', 'user_id', 'created_at']);
-
+            ->with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) // ✅ เปลี่ยนจาก 'tag' เป็น 'tags'
+            ->get(['id', 'image', 'title', 'user_id', 'created_at']);
+    
         return view('highlights.index', compact('highlights', 'news'));
     }
 
     public function create()
     {
-        $categories = Category::all();
+        $categories = Tag::all();
         return view('highlights.create', compact('categories'));
     }
 
@@ -44,73 +44,22 @@ class HighlightController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:category,id',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'tag_id' => 'required|array', // ✅ ต้องเป็น array
+            'tag_id.*' => 'exists:tag,id', // ✅ ตรวจสอบว่าแต่ละ tag_id มีอยู่จริง
         ]);
-
-        $manager = new ImageManager(new Driver()); // ใช้ GD หรือ Imagick
-
-        $coverImagePath = null;
-
-        if ($request->hasFile('cover_image')) {
-            $coverFile = $request->file('cover_image');
-            $extension = $coverFile->getClientOriginalExtension();
-            $mime = $coverFile->getMimeType();
-
-            // ตรวจสอบและเลือก Encoder ที่เหมาะสม
-            $encoder = match ($mime) {
-                'image/png' => new PngEncoder(),
-                'image/gif' => new GifEncoder(),
-                'image/webp' => new WebpEncoder(80),
-                default => new JpegEncoder(80) // ค่าเริ่มต้นเป็น JPG
-            };
-
-            $image = $manager->read($coverFile->getPathname())
-                ->scale(width: 1200)
-                ->encode($encoder);
-
-            $fileName = 'highlightImage/' . uniqid() . '.' . $extension;
-            Storage::disk('public')->put($fileName, $image->toString());
-            $coverImagePath = $fileName;
-        }
-
+    
         $highlight = Highlight::create([
             'title' => $request->title,
             'description' => $request->description,
-            'category_id' => $request->category_id,
-            'image' => $coverImagePath,
+            'image' => $request->file('cover_image') ? $request->file('cover_image')->store('highlightImage', 'public') : null,
             'status' => null,
             'user_id' => auth()->id(),
         ]);
-
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $imageFile) {
-                $extension = $imageFile->getClientOriginalExtension();
-                $mime = $imageFile->getMimeType();
-
-                $encoder = match ($mime) {
-                    'image/png' => new PngEncoder(),
-                    'image/gif' => new GifEncoder(),
-                    'image/webp' => new WebpEncoder(80),
-                    default => new JpegEncoder(80)
-                };
-
-                $image = $manager->read($imageFile->getPathname())
-                    ->scale(width: 1200)
-                    ->encode($encoder);
-
-                $fileName = 'imagecollection/' . uniqid() . '.' . $extension;
-                Storage::disk('public')->put($fileName, $image->toString());
-
-                ImageCollection::create([
-                    'image' => $fileName,
-                    'highlight_id' => $highlight->id,
-                ]);
-            }
-        }
-
-        return redirect()->route('highlights.index')->with('success', 'News created successfully!');
+    
+        // ✅ ใช้ `sync()` เชื่อม Many-to-Many ผ่าน Pivot Table `highlight_has_tag`
+        $highlight->tags()->sync($request->tag_id);
+    
+        return redirect()->route('highlights.index')->with('success', 'Highlight created successfully!');
     }
 
     public function edit($id)
@@ -118,68 +67,39 @@ class HighlightController extends Controller
         Log::info('Edit Highlight ID: 1');
         $highlight = Highlight::with('images')->findOrFail($id);
         Log::info('Edit Highlight ID: 2');
-        $categories = Category::all();
+        $categories = Tag::all();
         Log::info('Edit Highlight ID: 3');
         return view('highlights.edit', compact('highlight', 'categories'));
     }
 
     public function update(Request $request, $id)
     {
-        Log::info("🛠 UPDATE FUNCTION CALLED FOR HIGHLIGHT ID: " . $id);
-        Log::info("🔍 REQUEST DATA:", $request->all());
-
         $request->validate([
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:category,id',
+            'tag_id' => 'required|array',
+            'tag_id.*' => 'exists:tag,id',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
-
-        Log::info('Starting update process...');
+    
         $highlight = Highlight::findOrFail($id);
-        $coverImagePath = $highlight->image;
-
-        // ✅ Update Cover Image
+        $coverImagePath = $highlight->image; // ✅ ตั้งค่าเริ่มต้นให้เป็นภาพเดิม
+    
         if ($request->hasFile('cover_image')) {
             if ($highlight->image) {
                 Storage::disk('public')->delete($highlight->image);
             }
             $coverImagePath = $request->file('cover_image')->store('highlightImage', 'public');
         }
-
-        // ✅ Update Highlight Data
+    
         $highlight->update([
             'title' => $request->title,
             'description' => $request->description,
-            'category_id' => $request->category_id,
-            'image' => $coverImagePath,
+            'image' => $coverImagePath, // ✅ ใช้ค่าที่กำหนด
         ]);
-
-        // ✅ Remove images marked for deletion
-        if ($request->deleted_images) {
-            $deletedImageIds = json_decode($request->deleted_images, true);
-            foreach ($deletedImageIds as $imageId) {
-                $image = ImageCollection::find($imageId);
-                if ($image) {
-                    Storage::disk('public')->delete($image->image);
-                    $image->delete();
-                }
-            }
-        }
-
-        // ✅ Upload New Images (If Any)
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $imageFile) {
-                $fileName = $imageFile->store('imageCollection', 'public');
-
-                ImageCollection::create([
-                    'image' => $fileName,
-                    'highlight_id' => $highlight->id,
-                ]);
-            }
-        }
-
-        Log::info('Highlight updated successfully.');
+    
+        $highlight->tag()->sync($request->tag_id);
+    
         return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
     }
 
@@ -254,7 +174,7 @@ class HighlightController extends Controller
     {
         $type = $request->query('type');
 
-        $query = Highlight::with(['category', 'user'])
+        $query = Highlight::with(['tag', 'user'])
             ->when($type === 'highlights', function ($q) {
                 return $q->where('status', 1)->latest()->take(5);
             })
@@ -263,8 +183,8 @@ class HighlightController extends Controller
             });
 
         return datatables()->eloquent($query)
-            ->addColumn('category', function ($highlight) {
-                return $highlight->category->name ?? 'No Category';
+            ->addColumn('tag', function ($highlight) {
+                return $highlight->tag->name ?? 'No Tag';
             })
             ->addColumn('created_by', function ($highlight) {
                 return optional($highlight->user)->fname_th . ' ' . optional($highlight->user)->lname_th ?? 'Unknown';
