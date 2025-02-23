@@ -7,7 +7,7 @@ Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec
 *** Test Cases ***
 # Test Scenario ID:	UAT-V1-03
 
-Test Delete News
+Test Delete Highlight
      # ✅ Passed
     [Tags]    UAT-V1-03
     [Documentation]    ทดสอบการลบข่าว
@@ -32,7 +32,7 @@ Test Delete News
     Wait Until Element Is Not Visible    xpath=//table[@id='news-table']//tr[td[1][text()='${NEWS_ID}']]    timeout=10s
     Close Browser
 
-Test Edit News:
+Test Edit Highlight:
      # ✅ Passed
     [Tags]    UAT-V1-03
     [Documentation]    ทดสอบการแก้ไขข่าว

@@ -4,6 +4,28 @@ Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec
 
 *** Variables ***
 
+*** Keywords ***
+
+Delete Highlight
+    # ค้นหา ID ของ News ที่ต้องการลบ (เลือกอันล่าสุดที่เพิ่มเข้ามา)
+    ${NEWS_ID}    Get Text    xpath=(//table[@id='news-table']//tr[last()]//td[1])
+
+    # เลื่อน Scroll ไปที่ปุ่มลบของ News อันแรก
+    Scroll Element Into View    xpath=(//table[@id='news-table']//tr[td[1][text()='${NEWS_ID}']]//button[contains(@class,'btn-delete')])[1]
+    Wait Until Element Is Visible    xpath=(//table[@id='news-table']//tr[td[1][text()='${NEWS_ID}']]//button[contains(@class,'btn-delete')])[1]    timeout=5s
+    Click Button    xpath=(//table[@id='news-table']//tr[td[1][text()='${NEWS_ID}']]//button[contains(@class,'btn-delete')])[1]
+
+    # รอให้ Popup แจ้งเตือนปรากฏ
+    Wait Until Element Is Visible    xpath=//h2[@id='swal2-title' and text()='คุณแน่ใจหรือไม่?']    timeout=5s
+    # กดปุ่ม "ใช่, ลบเลย!"
+    Click Button    xpath=//button[contains(@class,'swal2-confirm') and text()='ใช่, ลบเลย!']
+
+    # รอให้หน้าเปลี่ยนกลับไปยัง Manage Highlights
+    Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    timeout=10s
+    # รอให้แถวที่มี ID ที่ถูกลบหายไปจริงๆ
+    Wait Until Element Is Not Visible    xpath=//table[@id='news-table']//tr[td[1][text()='${NEWS_ID}']]    timeout=10s
+    Sleep    2s
+
 *** Test Cases ***
 
 Test Go To Manage Highlights Page
@@ -39,4 +61,7 @@ Test Create News Success
     Wait Until Page Contains    สร้างข่าวสำเร็จ
     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
+
+    Delete Highlight
+
     Close Browser
