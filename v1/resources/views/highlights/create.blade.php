@@ -3,8 +3,9 @@
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <div class="container">
     <div class="card" style="padding: 16px;">
@@ -36,21 +37,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="tag">Select Tag</label>
-                    <select name="tag_id[]" id="tag" class="form-control" multiple="multiple">
+                    <label for="tag">Tags</label>
+                    <select name="tag_id[]" id="tag" class="form-control select2" multiple="multiple">
                         @foreach ($categories as $tag)
-                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                        <option value="{{ $tag->id }}">
+                            {{ $tag->name }}
+                        </option>
                         @endforeach
                     </select>
-                </div>
-
-                <button type="button" class="btn btn-primary" onclick="addSelectedTags()">Select</button>
-
-                <div class="form-group">
-                    <label for="selectedTags">Selected Tags</label>
-                    <div id="selectedTags" class="selected-tags-box">
-                        <!-- Selected tags will appear here -->
-                    </div>
                 </div>
 
                 <div class="form-group">
@@ -225,54 +219,14 @@
         });
     }
 
-    let selectedTagIds = [];
 
-    function addSelectedTags() {
-        const tagElement = document.getElementById("tag");
-        const selectedOptions = Array.from(tagElement.options).filter(option => option.selected);
-
-        selectedOptions.forEach(option => {
-            if (!selectedTagIds.includes(option.value)) {
-                selectedTagIds.push(option.value);
-            }
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Select tags",
+            tags: true,
+            tokenSeparators: [',', ' ']
         });
-
-        updateSelectedTagsDisplay();
-    }
-
-    function updateSelectedTagsDisplay() {
-        const selectedTagsBox = document.getElementById("selectedTags");
-        selectedTagsBox.innerHTML = '';
-
-        selectedTagIds.forEach(tagId => {
-            const option = document.querySelector(`#tag option[value="${tagId}"]`);
-            const tagElement = document.createElement("div");
-            tagElement.classList.add("selected-tag");
-
-            const tagText = document.createElement("span");
-            tagText.textContent = option ? option.text : "แท็กที่ไม่รู้จัก";
-
-            const removeBtn = document.createElement("span");
-            removeBtn.textContent = "✖";
-            removeBtn.classList.add("remove-tag");
-            removeBtn.onclick = () => {
-                removeTag(tagId);
-            };
-
-            tagElement.appendChild(tagText);
-            tagElement.appendChild(removeBtn);
-            selectedTagsBox.appendChild(tagElement);
-        });
-
-        Array.from(document.getElementById("tag").options).forEach(option => {
-            option.selected = selectedTagIds.includes(option.value);
-        });
-    }
-
-    function removeTag(tagId) {
-        selectedTagIds = selectedTagIds.filter(id => id !== tagId);
-        updateSelectedTagsDisplay();
-    }
+    });
 </script>
 
 <style>
@@ -389,30 +343,24 @@
         font-size: 12px;
     }
 
-    .selected-tags-box {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 10px;
+    .select2-selection--multiple {
+        border: 1px solid #d1c7bd !important;
+        border-radius: 10px !important;
+        min-height: 50px !important;
     }
 
-    .selected-tag {
-        background-color: #ddd;
-        border-radius: 15px;
-        padding: 5px 10px;
-        display: flex;
-        align-items: center;
+    .select2-selection__choice {
+        color: #fff !important;
+        border: none !important;
+        border-radius: 25px !important;
+        padding: 8px 25px !important;
+        font-size: 14px !important;
     }
 
-    .selected-tag span {
-        margin-right: 5px;
-    }
-
-    .selected-tag .remove-tag {
-        cursor: pointer;
-        font-size: 14px;
-        color: red;
-        margin-left: 5px;
+    .select2-selection__choice__remove {
+        color: #fff !important;
+        font-size: 20px !important;
+        margin: 5px !important;
     }
 </style>
 

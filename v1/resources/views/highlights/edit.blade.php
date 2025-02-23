@@ -52,7 +52,6 @@
                 </div>
 
 
-
                 <!-- ✅ Description -->
                 <div class="form-group">
                     <label for="description">Description</label>
@@ -119,12 +118,6 @@
         }
     }
 
-
-    // function removeCoverImage() {
-    //     document.getElementById("cover_image").value = "";
-    //     document.getElementById("coverPreview").classList.add("d-none");
-    //     document.getElementById("coverPlaceholder").classList.remove("d-none");
-    // }
     function removeCoverImage() {
         event.stopPropagation();
         document.getElementById("cover_image").value = ""; // Clear input
@@ -145,30 +138,26 @@
     }
 
 
-
+    // ลบรูปเก่า
     function markImageForDeletion(id, element) {
-        deletedImages.push(id);
+        deletedImages.push(id); // เก็บ id ของรูปเก่าที่จะลบ
         document.getElementById('deletedImagesInput').value = JSON.stringify(deletedImages);
-        element.parentElement.remove();
+        element.parentElement.remove(); // ลบออกจากหน้า
     }
-
     document.getElementById('image_album').addEventListener('change', function(event) {
         const newFiles = Array.from(event.target.files);
         selectedFiles = selectedFiles.concat(newFiles);
         updateAlbumPreview();
     });
 
+
     function updateAlbumPreview() {
         const previewContainer = document.getElementById('albumPreview');
 
-        // ✅ ตรวจสอบว่ามีรูปเก่าอยู่แล้วหรือไม่ ถ้าไม่ให้ดึงข้อมูลใหม่
-        if (!document.querySelector('.existing-image')) {
-            document.querySelectorAll('.existing-image').forEach(existing => {
-                previewContainer.appendChild(existing);
-            });
-        }
+        // ✅ ล้างเฉพาะรูปใหม่ ไม่แตะรูปเก่า (existing-image)
+        previewContainer.querySelectorAll('.image-item:not(.existing-image)').forEach(el => el.remove());
 
-        // ✅ แสดงรูปที่เพิ่งเพิ่ม
+        // ✅ แสดงรูปใหม่
         selectedFiles.forEach((file, index) => {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -177,13 +166,13 @@
 
                 const imgElement = document.createElement('img');
                 imgElement.src = e.target.result;
-                imgElement.alt = "Image Preview";
+                imgElement.alt = "New Image Preview";
 
                 const removeBtn = document.createElement('button');
                 removeBtn.innerHTML = '✖';
                 removeBtn.classList.add('remove-btn');
                 removeBtn.onclick = function() {
-                    removeImage(index);
+                    removeNewImage(index);
                 };
 
                 imgWrapper.appendChild(imgElement);
@@ -193,15 +182,19 @@
             reader.readAsDataURL(file);
         });
 
+        // ✅ อัปเดตไฟล์ใน input type="file"
         const dt = new DataTransfer();
         selectedFiles.forEach(file => dt.items.add(file));
-        document.getElementById("image_album").files = dt.files;
+        document.getElementById('image_album').files = dt.files;
     }
 
-    function removeImage(index) {
-        selectedFiles.splice(index, 1);
-        updateAlbumPreview();
+    // ลบรูปใหม่
+    function removeNewImage(index) {
+        selectedFiles.splice(index, 1); // เอารูปใหม่ออกจาก array
+        updateAlbumPreview(); // รีเฟรชตัวอย่าง
     }
+
+
 
     function confirmCancel() {
         Swal.fire({

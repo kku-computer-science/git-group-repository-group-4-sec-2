@@ -16,8 +16,8 @@
     <!-- ซ่อนค่า Count ของ Highlights -->
     <input type="hidden" id="highlight-count" value="{{ $highlights->where('status', 1)->count() }}">
 
-    <!-- ✅ ตาราง Highlights (ข้างบน) -->
-    <h2>Highlights</h2>
+    <!-- ✅ ตาราง Show  Highlights (ข้างบน) -->
+    <h2>Show Highlights</h2>
     <table id="highlight-table" class="table table-striped">
 
         <thead>
@@ -67,8 +67,7 @@
         </tbody>
     </table>
 
-    <!-- ✅ ตาราง News-->
-    <h2>News</h2>
+    <h2>Highlights</h2>
     <a href="{{ route('highlights.create') }}" class="btn btn-primary mb-3">+ Create</a>
     <table id="news-table" class="table table-striped">
 
@@ -90,7 +89,7 @@
                 <td>{{ $highlight->id }}</td>
                 <td>
                     @if($highlight->image)
-                    <img src="{{ asset('storage/' . $highlight->image) }}" width="120">
+                    <img src="{{ asset('storage/' . $highlight->image) }}">
                     @else
                     No Image
                     @endif
@@ -119,13 +118,6 @@
         </tbody>
     </table>
 </div>
-
-
-
-
-
-
-
 
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
@@ -266,7 +258,14 @@
                             updateHighlightCount();
                         },
                         error: function(xhr) {
-                            Swal.fire("ผิดพลาด!", "เกิดข้อผิดพลาดบางอย่าง!", "error");
+                            Swal.fire({
+                                icon: "error",
+                                title: "เกิดข้อผิดพลาด!",
+                                padding: "1.25rem",
+                                text: "ไม่สามารถลบรายการนี้ได้",
+                                confirmButtonText: "ตกลง",
+                                confirmButtonColor: "#3085d6"
+                            });
                         }
                     });
                 }
@@ -281,7 +280,7 @@
         $('#highlight-table').DataTable();
         $('#news-table').DataTable();
 
-      
+
         setTimeout(function() {
             $(".alert-success").fadeOut("slow");
         }, 2000);
@@ -308,10 +307,55 @@
 
             if (titleText.length > 25) {
                 var shortenedTitle = titleText.substring(0, 25) + '...'; // ย่อข้อความและเพิ่ม ...
-                titleCell.text(shortenedTitle); // อัพเดตข้อความที่แสดงในตาราง
+                titleCell.text(shortenedTitle);
             }
         });
     });
 </script>
+
+<style>
+    .table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .table th,
+    .table td {
+        word-wrap: break-word;
+        white-space: normal;
+        max-width: 200px;
+    }
+
+    .container {
+        overflow-x: auto;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .action-buttons .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+
+
+    th:nth-child(7),
+    td:nth-child(7) {
+        width: 300px;
+    }
+
+    td img {
+        border-radius: 0 !important;
+        width: 100px !important;
+        height: auto !important;
+        object-fit: cover;
+    }
+</style>
 
 @endsection
