@@ -1,5 +1,5 @@
 *** Settings ***
-Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/UAT/resource_v1.robot
+Resource          C:/work_2025/git-group-repository-group-4-sec-2/test_v1/UAT/resource_v1.robot
 # Library           SeleniumLibrary
 
 *** Variables ***
@@ -11,7 +11,9 @@ Test Open Home Page
      # ✅ Passed
     [Tags]    UAT-V2-01
     [Documentation]    ทดสอบการเปิดเว็บไซต์
-    Open Browser
+    Open Browser    ${URL}    ${BROWSER}
+    # 1. เปิดเว็บไซต์ที่หน้าแรก
+    Location Should Be    ${URL}
     Maximize Browser Window
     Close Browser
 

@@ -1,5 +1,5 @@
 *** Settings ***
-Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/UAT/resource_v1.robot
+Resource          C:/work_2025/git-group-repository-group-4-sec-2/test_v1/UAT/resource_v1.robot
 # Library           SeleniumLibrary
 
 *** Variables ***
@@ -23,14 +23,14 @@ Test Create News Success
     Location Should Be    ${CREATE_NEWS_URL}
 
     Click Element    id=coverImageBox
-    Choose File    xpath=//input[@type='file']    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg
+    Choose File    xpath=//input[@type='file']    C:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg
     Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
     Select From List By Label    id=category    ทุนวิจัยและโอกาสสนับสนุน
     Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
 
     Scroll Element Into View    id=imageAlbumBox
     Click Element    id=imageAlbumBox
-    Choose File    id=image_album    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_2.jpeg\n/Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_3.jpeg
+    Choose File    id=image_album    C:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg\nC:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_2.jpeg
     Scroll Element Into View    xpath=//button[@type='submit' and contains(text(),'Save')]
 
     # หรือใช้ Wait Until Element Is Visible ก่อนคลิก
