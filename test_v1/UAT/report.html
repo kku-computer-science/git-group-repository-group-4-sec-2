@@ -5,7 +5,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta content="Robot Framework 7.1.1 (Python 3.13.1 on win32)" name="Generator">
+<meta content="Robot Framework 7.2.2 (Python 3.13.2 on win32)" name="Generator">
 <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKcAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAqAAAAAAAAAAAAAAAAAAAALIAAAD/AAAA4AAAANwAAADcAAAA3AAAANwAAADcAAAA3AAAANwAAADcAAAA4AAAAP8AAACxAAAAAAAAAKYAAAD/AAAAuwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC/AAAA/wAAAKkAAAD6AAAAzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN8AAAD/AAAA+gAAAMMAAAAAAAAAAgAAAGsAAABrAAAAawAAAGsAAABrAAAAawAAAGsAAABrAAAADAAAAAAAAADaAAAA/wAAAPoAAADDAAAAAAAAAIsAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAANEAAAAAAAAA2gAAAP8AAAD6AAAAwwAAAAAAAAAAAAAAMgAAADIAAAAyAAAAMgAAADIAAAAyAAAAMgAAADIAAAAFAAAAAAAAANoAAAD/AAAA+gAAAMMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADaAAAA/wAAAPoAAADDAAAAAAAAADwAAAB8AAAAAAAAAGAAAABcAAAAAAAAAH8AAABKAAAAAAAAAAAAAAAAAAAA2gAAAP8AAAD6AAAAwwAAAAAAAADCAAAA/wAAACkAAADqAAAA4QAAAAAAAAD7AAAA/wAAALAAAAAGAAAAAAAAANoAAAD/AAAA+gAAAMMAAAAAAAAAIwAAAP4AAAD/AAAA/wAAAGAAAAAAAAAAAAAAAMkAAAD/AAAAigAAAAAAAADaAAAA/wAAAPoAAADDAAAAAAAAAAAAAAAIAAAAcAAAABkAAAAAAAAAAAAAAAAAAAAAAAAAEgAAAAAAAAAAAAAA2gAAAP8AAAD7AAAAywAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAN4AAAD/AAAAqwAAAP8AAACvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALIAAAD/AAAAsgAAAAAAAAC5AAAA/wAAAMoAAADAAAAAwAAAAMAAAADAAAAAwAAAAMAAAADAAAAAwAAAAMkAAAD/AAAAvAAAAAAAAAAAAAAAAAAAAKwAAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAArQAAAAAAAAAAwAMAAIABAAAf+AAAP/wAAD/8AAAgBAAAP/wAAD/8AAA//AAAJIwAADHEAAA//AAAP/wAAB/4AACAAQAAwAMAAA==">
 <style media="all">
 :root {
@@ -1328,7 +1328,7 @@ window.testdata = function () {
     var STATUSES = ['FAIL', 'PASS', 'SKIP', 'NOT RUN'];
     var KEYWORD_TYPES = ['KEYWORD', 'SETUP', 'TEARDOWN', 'FOR', 'ITERATION', 'IF',
                          'ELSE IF', 'ELSE', 'RETURN', 'VAR', 'TRY', 'EXCEPT', 'FINALLY',
-                         'WHILE', 'CONTINUE', 'BREAK', 'ERROR'];
+                         'WHILE', 'GROUP', 'CONTINUE', 'BREAK', 'ERROR'];
     function addElement(elem) {
         if (!elem.id)
             elem.id = uniqueId();
@@ -1887,22 +1887,22 @@ storage = function () {
 window.output = {};
 </script>
 <script type="text/javascript">
-window.output["suite"] = [1,2,3,0,[],[1,0,262207],[],[[4,0,5,[6],[1,230,22666],[]],[7,0,8,[6],[1,22900,33614],[]],[9,0,10,[6],[1,56516,27366],[]],[11,0,12,[6],[1,83882,35117],[]],[13,0,14,[6],[1,119000,25706],[]],[15,0,16,[6],[1,144710,25212],[]],[17,0,18,[6],[1,169923,24134],[]],[19,0,20,[6],[1,194058,24469],[]],[21,0,22,[6],[1,218528,21372],[]],[23,0,24,[6],[1,239901,22305],[]]],[],[10,10,0,0]];
+window.output["suite"] = [1,2,3,0,[],[1,0,41159],[],[[4,0,5,[6],[1,235,14071],[]],[7,0,8,[6],[1,14307,26852],[]]],[],[2,2,0,0]];
 </script>
 <script type="text/javascript">
 window.output["strings"] = [];
 </script>
 <script type="text/javascript">
-window.output["strings"] = window.output["strings"].concat(["*","*Test V1 All3","*C:\\work_2025\\git-group-repository-group-4-sec-2\\test_v1\\UAT\\test_v1_all3.robot","*test_v1_all3.robot","*Test Go To Manage Highlights Page","*<p>ทดสอบการ Login ของ Staff สำเร็จ และเข้าหน้า Manage Highlights\x3c/p>","*UAT-V1-03","*Test Create News Success","*<p>ทดสอบการสร้างข่าวใหม่สำเร็จ\x3c/p>","*Test Create News Unsuccess Empty Cover Image","*<p>ทดสอบการสร้างข่าวใหม่ไม่สำเร็จ เนื่องจากไม่ใส่รูปภาพ Cover Image\x3c/p>","*Test Create News Unsuccess Empty Title:","*<p>ทดสอบการสร้างข่าวใหม่ไม่สำเร็จ เนื่องจากไม่ใส่ Title\x3c/p>","*Test Create News Unsuccess Empty Category:","*<p>ทดสอบการสร้างข่าวใหม่ไม่สำเร็จ เนื่องจากไม่เลือก Category\x3c/p>","*Test Edit News:","*<p>ทดสอบการแก้ไขข่าว\x3c/p>","*Test Delete News","*<p>ทดสอบการลบข่าว\x3c/p>","*Test Remove News Form Highlights","*<p>ทดสอบการนำข่าวออกจาก Highlights\x3c/p>","*Test Add News to Highlights","*<p>ทดสอบการนำข่าวเข้า Highlights\x3c/p>","*Test Add News To Full Highlights","*<p>ทดสอบการเพิ่มข่าวเข้า Highlights เมื่อ Highlights เต็ม\x3c/p>"]);
+window.output["strings"] = window.output["strings"].concat(["*","*Test V1 All3","*D:\\projectSoftEn\\git-group-repository-group-4-sec-2\\test_v1\\UAT\\test_v1_all3.robot","*test_v1_all3.robot","*Test Remove News Form Highlights","*<p>ทดสอบการนำข่าวออกจาก Highlights\x3c/p>","*UAT-V1-03","*Test Add News to Highlights","*<p>ทดสอบการมีข่าวแล้วนำเข้า Highlights\x3c/p>"]);
 </script>
 <script type="text/javascript">
-window.output["stats"] = [[{"elapsed":"00:04:22","fail":0,"label":"All Tests","pass":10,"skip":0}],[{"elapsed":"00:04:22","fail":0,"label":"UAT-V1-03","pass":10,"skip":0}],[{"elapsed":"00:04:22","fail":0,"id":"s1","label":"Test V1 All3","name":"Test V1 All3","pass":10,"skip":0}]];
+window.output["stats"] = [[{"elapsed":"00:00:41","fail":0,"label":"All Tests","pass":2,"skip":0}],[{"elapsed":"00:00:41","fail":0,"label":"UAT-V1-03","pass":2,"skip":0}],[{"elapsed":"00:00:41","fail":0,"id":"s1","label":"Test V1 All3","name":"Test V1 All3","pass":2,"skip":0}]];
 </script>
 <script type="text/javascript">
-window.output["baseMillis"] = 1739326001319;
+window.output["baseMillis"] = 1740304239207;
 </script>
 <script type="text/javascript">
-window.output["generated"] = 262247;
+window.output["generated"] = 41177;
 </script>
 <script type="text/javascript">
 window.output["expand_keywords"] = null;
@@ -2354,7 +2354,7 @@ function hideHiddenDetailsColumns(elem) {
 
 <script type="text/x-jquery-tmpl" id="tagStatisticsRowTemplate">
   <tr onclick="tagDetailSelected('${label}')" class="row-${$item.index}">
-    <td class="stats-col-name" title="{{html doc}}">
+    <td class="stats-col-name" title="${doc}">
       <div class="stat-name">
         <a href="#tags?${label}">{{html label}}</a>
         {{if info}}(${info}){{/if}}
