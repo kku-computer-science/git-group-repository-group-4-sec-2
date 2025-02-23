@@ -2,6 +2,10 @@
 
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
 <div class="container">
     <div class="card p-4">
@@ -36,16 +40,18 @@
 
                 <!-- ✅ Tag -->
                 <div class="form-group">
-                    <label for="tag">Tag</label>
-                    <select name="tag_id" id="tag" class="form-control" required>
-                        <option value="">Select Tag</option>
+                    <label for="tag">Tags</label>
+                    <select name="tag_id[]" id="tag" class="form-control select2" multiple="multiple">
                         @foreach ($categories as $tag)
-                        <option value="{{ $tag->id }}" {{ $highlight->tag_id == $tag->id ? 'selected' : '' }}>
+                        <option value="{{ $tag->id }}"
+                            @if (in_array($tag->id, $selectedTags)) selected @endif>
                             {{ $tag->name }}
                         </option>
                         @endforeach
                     </select>
                 </div>
+
+
 
                 <!-- ✅ Description -->
                 <div class="form-group">
@@ -53,12 +59,18 @@
                     <textarea name="description" id="description" class="form-control description-box" rows="6">{{ $highlight->description }}</textarea>
                 </div>
 
+                <div class="form-group">
+                    <label for="research_link">Link Research</label>
+                    <input type="url" class="form-control" name="link" value="{{ $highlight->link ?? '' }}" placeholder="Enter your link">
+                </div>
+
+
                 <!-- ✅ Image Album -->
                 <div class="form-group">
                     <label for="image_album">Image Album</label>
                     <div class="image-upload-box small" id="imageAlbumBox" onclick="document.getElementById('image_album').click();">
                         <input type="file" name="images[]" id="image_album" class="d-none" multiple accept="image/*">
-                        <div class="upload-placeholder" >
+                        <div class="upload-placeholder">
                             <div class="placeholder-content">
                                 <i class="mdi mdi-cloud-upload-outline"></i>
                                 <p>Click to upload images</p>
@@ -226,6 +238,14 @@
             }
         });
     }
+
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Select tags",
+            tags: true,
+            tokenSeparators: [',', ' ']
+        });
+    });
 </script>
 
 <style>
@@ -341,6 +361,27 @@
         padding: 5px;
         border-radius: 50%;
         font-size: 12px;
+    }
+
+    .select2-selection--multiple {
+        border: 1px solid #d1c7bd !important;
+        border-radius: 10px !important;
+        min-height: 50px !important;
+    }
+
+    .select2-selection__choice {
+        color: #fff !important;
+        border: none !important;
+        ;
+        border-radius: 25px !important;
+        padding: 8px 25px !important;
+        font-size: 14px !important;
+    }
+
+    .select2-selection__choice__remove {
+        color: #fff !important;
+        font-size: 20px !important;
+        margin: 5px !important;
     }
 </style>
 @endsection

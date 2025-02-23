@@ -59,8 +59,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="research_link">Link Research</label>
-                    <input type="url" class="form-control" id="research_link" name="research_link" placeholder="Enter the link to your research">
+                    <label for="research_link">Addtional Link</label>
+                    <input type="url" class="form-control" id="link" name="link" placeholder="Enter the link">
                 </div>
 
                 <div class="form-group">
