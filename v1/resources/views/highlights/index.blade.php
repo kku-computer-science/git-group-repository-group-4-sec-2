@@ -70,7 +70,7 @@
         </tbody>
     </table>
 
-    <!-- ✅ ตาราง News-->
+    <!-- ✅ ตาราง News (ข้างล่าง) -->
     <h2>News</h2>
     <a href="{{ route('highlights.create') }}" class="btn btn-primary mb-3">+ Create</a>
     <table id="news-table" class="table table-striped">
@@ -124,9 +124,7 @@
         </tbody>
     </table>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
-<script src="https://cdn.datatables.net/1.12.0/js/dataTables.bootstrap4.min.js" defer></script>
+
 <script>
     $(document).ready(function() {
         function updateHighlightCount() {
@@ -161,10 +159,7 @@
             $.ajax({
                 url: "/highlights/" + highlightId + "/add",
                 type: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    _method: "PUT"
-                },
+                data: { _token: "{{ csrf_token() }}", _method: "PUT" },
                 success: function(response) {
                     Swal.fire({
                         position: "center",
@@ -197,10 +192,7 @@
             $.ajax({
                 url: "/highlights/" + highlightId + "/remove",
                 type: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    _method: "PUT"
-                },
+                data: { _token: "{{ csrf_token() }}", _method: "PUT" },
                 success: function(response) {
                     Swal.fire({
                         position: "center",
@@ -245,10 +237,7 @@
                     $.ajax({
                         url: "/highlights/" + highlightId,
                         type: "POST",
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            _method: "DELETE"
-                        },
+                        data: { _token: "{{ csrf_token() }}", _method: "DELETE" },
                         success: function(response) {
                             Swal.fire({
                                 icon: "success",
@@ -272,43 +261,14 @@
 
         updateHighlightCount();
     });
-
-    $(document).ready(function() {
-        // Initialize DataTables for both tables
-        $('#highlight-table').DataTable();
-        $('#news-table').DataTable();
-
-      
-        setTimeout(function() {
-            $(".alert-success").fadeOut("slow");
-        }, 2000);
-        setTimeout(function() {
-            $(".alert-danger").fadeOut("slow");
-        }, 2000);
-    });
-
-    $(document).ready(function() {
-        // ซ่อนข้อความที่ยาวเกิน 25 ตัวอักษรในคอลัมน์ Title
-        $('#highlight-table tbody tr').each(function() {
-            var titleCell = $(this).find('td:nth-child(3)'); // คอลัมน์ Title
-            var titleText = titleCell.text().trim();
-
-            if (titleText.length > 25) {
-                var shortenedTitle = titleText.substring(0, 25) + '...'; // ย่อข้อความและเพิ่ม ...
-                titleCell.text(shortenedTitle); // อัพเดตข้อความที่แสดงในตาราง
-            }
-        });
-
-        $('#news-table tbody tr').each(function() {
-            var titleCell = $(this).find('td:nth-child(3)'); // คอลัมน์ Title
-            var titleText = titleCell.text().trim();
-
-            if (titleText.length > 25) {
-                var shortenedTitle = titleText.substring(0, 25) + '...'; // ย่อข้อความและเพิ่ม ...
-                titleCell.text(shortenedTitle); // อัพเดตข้อความที่แสดงในตาราง
-            }
-        });
-    });
 </script>
+
+
+
+
+
+
+
+
 
 @endsection

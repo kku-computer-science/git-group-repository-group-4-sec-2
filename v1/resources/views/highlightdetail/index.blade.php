@@ -45,6 +45,8 @@
 @if($highlights->isNotEmpty())
 @foreach($highlights as $highlight)
 <div class="head-img">
+    @if($highlights->isNotEmpty())
+    @foreach($highlights as $highlight)
     <img src="{{ asset('storage/' . $highlight->image) }}" class="w-100" style="height: 600px; object-fit: cover;">
 </div>
 
@@ -56,11 +58,11 @@
                     <span>เผยแพร่&nbsp;{{ $highlight->created_at->format('d/m/Y H:i') }}&nbsp;</span>
                 </div>
                 <div class="px-2 d-flex col-lg-8">
-                    <div class="d-flex px-1 align-items-center" style="width: fit-content;">
+                    <div class="d-flex px-1 align-items-center" style="width: 150px;">
                         <span>หมวดหมู่:</span>
-                        <!-- <a href="/content/news/category/{{ $highlight->category->name }}"> -->
+                        <a href="/content/news/category/{{ $highlight->category->name }}">
                             <span>&nbsp;{{ $highlight->category->name }}</span>
-                        <!-- </a> -->
+                        </a>
                     </div>
                 </div>
             </div>
@@ -77,22 +79,23 @@
             <h2>{{ $highlight->title }}</h2>
         </div>
         <div class="py-2 col-12">
-            <span style="font-size:12pt; font-family:Aptos,sans-serif;">
-                {{ $highlight->description }}
+            <span style="font-size: 1.3em;"><span style="font-family:Aptos,sans-serif">
+                    {{ $highlight->description }}
+                </span>
             </span>
         </div>
-
-        @if($highlight->images->isNotEmpty())
+        <br>
         <div class="py-2 col-12">
-            <span class="text-muted">อัลบั้ม รูปภาพ</span>
-            <div class="container-fluid px-2">
+            <span class="text-muted">
+                อัลบั้ม รูปภาพ
+            </span>
+
+            <div class="px-2 container-fluid">
                 <div class="row">
                     @foreach($highlight->images as $image)
-                    <div class="my-2 col-md-6 col-lg-2">
-                        <img src="{{ asset('storage/' . $image->image) }}" 
-                            class="img-thumbnail w-100" 
-                            style="height: 150px; object-fit: cover; border-radius: 8px;" 
-                            role="button" tabindex="0">
+                    <div class="my-2 col-sm-12 col-md-6 col-lg-2">
+                        <img src="{{ asset('storage/' . $image->image) }}" class="img-thumbnail w-100"
+                            style="height: 150px; object-fit: cover; border-radius: 8px;" role="button" tabindex="0">
                     </div>
                     @endforeach
                 </div>
@@ -119,10 +122,15 @@
 @endif
 
 <!-- Related News Section -->
-<div class="container rlNews mt-5">
-    <h3 class="mb-4">ข่าวที่เกี่ยวข้อง</h3>
+<div class="container">
+    <div class="row mx-0 mb-4">
+        <div class="d-flex col-12">
+            <h4>ข่าวที่เกี่ยวข้อง &nbsp;</h4>
 
-    <div class="related-container">
+            <a href="/content/news/category/{{ $highlight->category->name }}" style="text-decoration: none ">
+                <h4>{{ $highlight->category->name }} </h4>
+            </a>
+        </div>
         @if($news->isNotEmpty())
         <div class="related-wrapper" id="relatedNews">
             @foreach($news as $new)

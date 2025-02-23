@@ -122,19 +122,16 @@
     /* Fix the carousel size */
     #carouselExampleIndicators {
         max-width: 100%;
-        border-radius: 20px;
-        /* Add rounded corners */
+        border-radius: 20px; /* Add rounded corners */
 
         width: 100%;
         /* Set your desired width */
-        height: 600px;
+        height: 400px;
         /* Set your desired height */
         margin: auto;
         /* Center the carousel */
-        overflow: hidden;
-        /* Prevent image overflow */
-        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
-        /* Add soft shadow */
+        overflow: hidden; /* Prevent image overflow */
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2); /* Add soft shadow */
 
 
     }
@@ -153,7 +150,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border-radius: 20px;
+        border-radius: 20px; 
         /* Ensure the image covers the box */
     }
 
@@ -169,6 +166,7 @@
         opacity: 1 !important;
         /* Ensure arrows are fully visible */
     }
+    
 </style>
 @section('content')
 <div class="container home">
@@ -176,34 +174,38 @@
 
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
             <!-- Carousel Indicators -->
-            <ol class="carousel-indicators">
+            <div class="carousel-indicators">
                 @foreach($heads as $index => $head)
-                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $index }}" class="{{ $loop->first ? 'active' : '' }}"></li>
+                <button type="button" data-bs-target="#carouselExampleIndicators"
+                    data-bs-slide-to="{{ $index }}" class="{{ $loop->first ? 'active' : '' }}"
+                    aria-label="Slide {{ $index + 1 }}"></button>
                 @endforeach
-            </ol>
+            </div>
 
             <!-- Carousel Items -->
             <div class="carousel-inner">
                 @foreach($heads as $index => $head)
+                
                 <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                     <a href="{{ route('highlight.show', $head->id) }}">
-                        <img src="{{ asset('storage/' . $head->image) }}" class="d-block w-100" alt="...">
+                        <img src="{{ asset('storage/' . $head->image) }}" class="d-block w-200"
+                            style="height: 400px; object-fit: cover;" alt="...">
                     </a>
                 </div>
+                
                 @endforeach
             </div>
 
             <!-- Navigation Buttons -->
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
-            </a>
+            </button>
         </div>
-
     </div>
 
 
@@ -217,9 +219,13 @@
             <!-- รายการข่าว -->
             <div class="highlight-wrapper" id="highlightNews">
                 @foreach($highlights as $highlight)
-                <div class="highlight-card">
-                    <a href="{{ route('highlight.show', $highlight->id) }}">
-                        <img src="{{ asset('storage/' . $highlight->image) }}" class="card-img-top" alt="Highlight Image">
+                <li class="card-item">
+                    <a href="{{ route('highlight.show', $highlight->id) }}" class="card-link">
+                        <img src="{{ asset('storage/' . $highlight->image) }}" class="d-block w-100"
+                            style="height: 200px; object-fit: cover;" alt="Card Image" class="card-image">
+                        <p class="tag">{{ $highlight->category->name }}</p>
+                        <h6 class="card-title">{{ $highlight->title }}</h6>
+                        <p class="card-description">{{ Str::limit($highlight->description, 100) }}</p>
                     </a>
                     <div class="card-body">
                         <span class="badge bg-primary">{{ $highlight->category->name }}</span>

@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Highlight;
-use App\Models\Category;
-use App\Models\ImageCollection;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 

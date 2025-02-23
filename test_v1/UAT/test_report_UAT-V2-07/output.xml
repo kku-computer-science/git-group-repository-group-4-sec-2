@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.2.2 (Python 3.13.2 on win32)" generated="2025-02-23T20:26:24.151809" rpa="false" schemaversion="5">
+<suite id="s1" name="test staff AddHighlightUnsuccess" source="D:\projectSoftEn\git-group-repository-group-4-sec-2\test_v1\UAT\test_report_UAT-V2-07\test_staff_AddHighlightUnsuccess.robot">
+<test id="s1-t1" name="Test Add News To Full Highlights" line="9">
+<kw name="Go To Manage Highlights Page" owner="resource_v1">
+<kw name="Go To Login Page" owner="resource_v1">
+<kw name="Open Browser" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:24.385419" level="INFO">Opening browser 'chrome' to base url 'https://cs04sec267.cpkkuhost.com/'.</msg>
+<arg>${URL}</arg>
+<arg>${BROWSER}</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<status status="PASS" start="2025-02-23T20:26:24.385226" elapsed="6.611268"/>
+</kw>
+<kw name="Maximize Browser Window" owner="SeleniumLibrary">
+<doc>Maximizes current browser window.</doc>
+<status status="PASS" start="2025-02-23T20:26:30.996735" elapsed="0.033350"/>
+</kw>
+<kw name="Location Should Be" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:31.036316" level="INFO">Current location is 'https://cs04sec267.cpkkuhost.com/'.</msg>
+<arg>${URL}</arg>
+<doc>Verifies that the current URL is exactly ``url``.</doc>
+<status status="PASS" start="2025-02-23T20:26:31.030475" elapsed="0.005957"/>
+</kw>
+<kw name="Click Link" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:31.036969" level="INFO">Clicking link 'xpath=//a[contains(@class, 'btn-primary') and contains(., 'Login')]'.</msg>
+<arg>xpath=//a[contains(@class, 'btn-primary') and contains(., 'Login')]</arg>
+<doc>Clicks a link identified by ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:31.036617" elapsed="1.042997"/>
+</kw>
+<kw name="Location Should Be" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:32.083844" level="INFO">Current location is 'https://cs04sec267.cpkkuhost.com/login'.</msg>
+<arg>${LOGIN_URL}</arg>
+<doc>Verifies that the current URL is exactly ``url``.</doc>
+<status status="PASS" start="2025-02-23T20:26:32.079798" elapsed="0.004149"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>Account Login</arg>
+<arg>${DELAY}</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2025-02-23T20:26:32.084134" elapsed="0.008709"/>
+</kw>
+<status status="PASS" start="2025-02-23T20:26:24.384772" elapsed="7.708203"/>
+</kw>
+<kw name="Login Staff" owner="resource_v1">
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:32.093710" level="INFO">Typing text 'staff@gmail.com' into text field 'id=username'.</msg>
+<arg>id=username</arg>
+<arg>${STAFF_USERNAME}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:32.093484" elapsed="0.054888"/>
+</kw>
+<kw name="Input Text" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:32.148868" level="INFO">Typing text '123456789' into text field 'id=password'.</msg>
+<arg>id=password</arg>
+<arg>${STAFF_PASSWORD}</arg>
+<doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:32.148567" elapsed="0.057228"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:32.206380" level="INFO">Clicking button 'xpath=//button[contains(text(),'Log In')]'.</msg>
+<arg>xpath=//button[contains(text(),'Log In')]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:32.206170" elapsed="2.269509"/>
+</kw>
+<kw name="Wait Until Location Is" owner="SeleniumLibrary">
+<arg>${DASHBOARD_URL}</arg>
+<arg>${DELAY}</arg>
+<doc>Waits until the current URL is ``expected``.</doc>
+<status status="PASS" start="2025-02-23T20:26:34.475850" elapsed="0.003084"/>
+</kw>
+<kw name="Wait Until Page Contains" owner="SeleniumLibrary">
+<arg>Dashboard</arg>
+<arg>${DELAY}</arg>
+<doc>Waits until ``text`` appears on the current page.</doc>
+<status status="PASS" start="2025-02-23T20:26:34.479103" elapsed="0.008719"/>
+</kw>
+<status status="PASS" start="2025-02-23T20:26:32.093173" elapsed="2.394757"/>
+</kw>
+<kw name="Verify Staff Dashboard" owner="resource_v1">
+<kw name="Page Should Contain" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:34.497100" level="INFO">Current page contains text 'Departments'.</msg>
+<arg>Departments</arg>
+<doc>Verifies that current page contains ``text``.</doc>
+<status status="PASS" start="2025-02-23T20:26:34.488287" elapsed="0.008908"/>
+</kw>
+<kw name="Page Should Contain" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:34.506045" level="INFO">Current page contains text 'Manage Programs'.</msg>
+<arg>Manage Programs</arg>
+<doc>Verifies that current page contains ``text``.</doc>
+<status status="PASS" start="2025-02-23T20:26:34.497350" elapsed="0.008788"/>
+</kw>
+<kw name="Page Should Contain" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:34.514621" level="INFO">Current page contains text 'Manage Highlights'.</msg>
+<arg>Manage Highlights</arg>
+<doc>Verifies that current page contains ``text``.</doc>
+<status status="PASS" start="2025-02-23T20:26:34.506291" elapsed="0.008396"/>
+</kw>
+<status status="PASS" start="2025-02-23T20:26:34.488078" elapsed="0.026685"/>
+</kw>
+<kw name="Click Link" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:34.515013" level="INFO">Clicking link 'xpath=//a[@class='nav-link' and contains(span, 'Manage Highlights')]'.</msg>
+<arg>xpath=//a[@class='nav-link' and contains(span, 'Manage Highlights')]</arg>
+<doc>Clicks a link identified by ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:34.514865" elapsed="0.567487"/>
+</kw>
+<kw name="Wait Until Location Is" owner="SeleniumLibrary">
+<arg>${MANAGE_HIGHLIGHTS_URL}</arg>
+<arg>${DELAY}</arg>
+<doc>Waits until the current URL is ``expected``.</doc>
+<status status="PASS" start="2025-02-23T20:26:35.082545" elapsed="0.003763"/>
+</kw>
+<kw name="Page Should Contain" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:35.097134" level="INFO">Current page contains text 'Manage Highlights'.</msg>
+<arg>Manage Highlights</arg>
+<doc>Verifies that current page contains ``text``.</doc>
+<status status="PASS" start="2025-02-23T20:26:35.086554" elapsed="0.010781"/>
+</kw>
+<status status="PASS" start="2025-02-23T20:26:24.384483" elapsed="10.713018"/>
+</kw>
+<kw name="Get Element Count" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:35.132453" level="INFO">${ROW_COUNT} = 2</msg>
+<var>${ROW_COUNT}</var>
+<arg>xpath=//table[@id='highlight-table']//tbody/tr</arg>
+<doc>Returns the number of elements matching ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:35.097975" elapsed="0.034528"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>จำนวนข่าวใน Highlights: ${ROW_COUNT}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-02-23T20:26:35.132891" elapsed="0.000359"/>
+</kw>
+<while condition="${ROW_COUNT} &lt; 5">
+<iter>
+<kw name="Get Text" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:35.154250" level="INFO">${NEWS_ID} = 58</msg>
+<var>${NEWS_ID}</var>
+<arg>xpath=(//table[@id='news-table']//tr[1]//td[1])[1]</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:35.133708" elapsed="0.020587"/>
+</kw>
+<kw name="Scroll Element Into View" owner="SeleniumLibrary">
+<arg>xpath=(//table[@id='news-table']//tr[td[contains(text(),'${NEWS_ID}')]]//button[contains(@class,'btn-add')])[1]</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="PASS" start="2025-02-23T20:26:35.154451" elapsed="0.270074"/>
+</kw>
+<kw name="Wait Until Element Is Not Visible" owner="SeleniumLibrary">
+<arg>xpath=//div[contains(@class,'swal2-container')]</arg>
+<arg>timeout=5s</arg>
+<doc>Waits until the element ``locator`` is not visible.</doc>
+<status status="PASS" start="2025-02-23T20:26:35.424721" elapsed="0.008148"/>
+</kw>
+<kw name="Press Keys" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:35.433586" level="INFO">Sending key(s) ('ESC',) to page.</msg>
+<msg time="2025-02-23T20:26:35.433669" level="INFO">Pressing special key ESCAPE to browser.</msg>
+<msg time="2025-02-23T20:26:35.433725" level="INFO">Releasing special key ESCAPE.</msg>
+<arg>NONE</arg>
+<arg>ESC</arg>
+<doc>Simulates the user pressing key(s) to an element or on the active browser.</doc>
+<status status="PASS" start="2025-02-23T20:26:35.433264" elapsed="0.005605"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-02-23T20:26:36.439654" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-02-23T20:26:35.439033" elapsed="1.000735"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" owner="SeleniumLibrary">
+<arg>xpath=(//table[@id='news-table']//tr[td[contains(text(),'${NEWS_ID}')]]//button[contains(@class,'btn-add')])[1]</arg>
+<arg>timeout=5s</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" start="2025-02-23T20:26:36.439933" elapsed="0.017309"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:36.457666" level="INFO">Clicking button 'xpath=(//table[@id='news-table']//tr[td[contains(text(),'58')]]//button[contains(@class,'btn-add')])[1]'.</msg>
+<arg>xpath=(//table[@id='news-table']//tr[td[contains(text(),'${NEWS_ID}')]]//button[contains(@class,'btn-add')])[1]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:36.457433" elapsed="0.049498"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//table[@id='highlight-table']//tr[td[normalize-space(text())='${NEWS_ID}']]</arg>
+<arg>timeout=10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2025-02-23T20:26:36.507152" elapsed="0.844382"/>
+</kw>
+<kw name="Get Element Count" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:37.357558" level="INFO">${ROW_COUNT} = 3</msg>
+<var>${ROW_COUNT}</var>
+<arg>xpath=//table[@id='highlight-table']//tbody/tr</arg>
+<doc>Returns the number of elements matching ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:37.351873" elapsed="0.005756"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>จำนวนข่าวใน Highlights หลังเพิ่ม: ${ROW_COUNT}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-02-23T20:26:37.357764" elapsed="0.000404"/>
+</kw>
+<kw name="Get Element Count" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:37.365993" level="INFO">${NEWS_COUNT} = 6</msg>
+<var>${NEWS_COUNT}</var>
+<arg>xpath=//table[@id='news-table']//tr</arg>
+<doc>Returns the number of elements matching ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:37.358301" elapsed="0.007739"/>
+</kw>
+<kw name="Exit For Loop If" owner="BuiltIn">
+<arg>${NEWS_COUNT} == 0</arg>
+<doc>Stops executing the enclosing FOR loop if the ``condition`` is true.</doc>
+<status status="PASS" start="2025-02-23T20:26:37.366179" elapsed="0.000236"/>
+</kw>
+<status status="PASS" start="2025-02-23T20:26:35.133417" elapsed="2.233038"/>
+</iter>
+<iter>
+<kw name="Get Text" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:37.377680" level="INFO">${NEWS_ID} = 59</msg>
+<var>${NEWS_ID}</var>
+<arg>xpath=(//table[@id='news-table']//tr[1]//td[1])[1]</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:37.366682" elapsed="0.011044"/>
+</kw>
+<kw name="Scroll Element Into View" owner="SeleniumLibrary">
+<arg>xpath=(//table[@id='news-table']//tr[td[contains(text(),'${NEWS_ID}')]]//button[contains(@class,'btn-add')])[1]</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="PASS" start="2025-02-23T20:26:37.377887" elapsed="0.274187"/>
+</kw>
+<kw name="Wait Until Element Is Not Visible" owner="SeleniumLibrary">
+<arg>xpath=//div[contains(@class,'swal2-container')]</arg>
+<arg>timeout=5s</arg>
+<doc>Waits until the element ``locator`` is not visible.</doc>
+<status status="PASS" start="2025-02-23T20:26:37.652250" elapsed="1.282080"/>
+</kw>
+<kw name="Press Keys" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:38.934845" level="INFO">Sending key(s) ('ESC',) to page.</msg>
+<msg time="2025-02-23T20:26:38.934927" level="INFO">Pressing special key ESCAPE to browser.</msg>
+<msg time="2025-02-23T20:26:38.934971" level="INFO">Releasing special key ESCAPE.</msg>
+<arg>NONE</arg>
+<arg>ESC</arg>
+<doc>Simulates the user pressing key(s) to an element or on the active browser.</doc>
+<status status="PASS" start="2025-02-23T20:26:38.934517" elapsed="0.005355"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-02-23T20:26:39.940654" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-02-23T20:26:38.940070" elapsed="1.000699"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" owner="SeleniumLibrary">
+<arg>xpath=(//table[@id='news-table']//tr[td[contains(text(),'${NEWS_ID}')]]//button[contains(@class,'btn-add')])[1]</arg>
+<arg>timeout=5s</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" start="2025-02-23T20:26:39.940944" elapsed="0.014629"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:39.956005" level="INFO">Clicking button 'xpath=(//table[@id='news-table']//tr[td[contains(text(),'59')]]//button[contains(@class,'btn-add')])[1]'.</msg>
+<arg>xpath=(//table[@id='news-table']//tr[td[contains(text(),'${NEWS_ID}')]]//button[contains(@class,'btn-add')])[1]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:39.955764" elapsed="0.051199"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//table[@id='highlight-table']//tr[td[normalize-space(text())='${NEWS_ID}']]</arg>
+<arg>timeout=10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2025-02-23T20:26:40.007172" elapsed="0.837578"/>
+</kw>
+<kw name="Get Element Count" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:40.850108" level="INFO">${ROW_COUNT} = 4</msg>
+<var>${ROW_COUNT}</var>
+<arg>xpath=//table[@id='highlight-table']//tbody/tr</arg>
+<doc>Returns the number of elements matching ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:40.844927" elapsed="0.005236"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>จำนวนข่าวใน Highlights หลังเพิ่ม: ${ROW_COUNT}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-02-23T20:26:40.850327" elapsed="0.000414"/>
+</kw>
+<kw name="Get Element Count" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:40.855833" level="INFO">${NEWS_COUNT} = 5</msg>
+<var>${NEWS_COUNT}</var>
+<arg>xpath=//table[@id='news-table']//tr</arg>
+<doc>Returns the number of elements matching ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:40.850876" elapsed="0.004988"/>
+</kw>
+<kw name="Exit For Loop If" owner="BuiltIn">
+<arg>${NEWS_COUNT} == 0</arg>
+<doc>Stops executing the enclosing FOR loop if the ``condition`` is true.</doc>
+<status status="PASS" start="2025-02-23T20:26:40.855969" elapsed="0.000208"/>
+</kw>
+<status status="PASS" start="2025-02-23T20:26:37.366496" elapsed="3.489723"/>
+</iter>
+<iter>
+<kw name="Get Text" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:40.867678" level="INFO">${NEWS_ID} = 60</msg>
+<var>${NEWS_ID}</var>
+<arg>xpath=(//table[@id='news-table']//tr[1]//td[1])[1]</arg>
+<doc>Returns the text value of the element identified by ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:40.856470" elapsed="0.011250"/>
+</kw>
+<kw name="Scroll Element Into View" owner="SeleniumLibrary">
+<arg>xpath=(//table[@id='news-table']//tr[td[contains(text(),'${NEWS_ID}')]]//button[contains(@class,'btn-add')])[1]</arg>
+<doc>Scrolls the element identified by ``locator`` into view.</doc>
+<status status="PASS" start="2025-02-23T20:26:40.867863" elapsed="0.272649"/>
+</kw>
+<kw name="Wait Until Element Is Not Visible" owner="SeleniumLibrary">
+<arg>xpath=//div[contains(@class,'swal2-container')]</arg>
+<arg>timeout=5s</arg>
+<doc>Waits until the element ``locator`` is not visible.</doc>
+<status status="PASS" start="2025-02-23T20:26:41.140763" elapsed="1.281326"/>
+</kw>
+<kw name="Press Keys" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:42.422600" level="INFO">Sending key(s) ('ESC',) to page.</msg>
+<msg time="2025-02-23T20:26:42.422677" level="INFO">Pressing special key ESCAPE to browser.</msg>
+<msg time="2025-02-23T20:26:42.422714" level="INFO">Releasing special key ESCAPE.</msg>
+<arg>NONE</arg>
+<arg>ESC</arg>
+<doc>Simulates the user pressing key(s) to an element or on the active browser.</doc>
+<status status="PASS" start="2025-02-23T20:26:42.422277" elapsed="0.004732"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-02-23T20:26:43.427846" level="INFO">Slept 1 second.</msg>
+<arg>1s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-02-23T20:26:42.427165" elapsed="1.000832"/>
+</kw>
+<kw name="Wait Until Element Is Enabled" owner="SeleniumLibrary">
+<arg>xpath=(//table[@id='news-table']//tr[td[contains(text(),'${NEWS_ID}')]]//button[contains(@class,'btn-add')])[1]</arg>
+<arg>timeout=5s</arg>
+<doc>Waits until the element ``locator`` is enabled.</doc>
+<status status="PASS" start="2025-02-23T20:26:43.428259" elapsed="0.013434"/>
+</kw>
+<kw name="Click Button" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:43.442128" level="INFO">Clicking button 'xpath=(//table[@id='news-table']//tr[td[contains(text(),'60')]]//button[contains(@class,'btn-add')])[1]'.</msg>
+<arg>xpath=(//table[@id='news-table']//tr[td[contains(text(),'${NEWS_ID}')]]//button[contains(@class,'btn-add')])[1]</arg>
+<doc>Clicks the button identified by ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:43.441880" elapsed="0.047914"/>
+</kw>
+<kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
+<arg>xpath=//table[@id='highlight-table']//tr[td[normalize-space(text())='${NEWS_ID}']]</arg>
+<arg>timeout=10s</arg>
+<doc>Waits until the element ``locator`` is visible.</doc>
+<status status="PASS" start="2025-02-23T20:26:43.489980" elapsed="0.841374"/>
+</kw>
+<kw name="Get Element Count" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:44.336406" level="INFO">${ROW_COUNT} = 5</msg>
+<var>${ROW_COUNT}</var>
+<arg>xpath=//table[@id='highlight-table']//tbody/tr</arg>
+<doc>Returns the number of elements matching ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:44.331541" elapsed="0.004902"/>
+</kw>
+<kw name="Log To Console" owner="BuiltIn">
+<arg>จำนวนข่าวใน Highlights หลังเพิ่ม: ${ROW_COUNT}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" start="2025-02-23T20:26:44.336572" elapsed="0.000347"/>
+</kw>
+<kw name="Get Element Count" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:44.343784" level="INFO">${NEWS_COUNT} = 4</msg>
+<var>${NEWS_COUNT}</var>
+<arg>xpath=//table[@id='news-table']//tr</arg>
+<doc>Returns the number of elements matching ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:44.337044" elapsed="0.006781"/>
+</kw>
+<kw name="Exit For Loop If" owner="BuiltIn">
+<arg>${NEWS_COUNT} == 0</arg>
+<doc>Stops executing the enclosing FOR loop if the ``condition`` is true.</doc>
+<status status="PASS" start="2025-02-23T20:26:44.343986" elapsed="0.000214"/>
+</kw>
+<status status="PASS" start="2025-02-23T20:26:40.856265" elapsed="3.487975"/>
+</iter>
+<status status="PASS" start="2025-02-23T20:26:35.133414" elapsed="9.210973"/>
+</while>
+<kw name="Get Element Attribute" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:44.357197" level="INFO">${ADD_BUTTON_STATE} = true</msg>
+<var>${ADD_BUTTON_STATE}</var>
+<arg>xpath=(//table[@id='news-table']//tr[1]//button[contains(@class,'btn-add')])[1]</arg>
+<arg>disabled</arg>
+<doc>Returns the value of ``attribute`` from the element ``locator``.</doc>
+<status status="PASS" start="2025-02-23T20:26:44.344598" elapsed="0.012651"/>
+</kw>
+<kw name="Should Be Equal As Strings" owner="BuiltIn">
+<arg>${ADD_BUTTON_STATE}</arg>
+<arg>true</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<status status="PASS" start="2025-02-23T20:26:44.357564" elapsed="0.000247"/>
+</kw>
+<kw name="Location Should Be" owner="SeleniumLibrary">
+<msg time="2025-02-23T20:26:44.361532" level="INFO">Current location is 'https://cs04sec267.cpkkuhost.com/highlights'.</msg>
+<arg>${MANAGE_HIGHLIGHTS_URL}</arg>
+<doc>Verifies that the current URL is exactly ``url``.</doc>
+<status status="PASS" start="2025-02-23T20:26:44.358022" elapsed="0.003644"/>
+</kw>
+<kw name="Sleep" owner="BuiltIn">
+<msg time="2025-02-23T20:26:46.362783" level="INFO">Slept 2 seconds.</msg>
+<arg>2s</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="PASS" start="2025-02-23T20:26:44.361970" elapsed="2.001018"/>
+</kw>
+<kw name="Close Browser" owner="SeleniumLibrary">
+<doc>Closes the current browser.</doc>
+<status status="PASS" start="2025-02-23T20:26:46.363552" elapsed="2.175278"/>
+</kw>
+<doc>ทดสอบการเพิ่มข่าวเข้า Highlights เมื่อ Highlights เต็ม</doc>
+<tag>UAT-V1-03</tag>
+<status status="PASS" start="2025-02-23T20:26:24.383118" elapsed="24.156407"/>
+</test>
+<status status="PASS" start="2025-02-23T20:26:24.152990" elapsed="24.387407"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="1" fail="0" skip="0">UAT-V1-03</stat>
+</tag>
+<suite>
+<stat name="test staff AddHighlightUnsuccess" id="s1" pass="1" fail="0" skip="0">test staff AddHighlightUnsuccess</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
