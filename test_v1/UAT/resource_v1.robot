@@ -10,30 +10,35 @@ Library           SeleniumLibrary
 ${BROWSER}       chrome
 # สำหรับทดสอบ localhost
 # ${LOCALHOST}     127.0.0.1:8000
-${LOCALHOST}     localhost
-${URL}           http://${LOCALHOST}/
-${LOGIN_URL}     http://${LOCALHOST}/login
-${DASHBOARD_URL}  http://${LOCALHOST}/dashboard
-${MANAGE_HIGHLIGHTS_URL}    http://${LOCALHOST}/highlights
-${CREATE_NEWS_URL}    http://${LOCALHOST}/highlights/create
+# ${LOCALHOST}     localhost
+# ${URL}           http://${LOCALHOST}/
+# ${LOGIN_URL}     http://${LOCALHOST}/login
+# ${DASHBOARD_URL}  http://${LOCALHOST}/dashboard
+# ${MANAGE_HIGHLIGHTS_URL}    http://${LOCALHOST}/highlights
+# ${CREATE_NEWS_URL}    http://${LOCALHOST}/highlights/create
 # สำหรับทดสอบ host จริง
-# ${HOST}          cs04sec267.cpkkuhost.com
-# ${URL}           https://${HOST}/
-# ${LOGIN_URL}     https://${HOST}/login
-# ${DASHBOARD_URL}  https://${HOST}/dashboard
-# ${MANAGE_HIGHLIGHTS_URL}    https://${HOST}/highlights
+${HOST}          cs04sec267.cpkkuhost.com
+${URL}           https://${HOST}/
+${LOGIN_URL}     https://${HOST}/login
+${DASHBOARD_URL}  https://${HOST}/dashboard
+${MANAGE_HIGHLIGHTS_URL}    https://${HOST}/highlights
+${CREATE_NEWS_URL}    https://${HOST}/highlights/create
 ${ADMIN_USERNAME}      admin@gmail.com
 ${ADMIN_PASSWORD}      12345678
 ${STAFF_USERNAME}      staff@gmail.com
 ${STAFF_PASSWORD}      123456789
 ${RESEARCHER_USERNAME}      thanaphon@kku.ac.th
 ${RESEARCHER_PASSWORD}      123456789
+${INVALID_ADMIN_USERNAME}   staff@mail.com
 ${INVALID_PASSWORD}      111111111
 ${error_message}    Login Failed: Your user ID or password is incorrect
 ${DELAY}    2
 
 ${TITLE}          โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
 ${DESCRIPTION}    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
+
+${CHROME_BROWSER_PATH}    /Users/fan/Desktop/ChromeForTesting/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing
+${CHROME_DRIVER_PATH}     /Users/fan/Desktop/ChromeForTesting/chromedriver-mac-arm64/chromedriver
 
 *** Keywords ***
 Verify Admin Dashboard
@@ -83,10 +88,39 @@ Verify Researcher Dashboard
 #     Page Should Not Contain    Manage Programs
 #     Page Should Not Contain    Manage Highlights
 
+Open Browser
+    # สร้าง options สำหรับ Chrome
+    ${chrome_options}    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()
+
+    # ตั้งค่า binary_location ให้กับ chrome_options
+    ${chrome_options.binary_location}    Set Variable    ${CHROME_BROWSER_PATH}
+
+    # สร้าง service สำหรับ chromedriver
+    ${service}    Evaluate    sys.modules['selenium.webdriver.chrome.service'].Service(executable_path="${CHROME_DRIVER_PATH}")
+
+    # สร้าง WebDriver โดยใช้ options และ service
+    Create Webdriver    Chrome    options=${chrome_options}    service=${service}
+
+    Maximize Browser Window
+    Go To    ${URL}
+
 Go To Login Page
-    Open Browser    ${URL}    ${BROWSER}
+    # สร้าง options สำหรับ Chrome
+    ${chrome_options}    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()
+
+    # ตั้งค่า binary_location ให้กับ chrome_options
+    ${chrome_options.binary_location}    Set Variable    ${CHROME_BROWSER_PATH}
+
+    # สร้าง service สำหรับ chromedriver
+    ${service}    Evaluate    sys.modules['selenium.webdriver.chrome.service'].Service(executable_path="${CHROME_DRIVER_PATH}")
+
+    # สร้าง WebDriver โดยใช้ options และ service
+    Create Webdriver    Chrome    options=${chrome_options}    service=${service}
+
     Maximize Browser Window
     # 1. เปิดเว็บไซต์ที่หน้าแรก
+    # ไปที่ URL ที่ต้องการ
+    Go To    ${URL}
     Location Should Be    ${URL}
     # 2. คลิกปุ่ม Login
     # Click Link    xpath=//a[@class='btn-solid-sm' and text()='Login']

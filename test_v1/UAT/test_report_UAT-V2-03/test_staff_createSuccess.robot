@@ -1,11 +1,14 @@
 *** Settings ***
-Resource          ./resource_v1.robot
+Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/UAT/resource_v1.robot
 # Library           SeleniumLibrary
 
 *** Variables ***
 
 *** Test Cases ***
-# Test Scenario ID:	UAT-V1-03
+
+Test Go To Manage Highlights Page
+    Go To Manage Highlights Page
+    Close Browser
 
 Test Create News Success
     # ✅ Passed
