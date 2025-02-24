@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Highlight;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class AllHighlightsController extends Controller
@@ -13,15 +14,18 @@ class AllHighlightsController extends Controller
         $highlights = Highlight::with(['tags', 'user', 'images'])
                         ->latest()
                         ->paginate(10);
-                        
-        return view('allhighlights.index', compact('highlights'));
+
+        // ดึงข้อมูล tag ทั้งหมด
+        $tags = Tag::all();
+
+        return view('allhighlights.index', compact('highlights', 'tags'));
     }
 
     public function show($id)
     {
         // ดึงข้อมูล Highlight ที่มีความสัมพันธ์ tags, user, images ด้วย
         $highlight = Highlight::with(['tags', 'user', 'images'])->findOrFail($id);
-        
+
         return view('allhighlights.show', compact('highlight'));
     }
 }

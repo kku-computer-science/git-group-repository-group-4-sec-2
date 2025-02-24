@@ -1,29 +1,40 @@
 @extends('layouts.layout')
 <style>
     /* Fix the carousel size */
-    #carouselExampleIndicators {
+    /* #carouselExampleIndicators {
         max-width: 100%;
         border-radius: 10px;
-        /* Add rounded corners */
         width: 100%;
-        /* Set your desired width */
         height: 15rem;
-        /* Set your desired height */
         margin: auto;
-        /* Center the carousel */
         overflow: hidden;
         border: 1px solid #ccc;
         display: flex;
         justify-content: center;
         align-items: center;
+    } */
+    #carouselExampleIndicators {
+        max-width: 100%;
+        border-radius: 10px;
+        width: 100%;
+        height: 15rem;
+        margin: auto;
+        overflow: hidden;
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: url('{{ asset("img/ba_banner_highlights.jpg") }}') no-repeat center center;
+        background-size: cover;
     }
+
 
     #carouselExampleIndicators h1 {
         font-size: 2rem;
-        color: #000;
+        /* background-color: #000000; */
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #FFFFFF;
         text-align: center;
-        background-color: #000;
-        opacity: 0.75;
         color: white;
         width: 100%;
         padding: 1.5rem 0;
@@ -82,6 +93,7 @@
         margin: auto;
         padding: 2rem;
         min-height: 2rem;
+        text-decoration: none;
     }
 
     /* Card แต่ละใบ */
@@ -94,6 +106,7 @@
         border-radius: 16px;
         background: #ECE9E6;
         transition: transform 0.3s ease;
+        text-decoration: none;
     }
 
     /* Tag เฉพาะใน Card ที่กรอบล้อมรอบตัวอักษร */
@@ -109,6 +122,7 @@
     /* Hover Effect */
     .card:hover {
         transform: translateY(-5px);
+        text-decoration: none;
     }
 
     /* ภาพใน Card */
@@ -124,6 +138,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+        color: black;
     }
 
     /* หัวข้อใน Card */
@@ -140,7 +155,7 @@
 
     /* กำหนดความสูงของ card header ให้เท่ากับ static example */
     .card_header {
-        height: 15rem; /* กำหนดความสูงที่ต้องการ */
+        height: 15rem;
         overflow: hidden;
     }
 
@@ -158,10 +173,89 @@
         }
     }
 
+    /* เพิ่มมา */
     .tag-container {
         display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
+        flex-wrap: nowrap;
+        overflow: hidden;
+        gap: 1px;
+    }
+
+    .tag-list-wrapper {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        margin: 0;
+    }
+
+    .tag-list {
+        display: flex;
+        flex-wrap: nowrap;
+        /* แสดง tag ในแถวเดียว */
+        gap: 10px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        margin-top: 2rem;
+        /* padding: 10px 10px; */
+        /* มี padding เพื่อเว้นระยะจากปุ่ม */
+    }
+
+    /* ซ่อน scrollbar ในเบราว์เซอร์ที่รองรับ */
+    .tag-list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tag-item {
+        font-size: 1rem;
+        font-weight: 500;
+        color: rgb(62, 162, 233);
+        padding: 5px 10px;
+        border-radius: 8px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        text-decoration: none;
+        border: 2px solid rgb(76, 169, 235);
+        white-space: nowrap;
+        /* ป้องกันไม่ให้ข้อความ wrap เป็นหลายบรรทัด */
+    }
+
+    .scroll-btn {
+        position: absolute;
+        /* top: 50%; */
+        /* transform: translateY(-50%); */
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 100%;
+        width: 2.5rem;
+        border: none;
+        color: white;
+        padding: 8px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    #scrollRightTag {
+        margin-left: 6.25rem;
+        background-color: rgb(62, 162, 233);
+    }
+
+    #scrollLeftTag {
+        margin-left: 3.5rem;
+        background-color: rgb(62, 162, 233);
+    }
+
+    #scrollRightTag:hover {
+        background-color: rgb(34, 121, 184);
+    }
+
+    #scrollLeftTag:hover {
+        background-color: rgb(34, 121, 184);
+    }
+
+    .btn-group-tag {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 2rem;
     }
 </style>
 
@@ -170,69 +264,51 @@
 <div class="container">
     <div class="container d-sm-flex justify-content-center mt-5">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-            <!-- ใส่เนื้อหา carousel ตามต้องการ -->
+            <h1>HIGHLIGHTS</h1>
         </div>
     </div>
 </div>
 
-<!-- Tag list -->
-<div class="container">
+<!-- Dynamic Tag list -->
+<!-- <div class="container">
     <div class="flex-wrap" style="display: flex; align-items: center; gap: 8px; margin-top: 45px;">
         <h5 class="tag-header ml-2">TAG :</h5>
         <div class="tag-list">
             <a href="#" class="tag-item tag-all active" data-tag="all">All</a>
-            <a href="#" class="tag-item" data-tag="technology">Technology</a>
-            <a href="#" class="tag-item" data-tag="programming">Programming</a>
-            <a href="#" class="tag-item" data-tag="webdev">Web Development</a>
-            <a href="#" class="tag-item" data-tag="design">Design</a>
-            <a href="#" class="tag-item" data-tag="ai">AI</a>
-            <a href="#" class="tag-item" data-tag="ml">Machine Learning</a>
+            @foreach ($tags as $tag)
+                <a href="#" class="tag-item" data-tag="{{ strtolower(trim($tag->name)) }}">{{ $tag->name }}</a>
+            @endforeach
+        </div>
+    </div>
+</div> -->
+<!-- Dynamic Tag list -->
+<div class="container">
+    <div>
+        <div class="container">
+            <div class="btn-group-tag">
+                <h4>Tag : </h4>
+                <button id="scrollLeftTag" class="scroll-btn">&lt;</button>
+                <button id="scrollRightTag" class="scroll-btn">&gt;</button>
+            </div>
+            <div class="tag-list-wrapper">
+                <div class="tag-list">
+                    <a href="#" class="tag-item tag-all active" data-tag="all">All</a>
+                    @foreach ($tags as $tag)
+                    <a href="#" class="tag-item" data-tag="{{ strtolower(trim($tag->name)) }}">{{ $tag->name }}</a>
+                    @endforeach
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Card Section (Static Example) -->
-<div class="container-card">
-    <div class="card" data-tag="ml">
-        <div class="card_header">
-            <img src="" alt="card_image" class="card_image">
-        </div>
-        <div class="card_body">
-            <span class="tag-item">Machine Learning</span>
-            <h4>ML Algorithms Explained</h4>
-            <p>Understanding machine learning basics.</p>
-        </div>
-    </div>
 
-    <div class="card" data-tag="technology">
-        <div class="card_header">
-            <img src="" alt="card_image" class="card_image">
-        </div>
-        <div class="card_body">
-            <span class="tag-item">Technology</span>
-            <h4>What's new in 2022 Tech</h4>
-            <p>Lorem ipsum dolor sit consectetur adipisicing elit.</p>
-        </div>
-    </div>
-
-    <div class="card" data-tag="ai">
-        <div class="card_header">
-            <img src="" alt="card_image" class="card_image">
-        </div>
-        <div class="card_body">
-            <span class="tag-item">AI</span>
-            <h4>What's new in 2022 Tech</h4>
-            <p>Lorem ipsum dolor sit consectetur adipisicing elit.</p>
-        </div>
-    </div>
-</div>
 
 <!-- Dynamic Item Highlights -->
-<div class="container-card">
+<!-- <div class="container-card">
     @foreach ($highlights as $highlight)
-    <div class="card" data-tag="{{ $highlight->tags->isNotEmpty() ? $highlight->tags->pluck('name')->map(function($name) { return Str::slug($name); })->implode(' ') : '' }}">
+    <div class="card" data-tag="{{ $highlight->tags->isNotEmpty() ? $highlight->tags->pluck('name')->map(function($name) { return strtolower(trim($name)); })->implode('|') : '' }}">
         <div class="card_header">
-            <!-- ดึงภาพจากฐานข้อมูล -->
             <img src="{{ asset('storage/' . $highlight->image) }}" alt="{{ $highlight->title }}" class="card_image">
         </div>
         <div class="card_body">
@@ -248,5 +324,79 @@
         </div>
     </div>
     @endforeach
+</div> -->
+<!-- Dynamic Item Highlights -->
+<div class="container-card">
+    @foreach ($highlights as $highlight)
+    <a href="{{ route('highlight.show', $highlight->id) }}" class="card" data-tag="{{ $highlight->tags->isNotEmpty() ? $highlight->tags->pluck('name')->map(function($name) { return strtolower(trim($name)); })->implode('|') : '' }}">
+        <div class="card_header">
+            <img src="{{ asset('storage/' . $highlight->image) }}" alt="{{ $highlight->title }}" class="card_image">
+        </div>
+        <div class="card_body">
+            @if($highlight->tags->isNotEmpty())
+            <div class="tag-container">
+                @foreach ($highlight->tags as $tag)
+                    <span class="tag-item">{{ $tag->name }}</span>
+                @endforeach
+            </div>
+            @endif
+            <h4>{{ $highlight->title }}</h4>
+            <p>{{ Str::limit($highlight->description, 100) }}</p>
+        </div>
+    </a>
+    @endforeach
 </div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tagItems = document.querySelectorAll('.tag-list > a.tag-item');
+        const cards = document.querySelectorAll('.container-card .card');
+        ////
+        const tagList = document.querySelector('.tag-list');
+        const btnLeft = document.getElementById('scrollLeftTag');
+        const btnRight = document.getElementById('scrollRightTag');
+
+        btnLeft.addEventListener('click', function() {
+            tagList.scrollBy({
+                left: -150,
+                behavior: 'smooth'
+            });
+        });
+
+        btnRight.addEventListener('click', function() {
+            tagList.scrollBy({
+                left: 150,
+                behavior: 'smooth'
+            });
+        });
+        ////
+        tagItems.forEach(tagItem => {
+            tagItem.addEventListener('click', function(event) {
+                event.preventDefault();
+                // ลบคลาส active จาก tag list ทั้งหมด
+                tagItems.forEach(t => t.classList.remove('active'));
+                // เพิ่ม active ให้กับ tag ที่ถูกคลิก
+                this.classList.add('active');
+
+                const selectedTag = this.getAttribute('data-tag'); // ค่าเป็น lowercase
+                cards.forEach(card => {
+                    const tagAttr = card.getAttribute('data-tag') || '';
+                    // แยกเป็น array ด้วยตัวคั่น '|' และ trim ค่าแต่ละตัว
+                    const cardTags = tagAttr.split('|').map(t => t.trim()).filter(t => t !== '');
+
+                    if (selectedTag === 'all' || cardTags.includes(selectedTag)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+
+
 @endsection
