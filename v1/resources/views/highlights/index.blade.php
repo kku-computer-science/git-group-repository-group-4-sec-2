@@ -16,8 +16,8 @@
     <!-- ซ่อนค่า Count ของ Highlights -->
     <input type="hidden" id="highlight-count" value="{{ $highlights->where('status', 1)->count() }}">
 
-    <!-- ✅ ตาราง Highlights (ข้างบน) -->
-    <h2>Highlights</h2>
+    <!-- ✅ ตาราง Show  Highlights (ข้างบน) -->
+    <h2>Show Highlights</h2>
     <table id="highlight-table" class="table table-striped">
 
         <thead>
@@ -67,9 +67,11 @@
         </tbody>
     </table>
 
-    <!-- ✅ ตาราง News-->
-    <h2>News</h2>
+    <h2>Highlights</h2>
     <a href="{{ route('highlights.create') }}" class="btn btn-primary mb-3">+ Create</a>
+    <button type="button" class="btn btn-danger" id="deleteTagBtn">
+        ลบ Tag
+    </button>
     <table id="news-table" class="table table-striped">
 
         <thead>
@@ -90,7 +92,7 @@
                 <td>{{ $highlight->id }}</td>
                 <td>
                     @if($highlight->image)
-                    <img src="{{ asset('storage/' . $highlight->image) }}" width="120">
+                    <img src="{{ asset('storage/' . $highlight->image) }}">
                     @else
                     No Image
                     @endif
@@ -120,12 +122,42 @@
     </table>
 </div>
 
-
-
-
-
-
-
+<!-- Modal แสดงรายการ Tag -->
+<div id="deleteTagModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">เลือกลบ Tag</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ชื่อ Tag</th>
+                            <th>ลบ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($tags as $index => $tag)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $tag->name }}</td>
+                            <td>
+                                <button class="btn btn-danger delete-tag-btn" data-id="{{ $tag->id }}">ลบ</button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
@@ -266,7 +298,14 @@
                             updateHighlightCount();
                         },
                         error: function(xhr) {
-                            Swal.fire("ผิดพลาด!", "เกิดข้อผิดพลาดบางอย่าง!", "error");
+                            Swal.fire({
+                                icon: "error",
+                                title: "เกิดข้อผิดพลาด!",
+                                padding: "1.25rem",
+                                text: "ไม่สามารถลบรายการนี้ได้",
+                                confirmButtonText: "ตกลง",
+                                confirmButtonColor: "#3085d6"
+                            });
                         }
                     });
                 }
@@ -281,7 +320,7 @@
         $('#highlight-table').DataTable();
         $('#news-table').DataTable();
 
-      
+
         setTimeout(function() {
             $(".alert-success").fadeOut("slow");
         }, 2000);
@@ -308,10 +347,104 @@
 
             if (titleText.length > 25) {
                 var shortenedTitle = titleText.substring(0, 25) + '...'; // ย่อข้อความและเพิ่ม ...
-                titleCell.text(shortenedTitle); // อัพเดตข้อความที่แสดงในตาราง
+                titleCell.text(shortenedTitle);
             }
         });
     });
+
+    $(document).ready(function() {
+        // เปิด Modal
+        $("#deleteTagBtn").click(function() {
+            $("#deleteTagModal").modal("show");
+        });
+
+        // ฟังก์ชันลบ Tag
+        $(document).on("click", ".delete-tag-btn", function() {
+            let tagId = $(this).data("id");
+
+            Swal.fire({
+                title: "คุณแน่ใจหรือไม่?",
+                text: "Tag นี้จะถูกลบและไม่สามารถกู้คืนได้!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "ใช่, ลบเลย!",
+                cancelButtonText: "ยกเลิก"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/tags/${tagId}`,
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire("ลบสำเร็จ!", "Tag ถูกลบเรียบร้อย", "success").then(() => {
+                                    location.reload(); // รีโหลดหน้าเพื่ออัปเดตรายการ
+                                });
+                            } else {
+                                Swal.fire("ไม่สามารถลบได้!", response.message, "warning");
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 400) {
+                                Swal.fire("ไม่สามารถลบได้!", "Tag นี้ถูกใช้งานอยู่ ไม่สามารถลบได้", "warning");
+                            } else {
+                                Swal.fire("Error", "เกิดข้อผิดพลาด ไม่สามารถลบ Tag ได้", "error");
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    });
 </script>
+
+<style>
+    .table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .table th,
+    .table td {
+        word-wrap: break-word;
+        white-space: normal;
+        max-width: 200px;
+    }
+
+    .container {
+        overflow-x: auto;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .action-buttons .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+
+
+    th:nth-child(7),
+    td:nth-child(7) {
+        width: 300px;
+    }
+
+    td img {
+        border-radius: 0 !important;
+        width: 100px !important;
+        height: auto !important;
+        object-fit: cover;
+    }
+</style>
 
 @endsection

@@ -2,11 +2,15 @@
 
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <div class="container">
     <div class="card" style="padding: 16px;">
         <div class="card-body">
-            <h4 class="card-title">Create News</h4>
+            <h4 class="card-title">Create Highlight</h4>
             <form id="newsForm" action="{{ route('highlights.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
@@ -34,16 +38,25 @@
 
                 <div class="form-group">
                     <label for="tag">Tags</label>
-                    <select name="tag_id[]" id="tag" class="form-control" multiple> <!-- ✅ เปลี่ยน name="tag_id" เป็น name="tag_id[]" และเพิ่ม multiple -->
+
+                    <select name="tag_id[]" id="tag" class="form-control select2" multiple="multiple">
                         @foreach ($categories as $tag)
-                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                        <option value="{{ $tag->id }}">
+                            {{ $tag->name }}
+                        </option>
                         @endforeach
                     </select>
+                    <button type="button" class="btn btn-dark mt-2" id="createTagBtn">Create</button>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea name="description" id="description" class="form-control description-box" rows="6"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="research_link">Addtional Link</label>
+                    <input type="url" class="form-control" id="link" name="link" placeholder="Enter the link">
                 </div>
 
                 <div class="form-group">
@@ -70,7 +83,148 @@
     </div>
 </div>
 
+<!-- Modal for Creating New Tag -->
+<div class="modal fade" id="createTagModal" tabindex="-1" role="dialog" aria-labelledby="createTagLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Tag</h5>
+                <button type="button" class="close close-modal" aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="newTagName" class="form-control" placeholder="Enter tag name">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light cancel-modal">Cancel</button>
+                <button type="button" class="btn btn-dark" id="saveTagBtn">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Select tags",
+            tags: true,
+            tokenSeparators: [',', ' ']
+        });
+
+        // Show create tag modal
+        $('#createTagBtn').click(function() {
+            $('#createTagModal').modal('show');
+        });
+
+        // Handle Cancel button with SweetAlert
+        $(document).on('click', '.cancel-modal, .close-modal', function() {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Your input will be lost!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, cancel!",
+                cancelButtonText: "No, keep editing"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#createTagModal').modal('hide'); // ปิด Modal
+                    $('#newTagName').val(''); // เคลียร์ input
+                }
+            });
+        });
+
+        // Save new tag
+        $('#saveTagBtn').click(function() {
+            let tagName = $('#newTagName').val().trim();
+            if (tagName === '') {
+                Swal.fire("Error", "Tag name cannot be empty!", "error");
+                return;
+            }
+
+            $.post("{{ route('tags.store') }}", {
+                name: tagName,
+                _token: '{{ csrf_token() }}'
+            }, function(response) {
+                if (response.success) {
+                    let newTagId = response.tag.id;
+                    let newTagOption = new Option(tagName, newTagId, true, true);
+                    $('#tag').append(newTagOption).trigger('change');
+                    $('#createTagModal').modal('hide');
+                    $('#newTagName').val('');
+                } else {
+                    Swal.fire("Error", response.message, "error");
+                }
+            }).fail(function() {
+                Swal.fire("Error", "Failed to create tag", "error");
+            });
+        });
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+    $(document).on('click', '.remove-tag', function() {
+        let tagId = $(this).data('id');
+        let tagElement = $(this).parent();
+
+        $.ajax({
+            url: `/tags/check/${tagId}`, // ตรวจสอบว่าลบได้หรือไม่
+            type: 'GET',
+            success: function(response) {
+                if (response.canDelete) {
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "This tag will be deleted permanently!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Yes, delete it!",
+                        cancelButtonText: "No, cancel!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: `/tags/${tagId}`,
+                                type: 'DELETE',
+                                data: {
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function(deleteResponse) {
+                                    if (deleteResponse.success) {
+                                        tagElement.remove();
+                                        let tagSelect = $('#tag').val().filter(id => id != tagId);
+                                        $('#tag').val(tagSelect).trigger('change');
+                                    } else {
+                                        Swal.fire("Error", deleteResponse.message, "error");
+                                    }
+                                },
+                                error: function() {
+                                    Swal.fire("Error", "Failed to delete tag", "error");
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    Swal.fire("Cannot Delete", "This tag is linked to a highlight and cannot be removed.", "warning");
+                }
+            },
+            error: function() {
+                Swal.fire("Error", "Failed to check tag dependency", "error");
+            }
+        });
+    });
+
     function confirmCancel() {
         Swal.fire({
             title: "คุณแน่ใจหรือไม่?",
@@ -167,14 +321,12 @@
     }
 
     document.getElementById("newsForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+        event.preventDefault(); // Prevent immediate form submission
 
-        let tagSelect = document.getElementById("tag");
-        let selectedTags = [...tagSelect.selectedOptions].map(option => option.value); // ✅ แก้ตรงนี้ (รองรับหลายค่า)
-
+        let tag = document.getElementById("tag").value;
         let coverPreview = document.getElementById("coverPreview").classList.contains("d-none");
 
-        if (selectedTags.length === 0) { // ✅ ตรวจสอบว่ามีการเลือก Tag อย่างน้อย 1 ค่า
+        if (!tag) {
             Swal.fire({
                 icon: "warning",
                 title: "กรุณาเลือกหมวดหมู่!",
@@ -183,7 +335,7 @@
                 confirmButtonText: "ตกลง",
                 confirmButtonColor: "#3085d6",
             });
-        } else if (coverPreview) {
+        } else if (coverPreview) { // เช็คว่าไม่ได้อัปโหลดรูปภาพ
             Swal.fire({
                 icon: "warning",
                 title: "กรุณาอัปโหลดรูปภาพ!",
@@ -195,6 +347,7 @@
         } else {
             confirmCreate();
         }
+
     });
 
     function confirmCreate() {
@@ -208,6 +361,15 @@
             document.getElementById("newsForm").submit(); // Submit the form after SweetAlert closes
         });
     }
+
+
+    // $(document).ready(function() {
+    //     $('.select2').select2({
+    //         placeholder: "Select tags",
+    //         tags: true,
+    //         tokenSeparators: [',', ' ']
+    //     });
+    // });
 </script>
 
 <style>
@@ -324,10 +486,24 @@
         font-size: 12px;
     }
 
-    #tag {
-        height: auto;
-        /* ✅ ปรับให้ขยายตามจำนวนที่เลือก */
-        min-height: 100px;
+    .select2-selection--multiple {
+        border: 1px solid #d1c7bd !important;
+        border-radius: 10px !important;
+        min-height: 50px !important;
+    }
+
+    .select2-selection__choice {
+        color: #fff !important;
+        border: none !important;
+        border-radius: 25px !important;
+        padding: 8px 25px !important;
+        font-size: 14px !important;
+    }
+
+    .select2-selection__choice__remove {
+        color: #fff !important;
+        font-size: 20px !important;
+        margin: 5px !important;
     }
 </style>
 

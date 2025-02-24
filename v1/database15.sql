@@ -361,7 +361,7 @@ CREATE TABLE `highlight` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_highlight_user` (`user_id`),
   CONSTRAINT `fk_highlight_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -417,7 +417,7 @@ CREATE TABLE `image_collection` (
   UNIQUE KEY `idimage_collection_UNIQUE` (`id`),
   KEY `fk_image_collection_highlight1_idx` (`highlight_id`),
   CONSTRAINT `fk_image_collection_highlight1` FOREIGN KEY (`highlight_id`) REFERENCES `highlight` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -810,7 +810,7 @@ CREATE TABLE `role_has_permissions` (
 
 LOCK TABLES `role_has_permissions` WRITE;
 /*!40000 ALTER TABLE `role_has_permissions` DISABLE KEYS */;
-INSERT INTO `role_has_permissions` VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1),(9,1),(10,1),(11,1),(12,1),(13,1),(14,1),(15,1),(16,1),(17,1),(18,1),(19,1),(20,1),(21,1),(22,1),(23,1),(24,1),(25,1),(26,1),(27,1),(28,1),(29,1),(30,1),(31,1),(32,1),(33,1),(34,1),(35,1),(36,1),(42,1),(43,1),(44,1),(45,1),(46,1),(47,1),(48,1),(50,1),(52,1),(17,2),(18,2),(19,2),(20,2),(21,2),(22,2),(23,2),(24,2),(25,2),(26,2),(27,2),(28,2),(29,2),(30,2),(31,2),(32,2),(31,3),(17,4),(18,4),(19,4),(21,4),(22,4),(23,4),(25,4),(29,4),(30,4),(31,4),(33,4),(34,4),(35,4),(36,4),(37,4),(38,4),(39,4),(42,4),(43,4),(44,4),(45,4),(52,4),(17,5),(18,5),(19,5),(20,5),(21,5),(22,5),(23,5),(24,5);
+INSERT INTO `role_has_permissions` VALUES (1,1),(2,1),(3,1),(4,1),(5,1),(6,1),(7,1),(8,1),(9,1),(10,1),(11,1),(12,1),(13,1),(14,1),(15,1),(16,1),(17,1),(18,1),(19,1),(20,1),(21,1),(22,1),(23,1),(24,1),(25,1),(26,1),(27,1),(28,1),(29,1),(30,1),(31,1),(32,1),(33,1),(34,1),(35,1),(36,1),(42,1),(43,1),(44,1),(45,1),(46,1),(47,1),(48,1),(50,1),(52,1),(17,2),(18,2),(19,2),(20,2),(21,2),(22,2),(23,2),(24,2),(25,2),(26,2),(27,2),(28,2),(29,2),(30,2),(31,2),(32,2),(31,3),(18,4),(19,4),(22,4),(23,4),(30,4),(31,4),(34,4),(35,4),(36,4),(37,4),(38,4),(39,4),(43,4),(44,4),(45,4),(52,4),(17,5),(18,5),(19,5),(20,5),(21,5),(22,5),(23,5),(24,5);
 /*!40000 ALTER TABLE `role_has_permissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1154,4 +1154,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-22 21:35:59
+-- Dump completed on 2025-02-24 21:39:42

@@ -8,9 +8,10 @@
       "extensions": [
         "xdebug.php-pack",
         "bmewburn.vscode-intelephense-client",
-        "ms-azuretools.vscode-docker"
+        "ms-azuretools.vscode-docker",
+        "fabiospampinato.vscode-todo-plus"
       ]
     }
   },
-  "postCreateCommand": "git config --global --add safe.directory /var/www/html && composer update && rm -rf public/storage && php artisan storage:link && curl http://localhost/clear-all && mysql -h mysql -u cs04sec2_cs04sec267 -p\"n*lYXLK_dIMA\" -D cs04sec2_mysql < database13.sql"
+  "postCreateCommand": "git config --global --add safe.directory /var/www/html && composer update && rm -rf public/storage && php artisan storage:link && curl http://localhost/clear-all && mysql -h mysql -u cs04sec2_cs04sec267 -p\"n*lYXLK_dIMA\" -D cs04sec2_mysql < database15.sql"
 }

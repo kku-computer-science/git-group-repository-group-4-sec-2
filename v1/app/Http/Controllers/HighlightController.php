@@ -23,15 +23,18 @@ class HighlightController extends Controller
 {
     public function index()
     {
-        $highlights = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) // ✅ เปลี่ยนจาก 'tag' เป็น 'tags'
+        $highlights = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) 
             ->where('status', 1)
-            ->get(['id', 'image', 'title', 'user_id', 'created_at']); // ✅ 'tag_id' ไม่จำเป็นแล้ว
+            ->get(['id', 'image', 'title', 'user_id', 'created_at']); 
     
         $news = Highlight::whereNull('status')
-            ->with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) // ✅ เปลี่ยนจาก 'tag' เป็น 'tags'
+            ->with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) 
             ->get(['id', 'image', 'title', 'user_id', 'created_at']);
     
-        return view('highlights.index', compact('highlights', 'news'));
+        // ✅ ดึงรายการ Tag ทั้งหมดไปใช้ใน View
+        $tags = Tag::all(['id', 'name']);
+    
+        return view('highlights.index', compact('highlights', 'news', 'tags'));
     }
 
     public function create()
@@ -46,12 +49,42 @@ class HighlightController extends Controller
             'title' => 'required|string|max:255',
             'tag_id' => 'required|array', // ✅ ต้องเป็น array
             'tag_id.*' => 'exists:tag,id', // ✅ ตรวจสอบว่าแต่ละ tag_id มีอยู่จริง
+            'link' => 'nullable|url',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120'
         ]);
-    
+        $manager = new ImageManager(new Driver()); // ใช้ GD หรือ Imagick
+
+        $coverImagePath = null;
+
+        if ($request->hasFile('cover_image')) {
+            $coverFile = $request->file('cover_image');
+            $extension = $coverFile->getClientOriginalExtension();
+            $mime = $coverFile->getMimeType();
+
+            // ตรวจสอบและเลือก Encoder ที่เหมาะสม
+            $encoder = match ($mime) {
+                'image/png' => new PngEncoder(),
+                'image/gif' => new GifEncoder(),
+                'image/webp' => new WebpEncoder(80),
+                default => new JpegEncoder(80) // ค่าเริ่มต้นเป็น JPG
+            };
+
+            $image = $manager->read($coverFile->getPathname())
+                ->scale(width: 1200)
+                ->encode($encoder);
+
+            $fileName = 'highlightImage/' . uniqid() . '.' . $extension;
+            Storage::disk('public')->put($fileName, $image->toString());
+            $coverImagePath = $fileName;
+        }
+
+
         $highlight = Highlight::create([
             'title' => $request->title,
             'description' => $request->description,
             'image' => $request->file('cover_image') ? $request->file('cover_image')->store('highlightImage', 'public') : null,
+            'link' => $request->link,
             'status' => null,
             'user_id' => auth()->id(),
         ]);
@@ -59,17 +92,45 @@ class HighlightController extends Controller
         // ✅ ใช้ `sync()` เชื่อม Many-to-Many ผ่าน Pivot Table `highlight_has_tag`
         $highlight->tags()->sync($request->tag_id);
     
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $imageFile) {
+                $extension = $imageFile->getClientOriginalExtension();
+                $mime = $imageFile->getMimeType();
+
+                $encoder = match ($mime) {
+                    'image/png' => new PngEncoder(),
+                    'image/gif' => new GifEncoder(),
+                    'image/webp' => new WebpEncoder(80),
+                    default => new JpegEncoder(80)
+                };
+
+                $image = $manager->read($imageFile->getPathname())
+                    ->scale(width: 1200)
+                    ->encode($encoder);
+
+                $fileName = 'imagecollection/' . uniqid() . '.' . $extension;
+                Storage::disk('public')->put($fileName, $image->toString());
+
+                ImageCollection::create([
+                    'image' => $fileName,
+                    'highlight_id' => $highlight->id,
+                ]);
+            }
+        }
+
         return redirect()->route('highlights.index')->with('success', 'Highlight created successfully!');
     }
 
     public function edit($id)
     {
         Log::info('Edit Highlight ID: 1');
-        $highlight = Highlight::with('images')->findOrFail($id);
+        $highlight = Highlight::with('tags','images')->findOrFail($id);
         Log::info('Edit Highlight ID: 2');
         $categories = Tag::all();
         Log::info('Edit Highlight ID: 3');
-        return view('highlights.edit', compact('highlight', 'categories'));
+        $selectedTags = $highlight->tags->pluck('id')->toArray();
+        Log::info('Edit Highlight ID: 4');
+        return view('highlights.edit', compact('highlight', 'categories','selectedTags'));
     }
 
     public function update(Request $request, $id)
@@ -79,26 +140,57 @@ class HighlightController extends Controller
             'tag_id' => 'required|array',
             'tag_id.*' => 'exists:tag,id',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'link' => 'nullable|url',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
     
         $highlight = Highlight::findOrFail($id);
+        $manager = new ImageManager(new Driver());
         $coverImagePath = $highlight->image; // ✅ ตั้งค่าเริ่มต้นให้เป็นภาพเดิม
     
         if ($request->hasFile('cover_image')) {
             if ($highlight->image) {
                 Storage::disk('public')->delete($highlight->image);
             }
-            $coverImagePath = $request->file('cover_image')->store('highlightImage', 'public');
-        }
+            $image = $manager->read($request->file('cover_image')->getPathname())
+                ->scale(width: 1200)
+                ->encode(new JpegEncoder(80));
+                $fileName = 'highlightImage/' . uniqid() . '.jpg';
+                Storage::disk('public')->put($fileName, $image->toString());
+                $coverImagePath = $fileName;
+            }
     
         $highlight->update([
             'title' => $request->title,
             'description' => $request->description,
+            'link' => $request->link,
             'image' => $coverImagePath, // ✅ ใช้ค่าที่กำหนด
         ]);
     
-        $highlight->tag()->sync($request->tag_id);
+        $highlight->tags()->sync($request->tag_id);
+
+        if ($request->deleted_images) {
+            $deletedImageIds = json_decode($request->deleted_images, true);
+            foreach ($deletedImageIds as $imageId) {
+                $image = ImageCollection::find($imageId);
+                if ($image) {
+                    Storage::disk('public')->delete($image->image);
+                    $image->delete();
+                }
+            }
+        }
+
+        // ✅ Upload New Images (If Any)
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $imageFile) {
+                $fileName = $imageFile->store('imageCollection', 'public');
+
+                ImageCollection::create([
+                    'image' => $fileName,
+                    'highlight_id' => $highlight->id,
+                ]);
+            }
+        }
     
         return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
     }
@@ -154,18 +246,24 @@ class HighlightController extends Controller
     public function destroy($id)
     {
         $highlight = Highlight::findOrFail($id);
-
+    
+        // ✅ ลบความสัมพันธ์กับ Tags ก่อน (Pivot Table)
+        $highlight->tags()->detach();
+    
+        // ✅ ลบรูปภาพหลักออกจาก Storage
         if ($highlight->image) {
             Storage::disk('public')->delete($highlight->image);
         }
-
+    
+        // ✅ ลบรูปภาพทั้งหมดที่เกี่ยวข้องใน ImageCollection
         foreach ($highlight->images as $image) {
             Storage::disk('public')->delete($image->image);
-            $image->delete();
+            $image->delete(); // ลบจาก Database
         }
-
-        $highlight->delete(); // ✅ ลบออกจาก Database
-
+    
+        // ✅ ลบ Highlight ออกจาก Database
+        $highlight->delete();
+    
         return response()->json(['success' => true, 'message' => 'Highlight deleted successfully.']);
     }
 
