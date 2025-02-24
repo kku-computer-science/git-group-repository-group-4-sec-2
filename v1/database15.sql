@@ -370,7 +370,6 @@ CREATE TABLE `highlight` (
 
 LOCK TABLES `highlight` WRITE;
 /*!40000 ALTER TABLE `highlight` DISABLE KEYS */;
-INSERT INTO `highlight` VALUES (12,'highlightImage/IEBOcChD5NpBrjJQJkt3pxdoceiplyO2LIzGJ1Lh.jpg','j','kjb',1,35,NULL,NULL,'2025-02-24 11:49:21','2025-02-24 11:49:47'),(13,'highlightImage/8yOf5jHEYNsdzSrMvtsNegzWogxw2QrKmzTgtvon.jpg','1','3',NULL,35,NULL,'https://www.w3profile.com/suphasan','2025-02-24 19:56:02','2025-02-24 19:56:02');
 /*!40000 ALTER TABLE `highlight` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -398,7 +397,6 @@ CREATE TABLE `highlight_has_tag` (
 
 LOCK TABLES `highlight_has_tag` WRITE;
 /*!40000 ALTER TABLE `highlight_has_tag` DISABLE KEYS */;
-INSERT INTO `highlight_has_tag` VALUES (13,1),(13,2),(12,3),(12,6),(12,10);
 /*!40000 ALTER TABLE `highlight_has_tag` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -428,7 +426,6 @@ CREATE TABLE `image_collection` (
 
 LOCK TABLES `image_collection` WRITE;
 /*!40000 ALTER TABLE `image_collection` DISABLE KEYS */;
-INSERT INTO `image_collection` VALUES (21,'imagecollection/67bbfa520d57f.jpg',12,'2025-02-24 11:49:22','2025-02-24 11:49:22'),(22,'imagecollection/67bc6c62a9ddd.jpg',13,'2025-02-24 19:56:02','2025-02-24 19:56:02');
 /*!40000 ALTER TABLE `image_collection` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -911,7 +908,7 @@ CREATE TABLE `tag` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -920,7 +917,7 @@ CREATE TABLE `tag` (
 
 LOCK TABLES `tag` WRITE;
 /*!40000 ALTER TABLE `tag` DISABLE KEYS */;
-INSERT INTO `tag` VALUES (1,'ทุนวิจัยและโอกาสสนับสนุน'),(2,'ผลงานวิจัยเด่นและรางวัล'),(3,'งานประชุมและสัมมนาวิชาการ'),(4,'ข่าวสารและประกาศสำคัญ'),(6,'ok'),(7,'hello'),(8,'ฟหดกหเ'),(9,'กดหเ'),(10,'b'),(11,'1111');
+INSERT INTO `tag` VALUES (1,'ทุนวิจัยและโอกาสสนับสนุน'),(2,'ผลงานวิจัยเด่นและรางวัล'),(3,'งานประชุมและสัมมนาวิชาการ'),(4,'ข่าวสารและประกาศสำคัญ');
 /*!40000 ALTER TABLE `tag` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1157,4 +1154,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-24 20:04:58
+-- Dump completed on 2025-02-24 21:39:42

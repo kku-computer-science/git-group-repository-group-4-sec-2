@@ -162,44 +162,17 @@
             });
         });
 
-        // Handle deleting tags
-        $(document).on('click', '.select2-selection__choice__remove', function(event) {
-            event.preventDefault();
-            let tagId = $(this).parent().data('select2-id');
-
-            Swal.fire({
-                title: "Are you sure?",
-                text: "This tag will be deleted permanently!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, cancel!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: `/tags/${tagId}`,
-                        type: 'DELETE',
-                        data: {
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                $('#tag option[value="' + tagId + '"]').remove();
-                                $('#tag').val(null).trigger('change');
-                            } else {
-                                Swal.fire("Error", response.message, "error");
-                            }
-                        },
-                        error: function() {
-                            Swal.fire("Error", "Failed to delete tag", "error");
-                        }
-                    });
-                }
-            });
-        });
     });
+
+
+
+
+
+
+
+
+
+
 
     $(document).on('click', '.remove-tag', function() {
         let tagId = $(this).data('id');
@@ -251,12 +224,6 @@
             }
         });
     });
-
-
-
-
-
-
 
     function confirmCancel() {
         Swal.fire({

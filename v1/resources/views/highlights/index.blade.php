@@ -69,6 +69,9 @@
 
     <h2>Highlights</h2>
     <a href="{{ route('highlights.create') }}" class="btn btn-primary mb-3">+ Create</a>
+    <button type="button" class="btn btn-danger" id="deleteTagBtn">
+        ลบ Tag
+    </button>
     <table id="news-table" class="table table-striped">
 
         <thead>
@@ -117,6 +120,43 @@
             @endforeach
         </tbody>
     </table>
+</div>
+
+<!-- Modal แสดงรายการ Tag -->
+<div id="deleteTagModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">เลือกลบ Tag</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>ชื่อ Tag</th>
+                            <th>ลบ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($tags as $index => $tag)
+                        <tr>
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $tag->name }}</td>
+                            <td>
+                                <button class="btn btn-danger delete-tag-btn" data-id="{{ $tag->id }}">ลบ</button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -309,6 +349,55 @@
                 var shortenedTitle = titleText.substring(0, 25) + '...'; // ย่อข้อความและเพิ่ม ...
                 titleCell.text(shortenedTitle);
             }
+        });
+    });
+
+    $(document).ready(function() {
+        // เปิด Modal
+        $("#deleteTagBtn").click(function() {
+            $("#deleteTagModal").modal("show");
+        });
+
+        // ฟังก์ชันลบ Tag
+        $(document).on("click", ".delete-tag-btn", function() {
+            let tagId = $(this).data("id");
+
+            Swal.fire({
+                title: "คุณแน่ใจหรือไม่?",
+                text: "Tag นี้จะถูกลบและไม่สามารถกู้คืนได้!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "ใช่, ลบเลย!",
+                cancelButtonText: "ยกเลิก"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: `/tags/${tagId}`,
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire("ลบสำเร็จ!", "Tag ถูกลบเรียบร้อย", "success").then(() => {
+                                    location.reload(); // รีโหลดหน้าเพื่ออัปเดตรายการ
+                                });
+                            } else {
+                                Swal.fire("ไม่สามารถลบได้!", response.message, "warning");
+                            }
+                        },
+                        error: function(xhr) {
+                            if (xhr.status === 400) {
+                                Swal.fire("ไม่สามารถลบได้!", "Tag นี้ถูกใช้งานอยู่ ไม่สามารถลบได้", "warning");
+                            } else {
+                                Swal.fire("Error", "เกิดข้อผิดพลาด ไม่สามารถลบ Tag ได้", "error");
+                            }
+                        }
+                    });
+                }
+            });
         });
     });
 </script>

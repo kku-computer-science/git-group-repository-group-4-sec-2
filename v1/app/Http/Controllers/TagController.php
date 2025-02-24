@@ -28,15 +28,19 @@ class TagController extends Controller
         $tag = Tag::find($id);
 
         if (!$tag) {
-            return response()->json(['success' => false, 'message' => 'Tag ไม่พบ'], 404);
+            return response()->json(['success' => false, 'message' => 'ไม่พบ Tag นี้'], 404);
         }
 
         // เช็คว่า Tag นี้ถูกใช้งานอยู่หรือไม่
         if ($tag->highlights()->exists()) {
-            return response()->json(['success' => false, 'message' => 'ไม่สามารถลบ Tag ที่ถูกใช้งานอยู่ได้'], 400);
+            return response()->json([
+                'success' => false,
+                'message' => 'ไม่สามารถลบ Tag ที่ถูกใช้งานอยู่ได้'
+            ], 400);
         }
 
         $tag->delete();
+
         return response()->json(['success' => true, 'message' => 'ลบ Tag สำเร็จ']);
     }
 }
