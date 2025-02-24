@@ -3,57 +3,38 @@
     /* Fix the carousel size */
     #carouselExampleIndicators {
         max-width: 100%;
-        border-radius: 20px;
+        border-radius: 10px;
         /* Add rounded corners */
         width: 100%;
         /* Set your desired width */
-        height: 10rem;
+        height: 15rem;
         /* Set your desired height */
         margin: auto;
         /* Center the carousel */
         overflow: hidden;
-        /* Prevent image overflow */
-        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
-        /* Add soft shadow */
+        border: 1px solid #ccc;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    .carousel-inner {
+    #carouselExampleIndicators h1 {
+        font-size: 2rem;
+        color: #000;
+        text-align: center;
+        background-color: #000;
+        opacity: 0.75;
+        color: white;
         width: 100%;
-        height: 100%;
-    }
-
-    .carousel-item {
-        width: 10%;
-        height: 100%;
-    }
-
-    .carousel-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 20px;
-        /* Ensure the image covers the box */
-    }
-
-    /* Custom styling for arrows */
-    .carousel-control-prev-icon,
-    .carousel-control-next-icon {
-        filter: invert(100%);
-        /* Makes arrows white */
-    }
-
-    .carousel-control-prev,
-    .carousel-control-next {
-        opacity: 1 !important;
-        /* Ensure arrows are fully visible */
+        padding: 1.5rem 0;
     }
 
     .tag-header {
-        font-size: 1.5rem;       
+        font-size: 1.5rem;
         color: rgb(25, 85, 138);
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        margin-top: 5;
+        margin-top: 5px;
     }
 
     /* Tag List */
@@ -152,6 +133,17 @@
         margin: 0;
     }
 
+    .card_image {
+        width: 100%;
+        height: 100%;
+    }
+
+    /* กำหนดความสูงของ card header ให้เท่ากับ static example */
+    .card_header {
+        height: 15rem; /* กำหนดความสูงที่ต้องการ */
+        overflow: hidden;
+    }
+
     /* Tablet (2 ใบต่อแถว) */
     @media (max-width: 900px) {
         .card {
@@ -165,40 +157,45 @@
             width: 100%;
         }
     }
+
+    .tag-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
 </style>
 
 @section('content')
-<!-- เปลี่ยน container เป็น container-fluid เพื่อให้เต็มความกว้างของหน้าจอ -->
-<div class="container-fluid">
-    <!-- Highlights banner -->
-    <div class="d-sm-flex justify-content-center mt-5">
+<!-- Highlights banner -->
+<div class="container">
+    <div class="container d-sm-flex justify-content-center mt-5">
         <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-           hhhhhhhhhhhhhhh
+            <!-- ใส่เนื้อหา carousel ตามต้องการ -->
         </div>
     </div>
 </div>
 
 <!-- Tag list -->
 <div class="container">
-  <div class="flex-wrap" style="display: flex; align-items: center; gap: 8px; margin-top: 45px;">
-    <h5 class="tag-header">ALL TAG :</h5>
-    <div class="tag-list">
-      <a href="#" class="tag-item tag-all active" data-tag="all">All</a>
-      <a href="#" class="tag-item" data-tag="technology">Technology</a>
-      <a href="#" class="tag-item" data-tag="programming">Programming</a>
-      <a href="#" class="tag-item" data-tag="webdev">Web Development</a>
-      <a href="#" class="tag-item" data-tag="design">Design</a>
-      <a href="#" class="tag-item" data-tag="ai">AI</a>
-      <a href="#" class="tag-item" data-tag="ml">Machine Learning</a>
+    <div class="flex-wrap" style="display: flex; align-items: center; gap: 8px; margin-top: 45px;">
+        <h5 class="tag-header ml-2">TAG :</h5>
+        <div class="tag-list">
+            <a href="#" class="tag-item tag-all active" data-tag="all">All</a>
+            <a href="#" class="tag-item" data-tag="technology">Technology</a>
+            <a href="#" class="tag-item" data-tag="programming">Programming</a>
+            <a href="#" class="tag-item" data-tag="webdev">Web Development</a>
+            <a href="#" class="tag-item" data-tag="design">Design</a>
+            <a href="#" class="tag-item" data-tag="ai">AI</a>
+            <a href="#" class="tag-item" data-tag="ml">Machine Learning</a>
+        </div>
     </div>
-  </div>
 </div>
 
-<!-- Card Section -->
+<!-- Card Section (Static Example) -->
 <div class="container-card">
     <div class="card" data-tag="ml">
         <div class="card_header">
-            <img src="img/Banner1.png" alt="card_image" class="card_image">
+            <img src="" alt="card_image" class="card_image">
         </div>
         <div class="card_body">
             <span class="tag-item">Machine Learning</span>
@@ -209,7 +206,7 @@
 
     <div class="card" data-tag="technology">
         <div class="card_header">
-            <img src="img/Banner1.png" alt="card_image" class="card_image">
+            <img src="" alt="card_image" class="card_image">
         </div>
         <div class="card_body">
             <span class="tag-item">Technology</span>
@@ -218,137 +215,38 @@
         </div>
     </div>
 
-    <div class="card" data-tag="programming">
-        <div class="card_header">
-            <img src="img/Banner1.png" alt="card_image" class="card_image">
-        </div>
-        <div class="card_body">
-            <span class="tag-item">Programming</span>
-            <h4>Learn JavaScript in 2022</h4>
-            <p>Sequi perferendis molestiae non nemo doloribus.</p>
-        </div>
-    </div>
-
-    <div class="card" data-tag="webdev">
-        <div class="card_header">
-            <img src="img/Banner1.png" alt="card_image" class="card_image">
-        </div>
-        <div class="card_body">
-            <span class="tag-item">Web Development</span>
-            <h4>Modern Web Trends</h4>
-            <p>Doloremque, nihil! At ea atque quidem!</p>
-        </div>
-    </div>
-
-    <div class="card" data-tag="design">
-        <div class="card_header">
-            <img src="img/Banner1.png" alt="card_image" class="card_image">
-        </div>
-        <div class="card_body">
-            <span class="tag-item">Design</span>
-            <h4>UI/UX Best Practices</h4>
-            <p>Learn how to improve your designs today.</p>
-        </div>
-    </div>
-
     <div class="card" data-tag="ai">
         <div class="card_header">
-            <img src="img/Banner1.png" alt="card_image" class="card_image">
+            <img src="" alt="card_image" class="card_image">
         </div>
         <div class="card_body">
             <span class="tag-item">AI</span>
-            <h4>Artificial Intelligence Today</h4>
-            <p>Explore the latest advancements in AI.</p>
-        </div>
-    </div>
-
-    <div class="card" data-tag="ml">
-        <div class="card_header">
-            <img src="img/Banner1.png" alt="card_image" class="card_image">
-        </div>
-        <div class="card_body">
-            <span class="tag-item">Machine Learning</span>
-            <h4>ML Algorithms Explained</h4>
-            <p>Understanding machine learning basics.</p>
-        </div>
-    </div>
-
-    <div class="card" data-tag="ml">
-        <div class="card_header">
-            <img src="img/Banner1.png" alt="card_image" class="card_image">
-        </div>
-        <div class="card_body">
-            <span class="tag-item">Machine Learning</span>
-            <h4>ML Algorithms Explained</h4>
-            <p>Understanding machine learning basics.</p>
-        </div>
-    </div>
-
-    <div class="card" data-tag="programming">
-        <div class="card_header">
-            <img src="img/Banner1.png" alt="card_image" class="card_image">
-        </div>
-        <div class="card_body">
-            <span class="tag-item">Programming</span>
-            <h4>Learn JavaScript in 2022</h4>
-            <p>Sequi perferendis molestiae non nemo doloribus.</p>
+            <h4>What's new in 2022 Tech</h4>
+            <p>Lorem ipsum dolor sit consectetur adipisicing elit.</p>
         </div>
     </div>
 </div>
 
-<!-- Link Page -->
-<div class="container">
-    <ul>
-        @foreach ($highlights as $highlight)
-            <li>
-                <a href="{{ route('allhighlights.show', $highlight->id) }}">{{ $highlight->title }}</a>
-            </li>
-        @endforeach
-    </ul>
+<!-- Dynamic Item Highlights -->
+<div class="container-card">
+    @foreach ($highlights as $highlight)
+    <div class="card" data-tag="{{ $highlight->tags->isNotEmpty() ? $highlight->tags->pluck('name')->map(function($name) { return Str::slug($name); })->implode(' ') : '' }}">
+        <div class="card_header">
+            <!-- ดึงภาพจากฐานข้อมูล -->
+            <img src="{{ asset('storage/' . $highlight->image) }}" alt="{{ $highlight->title }}" class="card_image">
+        </div>
+        <div class="card_body">
+            @if($highlight->tags->isNotEmpty())
+            <div class="tag-container">
+                @foreach ($highlight->tags as $tag)
+                <span class="tag-item">{{ $tag->name }}</span>
+                @endforeach
+            </div>
+            @endif
+            <h4>{{ $highlight->title }}</h4>
+            <p>{{ Str::limit($highlight->description, 100) }}</p>
+        </div>
+    </div>
+    @endforeach
 </div>
-
-<script>
-    // เลือกทุก Tag-item
-    const tags = document.querySelectorAll('.Tag-item');
-
-    tags.forEach(tag => {
-        tag.addEventListener('click', function(event) {
-            event.preventDefault(); // ป้องกันลิงก์ไม่ให้รีเฟรชหน้า
-
-            // Toggle คลาส 'active' เมื่อคลิก
-            this.classList.toggle('active');
-        });
-    });
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const tags = document.querySelectorAll('.tag-item');
-        const cards = document.querySelectorAll('.card');
-
-        tags.forEach(tag => {
-            tag.addEventListener('click', function(event) {
-                event.preventDefault();
-
-                // ลบคลาส active จากทุก tag
-                tags.forEach(t => t.classList.remove('active'));
-                // เพิ่ม active ใน tag ที่คลิก
-                this.classList.add('active');
-
-                const selectedTag = this.getAttribute('data-tag');
-
-                // แสดง/ซ่อน cards ตาม tag ที่เลือก
-                cards.forEach(card => {
-                    const cardTag = card.getAttribute('data-tag');
-                    if (selectedTag === 'all' || cardTag === selectedTag) {
-                        card.style.display = 'flex'; // แสดง card
-                    } else {
-                        card.style.display = 'none'; // ซ่อน card
-                    }
-                });
-            });
-        });
-    });
-</script>
-
 @endsection
