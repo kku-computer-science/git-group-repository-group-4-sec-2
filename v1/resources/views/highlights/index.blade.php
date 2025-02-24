@@ -416,11 +416,6 @@
         });
     });
 
-
-    $("#highlight-table tbody tr").each(function() {
-        console.log($(this).attr("data-id"));
-    });
-
     // console.log("🔍 Ordered IDs ส่งไปที่ API:", orderedIds);
     $(document).on("click", ".move-up, .move-down", function() {
         let row = $(this).closest("tr");
