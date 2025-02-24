@@ -128,12 +128,6 @@
         text-decoration: none;
     }
 
-    /* ภาพใน Card */
-    img {
-        max-width: 100%;
-        display: block;
-        object-fit: cover;
-    }
 
     /* ส่วนเนื้อหาใน Card */
     .card_body {
@@ -162,6 +156,26 @@
         overflow: hidden;
     }
 
+    .card_body p {
+        flex-grow: 1;
+        /* ให้ข้อความเต็มพื้นที่ และทำให้ card เท่ากัน */
+        height: 3rem;
+        /* จำกัดความสูงของคำอธิบาย */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        /* แสดงสูงสุด 3 บรรทัด */
+        -webkit-box-orient: vertical;
+    }
+
+    /* ภาพใน Card */
+    img {
+        max-width: 100%;
+        display: block;
+        object-fit: cover;
+    }
+
     /* Tablet (2 ใบต่อแถว) */
     @media (max-width: 900px) {
         .card {
@@ -181,7 +195,7 @@
         display: flex;
         flex-wrap: nowrap;
         overflow: hidden;
-        gap: 2px;
+        gap: 5px;
     }
 
     .tag-list-wrapper {
@@ -339,7 +353,7 @@
             @if($highlight->tags->isNotEmpty())
             <div class="tag-container">
                 @foreach ($highlight->tags as $tag)
-                    <span class="tag-item">{{ $tag->name }}</span>
+                <span class="tag-item">{{ $tag->name }}</span>
                 @endforeach
             </div>
             @endif
