@@ -216,6 +216,7 @@ class HighlightController extends Controller
     {
         $highlight = Highlight::findOrFail($id);
         $highlight->status = null;
+        $highlight->priority = null; // ✅ ตั้งค่า priority เป็น null
         $highlight->save();
 
         return redirect()->route('highlights.index')->with('success', 'Removed from Highlights!');
@@ -309,11 +310,13 @@ class HighlightController extends Controller
 
     public function reorder(Request $request)
     {
-        dd($request->orderedIds); // 🔍 ตรวจสอบว่าค่าที่ส่งมาถูกต้องหรือไม่
+        Log::info('📌 Ordered IDs ที่ได้รับ:', ['ids' => $request->orderedIds]);
 
-        $orderedIds = $request->orderedIds;
+        if (!is_array($request->orderedIds) || empty($request->orderedIds)) {
+            return response()->json(['success' => false, 'message' => 'ไม่มีข้อมูล Ordered IDs'], 400);
+        }
 
-        foreach ($orderedIds as $index => $id) {
+        foreach ($request->orderedIds as $index => $id) {
             Highlight::where('id', $id)->update(['priority' => $index + 1]);
         }
 

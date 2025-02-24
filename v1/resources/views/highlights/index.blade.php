@@ -207,8 +207,20 @@
                         timer: 1500
                     });
 
+                    // ✅ เพิ่มปุ่ม Move Up / Move Down ก่อนนำไปใส่ใน Highlight Table
+                    let priorityControls = `
+                <td class="priority-controls">
+                    <button class="btn btn-sm btn-light move-up" data-id="${highlightId}">⬆️</button>
+                    <button class="btn btn-sm btn-light move-down" data-id="${highlightId}">⬇️</button>
+                </td>
+            `;
+
+                    row.prepend(priorityControls); // เพิ่มปุ่มก่อนนำเข้า Highlight Table
+
+                    // ✅ ย้ายแถวไปยัง Highlight Table
                     $("#highlight-table tbody").append(row);
 
+                    // ✅ เปลี่ยนปุ่มจาก ADD -> REMOVE
                     row.find(".btn-add")
                         .removeClass("btn-success btn-add")
                         .addClass("btn-warning btn-remove")
@@ -243,8 +255,13 @@
                         timer: 1500
                     });
 
+                    // ✅ ลบปุ่ม Move Up / Move Down ก่อนย้ายไปตาราง News
+                    row.find(".priority-controls").remove();
+
+                    // ✅ ย้ายไปตาราง News และไปอยู่ด้านล่างสุด
                     $("#news-table tbody").append(row);
 
+                    // ✅ เปลี่ยนปุ่มจาก REMOVE -> ADD
                     row.find(".btn-remove")
                         .removeClass("btn-warning btn-remove")
                         .addClass("btn-success btn-add")
@@ -403,46 +420,46 @@
     $("#highlight-table tbody tr").each(function() {
         console.log($(this).attr("data-id"));
     });
-    $(document).ready(function() {
-        $(".move-up, .move-down").click(function() {
-            let row = $(this).closest("tr");
-            let highlightId = $(this).data("id");
-            let moveUp = $(this).hasClass("move-up");
-            let siblingRow = moveUp ? row.prev() : row.next();
 
-            if (siblingRow.length === 0) return; // หยุดถ้าไม่มีแถวข้างบนหรือข้างล่าง
+    // console.log("🔍 Ordered IDs ส่งไปที่ API:", orderedIds);
+    $(document).on("click", ".move-up, .move-down", function() {
+        let row = $(this).closest("tr");
+        let moveUp = $(this).hasClass("move-up");
+        let siblingRow = moveUp ? row.prev() : row.next();
 
-            // ✅ สลับตำแหน่ง row
-            moveUp ? siblingRow.before(row) : siblingRow.after(row);
+        if (siblingRow.length === 0) return; // ถ้าไม่มีแถวข้างบนหรือข้างล่าง ให้หยุดทำงาน
 
-            // ✅ อัปเดต priority ใหม่
-            let orderedIds = $("#highlight-table tbody tr").map(function() {
-                return $(this).data("id");
-            }).get();
+        // ✅ สลับตำแหน่งแถว
+        moveUp ? siblingRow.before(row) : siblingRow.after(row);
 
-            console.log("🔍 Ordered IDs ส่งไปที่ API:", orderedIds); // 🔍 ตรวจสอบค่าก่อนส่ง API
+        // ✅ ดึงค่า ID ของลำดับใหม่จากทุกแถวในตาราง
+        let orderedIds = $("#highlight-table tbody tr").map(function() {
+            return $(this).data("id");
+        }).get();
 
-            $.ajax({
-                url: "/highlights/reorder",
-                type: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    orderedIds: orderedIds
-                },
-                success: function(response) {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "ลำดับ Priority ถูกอัปเดตแล้ว!",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                },
-                error: function(xhr) {
-                    console.error("❌ Error Response:", xhr); // 🔍 Debug ค่าที่ error
-                    Swal.fire("ผิดพลาด!", "ไม่สามารถอัปเดตลำดับ Priority ได้!", "error");
-                }
-            });
+        console.log("🔍 Ordered IDs ที่ส่งไป API:", orderedIds); // Debug ตรวจสอบค่า
+
+        // ✅ เรียก API อัปเดต Priority
+        $.ajax({
+            url: "/highlights/reorder",
+            type: "POST",
+            data: {
+                _token: "{{ csrf_token() }}", // Laravel CSRF Token
+                orderedIds: orderedIds // ส่งค่าที่ถูกต้องไปยัง Server
+            },
+            success: function(response) {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "ลำดับ Priority ถูกอัปเดตแล้ว!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            },
+            error: function(xhr) {
+                console.error("❌ Error Response:", xhr); // Debug ค่าที่ error
+                Swal.fire("ผิดพลาด!", "ไม่สามารถอัปเดตลำดับ Priority ได้!", "error");
+            }
         });
     });
 </script>
