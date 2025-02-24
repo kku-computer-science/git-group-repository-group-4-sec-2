@@ -38,6 +38,7 @@
 
                 <div class="form-group">
                     <label for="tag">Tags</label>
+
                     <select name="tag_id[]" id="tag" class="form-control select2" multiple="multiple">
                         @foreach ($categories as $tag)
                         <option value="{{ $tag->id }}">
@@ -45,6 +46,7 @@
                         </option>
                         @endforeach
                     </select>
+                    <button type="button" class="btn btn-dark mt-2" id="createTagBtn">Create</button>
                 </div>
 
                 <div class="form-group">
@@ -81,7 +83,148 @@
     </div>
 </div>
 
+<!-- Modal for Creating New Tag -->
+<div class="modal fade" id="createTagModal" tabindex="-1" role="dialog" aria-labelledby="createTagLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Tag</h5>
+                <button type="button" class="close close-modal" aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="newTagName" class="form-control" placeholder="Enter tag name">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light cancel-modal">Cancel</button>
+                <button type="button" class="btn btn-dark" id="saveTagBtn">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Select tags",
+            tags: true,
+            tokenSeparators: [',', ' ']
+        });
+
+        // Show create tag modal
+        $('#createTagBtn').click(function() {
+            $('#createTagModal').modal('show');
+        });
+
+        // Handle Cancel button with SweetAlert
+        $(document).on('click', '.cancel-modal, .close-modal', function() {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Your input will be lost!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, cancel!",
+                cancelButtonText: "No, keep editing"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $('#createTagModal').modal('hide'); // ปิด Modal
+                    $('#newTagName').val(''); // เคลียร์ input
+                }
+            });
+        });
+
+        // Save new tag
+        $('#saveTagBtn').click(function() {
+            let tagName = $('#newTagName').val().trim();
+            if (tagName === '') {
+                Swal.fire("Error", "Tag name cannot be empty!", "error");
+                return;
+            }
+
+            $.post("{{ route('tags.store') }}", {
+                name: tagName,
+                _token: '{{ csrf_token() }}'
+            }, function(response) {
+                if (response.success) {
+                    let newTagId = response.tag.id;
+                    let newTagOption = new Option(tagName, newTagId, true, true);
+                    $('#tag').append(newTagOption).trigger('change');
+                    $('#createTagModal').modal('hide');
+                    $('#newTagName').val('');
+                } else {
+                    Swal.fire("Error", response.message, "error");
+                }
+            }).fail(function() {
+                Swal.fire("Error", "Failed to create tag", "error");
+            });
+        });
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+    $(document).on('click', '.remove-tag', function() {
+        let tagId = $(this).data('id');
+        let tagElement = $(this).parent();
+
+        $.ajax({
+            url: `/tags/check/${tagId}`, // ตรวจสอบว่าลบได้หรือไม่
+            type: 'GET',
+            success: function(response) {
+                if (response.canDelete) {
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "This tag will be deleted permanently!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                        confirmButtonText: "Yes, delete it!",
+                        cancelButtonText: "No, cancel!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: `/tags/${tagId}`,
+                                type: 'DELETE',
+                                data: {
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function(deleteResponse) {
+                                    if (deleteResponse.success) {
+                                        tagElement.remove();
+                                        let tagSelect = $('#tag').val().filter(id => id != tagId);
+                                        $('#tag').val(tagSelect).trigger('change');
+                                    } else {
+                                        Swal.fire("Error", deleteResponse.message, "error");
+                                    }
+                                },
+                                error: function() {
+                                    Swal.fire("Error", "Failed to delete tag", "error");
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    Swal.fire("Cannot Delete", "This tag is linked to a highlight and cannot be removed.", "warning");
+                }
+            },
+            error: function() {
+                Swal.fire("Error", "Failed to check tag dependency", "error");
+            }
+        });
+    });
+
     function confirmCancel() {
         Swal.fire({
             title: "คุณแน่ใจหรือไม่?",
@@ -220,13 +363,13 @@
     }
 
 
-    $(document).ready(function() {
-        $('.select2').select2({
-            placeholder: "Select tags",
-            tags: true,
-            tokenSeparators: [',', ' ']
-        });
-    });
+    // $(document).ready(function() {
+    //     $('.select2').select2({
+    //         placeholder: "Select tags",
+    //         tags: true,
+    //         tokenSeparators: [',', ' ']
+    //     });
+    // });
 </script>
 
 <style>

@@ -43,6 +43,12 @@ use App\Http\Controllers\TcicallController;
 use App\Http\Controllers\HighlightController;
 use App\Http\Controllers\HighlightdetailController;
 
+use App\Http\Controllers\AllHighlightsController;
+use App\Http\Controllers\TagController;
+
+Route::get('/allhighlights', [AllHighlightsController::class, 'index'])->name('allhighlights.index');
+Route::get('/allhighlights/{id}', [AllHighlightsController::class, 'show'])->name('allhighlights.show');
+
 
 Route::get('/test-permission', function () {
     return \Illuminate\Support\Facades\Gate::allows('manage-highlights') ? 'Allowed' : 'Denied';
@@ -71,6 +77,15 @@ Route::prefix('highlights')->group(function () {
 
 Route::get('highlightdetail', [HighlightdetailController::class, 'index'])->name('highlightdetail');
 Route::get('/highlight/{id}', [HighlightdetailController::class, 'show'])->name('highlight.show');
+
+
+Route::prefix('tags')->group(function () {
+    Route::post('/store', [TagController::class, 'store'])->name('tags.store'); // ✅ เส้นทางสำหรับสร้าง Tag
+    Route::delete('/{id}', [TagController::class, 'destroy'])->name('tags.destroy'); // ✅ เส้นทางสำหรับลบ Tag
+});
+
+
+
 
 // Route::get('/news/{id}', [HighlightdetailController::class, 'show'])->name('news.show');
 

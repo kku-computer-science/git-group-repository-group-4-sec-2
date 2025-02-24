@@ -43,12 +43,12 @@
                     <label for="tag">Tags</label>
                     <select name="tag_id[]" id="tag" class="form-control select2" multiple="multiple">
                         @foreach ($categories as $tag)
-                        <option value="{{ $tag->id }}"
-                            @if (in_array($tag->id, $selectedTags)) selected @endif>
+                        <option value="{{ $tag->id }}" {{ in_array($tag->id, $selectedTags) ? 'selected' : '' }}>
                             {{ $tag->name }}
                         </option>
                         @endforeach
                     </select>
+                    <button type="button" class="btn btn-dark mt-2" id="createTagBtn">Create</button>
                 </div>
 
 
@@ -101,7 +101,112 @@
     </div>
 </div>
 
+<!-- Modal for Creating New Tag -->
+<div class="modal fade" id="createTagModal" tabindex="-1" role="dialog" aria-labelledby="createTagLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Tag</h5>
+                <button type="button" class="close close-modal" aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="newTagName" class="form-control" placeholder="Enter tag name">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light cancel-modal">Cancel</button>
+                <button type="button" class="btn btn-dark" id="saveTagBtn">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+$(document).ready(function() {
+    $('.select2').select2({
+        placeholder: "Select tags",
+        tags: true,
+        tokenSeparators: [',', ' ']
+    });
+
+    let selectedTags = @json($selectedTags);
+
+    // ✅ ตั้งค่า Select2 ให้เลือก Tag ที่มีอยู่แล้ว
+    $('#tag').val(selectedTags).trigger('change');
+
+    // ✅ กดปุ่ม ✖ แล้วลบ Tag ออกจาก UI (แต่ยังไม่อัปเดต Database)
+    $(document).on('click', '.remove-tag', function() {
+        let tagId = $(this).data('id');
+
+        // ซ่อนจาก UI
+        $(this).parent().remove();
+
+        // อัปเดตค่าที่เลือกใน Select2 (ลบออก)
+        let tagSelect = $('#tag').val();
+        tagSelect = tagSelect.filter(id => id != tagId);
+        $('#tag').val(tagSelect).trigger('change');
+    });
+
+    // ✅ Show Create Tag Modal
+    $('#createTagBtn').click(function() {
+        $('#createTagModal').modal('show');
+    });
+
+    // ✅ Save New Tag
+    $('#saveTagBtn').click(function() {
+        let tagName = $('#newTagName').val().trim();
+        if (tagName === '') {
+            Swal.fire("Error", "Tag name cannot be empty!", "error");
+            return;
+        }
+
+        $.post("{{ route('tags.store') }}", {
+            name: tagName,
+            _token: '{{ csrf_token() }}'
+        }, function(response) {
+            if (response.success) {
+                let newTagId = response.tag.id;
+                let newTagOption = new Option(tagName, newTagId, true, true);
+                $('#tag').append(newTagOption).trigger('change');
+                $('#createTagModal').modal('hide');
+                $('#newTagName').val('');
+            } else {
+                Swal.fire("Error", response.message, "error");
+            }
+        }).fail(function() {
+            Swal.fire("Error", "Failed to create tag", "error");
+        });
+    });
+
+    // ✅ Confirm Update
+    window.confirmUpdate = function() {
+        Swal.fire({
+            title: "ยืนยันการอัปเดต?",
+            text: "คุณแน่ใจหรือไม่ว่าต้องการอัปเดตข้อมูลนี้",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ใช่, อัปเดตเลย!",
+            cancelButtonText: "ยกเลิก"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById("updateForm").submit();
+            }
+        });
+    };
+});
+
+
+
+
+
+
+
+
+
+
     let deletedImages = [];
     let selectedFiles = [];
 
@@ -231,14 +336,6 @@
             }
         });
     }
-
-    $(document).ready(function() {
-        $('.select2').select2({
-            placeholder: "Select tags",
-            tags: true,
-            tokenSeparators: [',', ' ']
-        });
-    });
 </script>
 
 <style>
