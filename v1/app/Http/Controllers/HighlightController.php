@@ -243,18 +243,24 @@ class HighlightController extends Controller
     public function destroy($id)
     {
         $highlight = Highlight::findOrFail($id);
-
+    
+        // ✅ ลบความสัมพันธ์กับ Tags ก่อน (Pivot Table)
+        $highlight->tags()->detach();
+    
+        // ✅ ลบรูปภาพหลักออกจาก Storage
         if ($highlight->image) {
             Storage::disk('public')->delete($highlight->image);
         }
-
+    
+        // ✅ ลบรูปภาพทั้งหมดที่เกี่ยวข้องใน ImageCollection
         foreach ($highlight->images as $image) {
             Storage::disk('public')->delete($image->image);
-            $image->delete();
+            $image->delete(); // ลบจาก Database
         }
-
-        $highlight->delete(); // ✅ ลบออกจาก Database
-
+    
+        // ✅ ลบ Highlight ออกจาก Database
+        $highlight->delete();
+    
         return response()->json(['success' => true, 'message' => 'Highlight deleted successfully.']);
     }
 
