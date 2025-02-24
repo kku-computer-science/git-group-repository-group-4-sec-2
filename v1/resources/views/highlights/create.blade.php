@@ -163,92 +163,106 @@
         });
 
         // Handle deleting tags
-        $(document).on('click', '.select2-selection__choice__remove', function(event) {
-            event.preventDefault();
-            let tagId = $(this).parent().data('select2-id');
+        // $(document).on('click', '.select2-selection__choice__remove', function(event) {
+        //     event.preventDefault();
+        //     let tagId = $(this).parent().data('select2-id');
+
+        //     Swal.fire({
+        //         title: "Are you sure?",
+        //         text: "This tag will be deleted permanently!",
+        //         icon: "warning",
+        //         showCancelButton: true,
+        //         confirmButtonColor: "#d33",
+        //         cancelButtonColor: "#3085d6",
+        //         confirmButtonText: "Yes, delete it!",
+        //         cancelButtonText: "No, cancel!"
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             $.ajax({
+        //                 url: `/tags/${tagId}`,
+        //                 type: 'DELETE',
+        //                 data: {
+        //                     _token: '{{ csrf_token() }}'
+        //                 },
+        //                 success: function(response) {
+        //                     if (response.success) {
+        //                         $('#tag option[value="' + tagId + '"]').remove();
+        //                         $('#tag').val(null).trigger('change');
+        //                     } else {
+        //                         Swal.fire("Error", response.message, "error");
+        //                     }
+        //                 },
+        //                 error: function() {
+        //                     Swal.fire("Error", "Failed to delete tag", "error");
+        //                 }
+        //             });
+        //         }
+        //     });
+        // });
+    });
+
+    $(document).ready(function() {
+        $('#tag').select2({
+            placeholder: "Select tags",
+            tags: true,
+            tokenSeparators: [',', ' '],
+            width: '100%',
+            escapeMarkup: function(m) {
+                return m;
+            }, // ป้องกัน Select2 แปลง HTML
+            templateResult: function(data) {
+                if (!data.id) return data.text; // ถ้าเป็น placeholder
+
+                let tagId = data.id;
+                let tagName = data.text;
+
+                return `
+                <span style="display: flex; justify-content: space-between; align-items: center;">
+                    ${tagName}
+                    <span class="remove-tag" data-id="${tagId}" style="color: red; cursor: pointer; font-size: 18px; margin-left: 10px;">&times;</span>
+                </span>
+            `;
+            },
+            templateSelection: function(data) {
+                return data.text; // แสดงผลเฉพาะชื่อแท็กที่เลือก
+            }
+        });
+
+        // ✅ ดักจับการกดปุ่ม ❌ ก่อนที่ Select2 จะรับรู้
+        $(document).on('mousedown', '.remove-tag', function(event) {
+            event.stopPropagation(); // ป้องกันไม่ให้ Select2 รับเหตุการณ์นี้
+            event.preventDefault(); // ป้องกันค่า default (เช่น เปิด dropdown)
+
+            let tagId = $(this).data('id');
 
             Swal.fire({
-                title: "Are you sure?",
-                text: "This tag will be deleted permanently!",
+                title: "คุณแน่ใจหรือไม่?",
+                text: "แท็กนี้จะถูกลบออก!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#d33",
                 cancelButtonColor: "#3085d6",
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "No, cancel!"
+                confirmButtonText: "ใช่, ลบเลย!",
+                cancelButtonText: "ยกเลิก"
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: `/tags/${tagId}`,
-                        type: 'DELETE',
-                        data: {
-                            _token: '{{ csrf_token() }}'
-                        },
+                        url: `/tags/check/${tagId}`, // ตรวจสอบว่าลบได้หรือไม่
+                        type: 'GET',
                         success: function(response) {
-                            if (response.success) {
-                                $('#tag option[value="' + tagId + '"]').remove();
-                                $('#tag').val(null).trigger('change');
+                            if (response.canDelete) {
+                                let tagSelect = $('#tag').val().filter(id => id != tagId);
+                                $('#tag').val(tagSelect).trigger('change');
                             } else {
-                                Swal.fire("Error", response.message, "error");
+                                Swal.fire("Cannot Delete", "This tag is linked to a highlight and cannot be removed.", "warning");
                             }
                         },
                         error: function() {
-                            Swal.fire("Error", "Failed to delete tag", "error");
+                            Swal.fire("Error", "Failed to check tag dependency", "error");
                         }
                     });
                 }
             });
-        });
-    });
-
-    $(document).on('click', '.remove-tag', function() {
-        let tagId = $(this).data('id');
-        let tagElement = $(this).parent();
-
-        $.ajax({
-            url: `/tags/check/${tagId}`, // ตรวจสอบว่าลบได้หรือไม่
-            type: 'GET',
-            success: function(response) {
-                if (response.canDelete) {
-                    Swal.fire({
-                        title: "Are you sure?",
-                        text: "This tag will be deleted permanently!",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#d33",
-                        cancelButtonColor: "#3085d6",
-                        confirmButtonText: "Yes, delete it!",
-                        cancelButtonText: "No, cancel!"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: `/tags/${tagId}`,
-                                type: 'DELETE',
-                                data: {
-                                    _token: '{{ csrf_token() }}'
-                                },
-                                success: function(deleteResponse) {
-                                    if (deleteResponse.success) {
-                                        tagElement.remove();
-                                        let tagSelect = $('#tag').val().filter(id => id != tagId);
-                                        $('#tag').val(tagSelect).trigger('change');
-                                    } else {
-                                        Swal.fire("Error", deleteResponse.message, "error");
-                                    }
-                                },
-                                error: function() {
-                                    Swal.fire("Error", "Failed to delete tag", "error");
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    Swal.fire("Cannot Delete", "This tag is linked to a highlight and cannot be removed.", "warning");
-                }
-            },
-            error: function() {
-                Swal.fire("Error", "Failed to check tag dependency", "error");
-            }
         });
     });
 

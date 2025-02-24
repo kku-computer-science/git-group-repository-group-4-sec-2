@@ -39,4 +39,18 @@ class TagController extends Controller
         $tag->delete();
         return response()->json(['success' => true, 'message' => 'ลบ Tag สำเร็จ']);
     }
+
+    public function checkDelete($id)
+    {
+        $tag = Tag::find($id);
+
+        if (!$tag) {
+            return response()->json(['success' => false, 'message' => 'Tag ไม่พบ'], 404);
+        }
+
+        // ตรวจสอบว่าแท็กถูกใช้งานอยู่หรือไม่
+        $canDelete = !$tag->highlights()->exists();
+
+        return response()->json(['canDelete' => $canDelete]);
+    }
 }
