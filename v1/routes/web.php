@@ -68,6 +68,8 @@ Route::prefix('highlights')->group(function () {
     // DELETE route สำหรับลบ Highlight
     Route::delete('/{id}', [HighlightController::class, 'destroy'])->name('highlights.destroy');
     Route::get('/data', [HighlightController::class, 'dataTable'])->name('highlights.data');
+
+    Route::post('/reorder', [HighlightController::class, 'reorder'])->name('highlights.reorder');
 });
 
 
