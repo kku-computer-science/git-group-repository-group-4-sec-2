@@ -86,12 +86,15 @@
     .container-card {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: start;
         align-items: center;
         gap: 2rem;
-        max-width: 1375px;
+        /* max-width: 1100px; */
+        width: 100%;
         margin: auto;
         padding: 2rem;
+        padding-left: 8rem;
+        padding-right: 6rem;
         min-height: 2rem;
         text-decoration: none;
     }
