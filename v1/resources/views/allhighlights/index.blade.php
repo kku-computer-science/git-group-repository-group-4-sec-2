@@ -181,7 +181,7 @@
         display: flex;
         flex-wrap: nowrap;
         overflow: hidden;
-        gap: 1px;
+        gap: 2px;
     }
 
     .tag-list-wrapper {
