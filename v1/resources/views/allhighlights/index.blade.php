@@ -234,12 +234,12 @@
     }
 
     #scrollRightTag {
-        margin-left: 6.25rem;
+        margin-left: 7.25rem;
         background-color: rgb(62, 162, 233);
     }
 
     #scrollLeftTag {
-        margin-left: 3.5rem;
+        margin-left: 4.5rem;
         background-color: rgb(62, 162, 233);
     }
 
@@ -286,7 +286,7 @@
     <div>
         <div class="container">
             <div class="btn-group-tag">
-                <h4>Tag : </h4>
+                <h4>Tags : </h4>
                 <button id="scrollLeftTag" class="scroll-btn">&lt;</button>
                 <button id="scrollRightTag" class="scroll-btn">&gt;</button>
             </div>
