@@ -2,11 +2,15 @@
 
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <div class="container">
     <div class="card" style="padding: 16px;">
         <div class="card-body">
-            <h4 class="card-title">Create News</h4>
+            <h4 class="card-title">Create Highlight</h4>
             <form id="newsForm" action="{{ route('highlights.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
@@ -33,11 +37,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="category">Category</label>
-                    <select name="category_id" id="category" class="form-control">
-                        <option value="">Select Category</option>
-                        @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <label for="tag">Tags</label>
+                    <select name="tag_id[]" id="tag" class="form-control select2" multiple="multiple">
+                        @foreach ($categories as $tag)
+                        <option value="{{ $tag->id }}">
+                            {{ $tag->name }}
+                        </option>
                         @endforeach
                     </select>
                 </div>
@@ -45,6 +50,11 @@
                 <div class="form-group">
                     <label for="description">Description</label>
                     <textarea name="description" id="description" class="form-control description-box" rows="6"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="research_link">Addtional Link</label>
+                    <input type="url" class="form-control" id="link" name="link" placeholder="Enter the link">
                 </div>
 
                 <div class="form-group">
@@ -167,12 +177,13 @@
         updateAlbumPreview();
     }
 
-    document.getElementById("newsForm").addEventListener("submit", function (event) {
+    document.getElementById("newsForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent immediate form submission
 
-        let category = document.getElementById("category").value;
+        let tag = document.getElementById("tag").value;
+        let coverPreview = document.getElementById("coverPreview").classList.contains("d-none");
 
-        if (!category) {
+        if (!tag) {
             Swal.fire({
                 icon: "warning",
                 title: "กรุณาเลือกหมวดหมู่!",
@@ -181,9 +192,19 @@
                 confirmButtonText: "ตกลง",
                 confirmButtonColor: "#3085d6",
             });
+        } else if (coverPreview) { // เช็คว่าไม่ได้อัปโหลดรูปภาพ
+            Swal.fire({
+                icon: "warning",
+                title: "กรุณาอัปโหลดรูปภาพ!",
+                text: "คุณต้องเลือกอัปโหลดรูปภาพก่อนส่งแบบฟอร์ม",
+                padding: "1.25rem",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#3085d6",
+            });
         } else {
             confirmCreate();
         }
+
     });
 
     function confirmCreate() {
@@ -197,6 +218,15 @@
             document.getElementById("newsForm").submit(); // Submit the form after SweetAlert closes
         });
     }
+
+
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Select tags",
+            tags: true,
+            tokenSeparators: [',', ' ']
+        });
+    });
 </script>
 
 <style>
@@ -311,6 +341,26 @@
         padding: 5px;
         border-radius: 50%;
         font-size: 12px;
+    }
+
+    .select2-selection--multiple {
+        border: 1px solid #d1c7bd !important;
+        border-radius: 10px !important;
+        min-height: 50px !important;
+    }
+
+    .select2-selection__choice {
+        color: #fff !important;
+        border: none !important;
+        border-radius: 25px !important;
+        padding: 8px 25px !important;
+        font-size: 14px !important;
+    }
+
+    .select2-selection__choice__remove {
+        color: #fff !important;
+        font-size: 20px !important;
+        margin: 5px !important;
     }
 </style>
 

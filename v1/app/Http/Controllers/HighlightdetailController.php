@@ -12,11 +12,11 @@ class HighlightdetailController extends Controller
     {
         $highlights = Highlight::with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
             ->where('status', 1)
-            ->get(['id', 'image', 'title', 'category_id', 'user_id', 'created_at', 'updated_at']);
+            ->get(['id', 'image', 'title', 'user_id', 'created_at', 'updated_at']); // 🔹 ลบ 'tag_id'
 
         $news = Highlight::whereNull('status')
-            ->with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
-            ->get(['id', 'image', 'title', 'category_id', 'user_id', 'created_at']);
+            ->with(['tags:id,name', 'user:id,fname_th,lname_th', 'images'])
+            ->get(['id', 'image', 'title', 'user_id', 'created_at']);
 
         return view('highlightdetail.index', compact('highlights', 'news'));
     }
@@ -34,12 +34,16 @@ class HighlightdetailController extends Controller
             ->where('id', $id)
             ->firstOrFail();
 
-        $news = Highlight::where('category_id', $highlight->category_id) // ✅ ใช้ $highlight แทน $highlights
+        $news = Highlight::whereHas('tags', function ($q) use ($highlight) {
+            $tagIds = $highlight->tags()->pluck('id')->toArray();
+            if (!empty($tagIds)) {
+                $q->whereIn('id', $tagIds);
+            }
+        })
             ->where('id', '!=', $id)
             ->select(['id', 'image', 'title', 'description', 'category_id', 'user_id', 'created_at'])
             ->get();
 
-
-        return view('highlightdetail.index', compact('highlights', 'news'));
+        return view('highlightdetail.index', compact('highlight', 'news')); // 🔹 เปลี่ยน highlights เป็น highlight
     }
 }

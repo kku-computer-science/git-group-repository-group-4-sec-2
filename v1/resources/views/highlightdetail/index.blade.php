@@ -42,8 +42,7 @@
 
 </style>
 @section('content')
-@if($highlights->isNotEmpty())
-@foreach($highlights as $highlight)
+@if(isset($highlight))
 <div class="head-img">
     @if($highlights->isNotEmpty())
     @foreach($highlights as $highlight)
@@ -55,14 +54,19 @@
         <div class="py-3 px-0 d-flex align-items-center col-lg-10">
             <div class="row mx-0 w-100">
                 <div class="px-0 py-2 d-flex justify-content-center align-items-center col-lg-4">
-                    <span>เผยแพร่&nbsp;{{ $highlight->created_at->format('d/m/Y H:i') }}&nbsp;</span>
+                    <span><b>เผยแพร่:</b>&nbsp;{{ $highlight->created_at->format('d/m/Y H:i') }}&nbsp;</span>
                 </div>
                 <div class="px-2 d-flex col-lg-8">
-                    <div class="d-flex px-1 align-items-center" style="width: 150px;">
-                        <span>หมวดหมู่:</span>
-                        <a href="/content/news/category/{{ $highlight->category->name }}">
-                            <span>&nbsp;{{ $highlight->category->name }}</span>
-                        </a>
+                    <div class="d-flex px-1 align-items-center" style="width: fit-content;">
+                    <span><b>แท็ก:</b></span>
+                        @if($highlight->tags->isNotEmpty())
+                            @foreach($highlight->tags as $tag)
+                                <span>&nbsp;{{ $tag->name }}</span>
+                            @endforeach
+                        @else
+                            <span class="text-muted">แท็ก: -</span>
+                        @endif
+                        <!-- </a> -->
                     </div>
                 </div>
             </div>
@@ -109,23 +113,18 @@
             </h6>
         </div>
         <div class="d-flex justify-content-end col-12">
-            <h6>
-                อัปเดตล่าสุด:
-                <span>{{ $highlight->updated_at->format('d/m/Y H:i') }}</span>
-            </h6>
+            <span><b>อัปเดตล่าสุด: </b></span>
+            <span>&nbsp;{{ $highlight->updated_at->format('d/m/Y H:i') }}</span>
         </div>
     </div>
 </div>
-@endforeach
 @else
 <p>ไม่มีข้อมูล</p>
 @endif
 
 <!-- Related News Section -->
-<div class="container">
-    <div class="row mx-0 mb-4">
-        <div class="d-flex col-12">
-            <h4>ข่าวที่เกี่ยวข้อง &nbsp;</h4>
+<!-- <div class="container rlNews mt-5">
+    <h3 class="mb-4">ข่าวที่เกี่ยวข้อง</h3>
 
             <a href="/content/news/category/{{ $highlight->category->name }}" style="text-decoration: none ">
                 <h4>{{ $highlight->category->name }} </h4>
@@ -145,10 +144,10 @@
                 </div>
             </div>
             @endforeach
-        </div>
+        </div> -->
 
         <!-- Navigation Arrows -->
-        <div class="d-flex justify-content-end mt-3">
+        <!-- <div class="d-flex justify-content-end mt-3">
             <button class="btn btn-outline-primary me-2" id="scrollLeftRelated"><i class="fas fa-chevron-left"></i></button>
             <button class="btn btn-outline-primary" id="scrollRightRelated"><i class="fas fa-chevron-right"></i></button>
         </div>
@@ -157,7 +156,7 @@
         <p class="text-muted">ไม่มีข่าวที่เกี่ยวข้อง</p>
         @endif
     </div>
-</div>
+</div> -->
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {

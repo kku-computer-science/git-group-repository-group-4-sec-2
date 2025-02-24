@@ -23,14 +23,14 @@ class HighlightController extends Controller
 {
     public function index()
     {
-        $highlights = Highlight::with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
+        $highlights = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) 
             ->where('status', 1)
-            ->get(['id', 'image', 'title', 'category_id', 'user_id', 'created_at']);
-
+            ->get(['id', 'image', 'title', 'user_id', 'created_at']); 
+    
         $news = Highlight::whereNull('status')
-            ->with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
-            ->get(['id', 'image', 'title', 'category_id', 'user_id', 'created_at']);
-
+            ->with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) 
+            ->get(['id', 'image', 'title', 'user_id', 'created_at']);
+    
         return view('highlights.index', compact('highlights', 'news'));
     }
 
@@ -44,11 +44,12 @@ class HighlightController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:category,id',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'tag_id' => 'required|array', // ✅ ต้องเป็น array
+            'tag_id.*' => 'exists:tag,id', // ✅ ตรวจสอบว่าแต่ละ tag_id มีอยู่จริง
+            'link' => 'nullable|url',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120'
         ]);
-
         $manager = new ImageManager(new Driver()); // ใช้ GD หรือ Imagick
 
         $coverImagePath = null;
@@ -75,15 +76,19 @@ class HighlightController extends Controller
             $coverImagePath = $fileName;
         }
 
+
         $highlight = Highlight::create([
             'title' => $request->title,
             'description' => $request->description,
-            'category_id' => $request->category_id,
-            'image' => $coverImagePath,
+            'image' => $request->file('cover_image') ? $request->file('cover_image')->store('highlightImage', 'public') : null,
+            'link' => $request->link,
             'status' => null,
             'user_id' => auth()->id(),
         ]);
-
+    
+        // ✅ ใช้ `sync()` เชื่อม Many-to-Many ผ่าน Pivot Table `highlight_has_tag`
+        $highlight->tags()->sync($request->tag_id);
+    
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $imageFile) {
                 $extension = $imageFile->getClientOriginalExtension();
@@ -110,17 +115,19 @@ class HighlightController extends Controller
             }
         }
 
-        return redirect()->route('highlights.index')->with('success', 'News created successfully!');
+        return redirect()->route('highlights.index')->with('success', 'Highlight created successfully!');
     }
 
     public function edit($id)
     {
         Log::info('Edit Highlight ID: 1');
-        $highlight = Highlight::with('images')->findOrFail($id);
+        $highlight = Highlight::with('tags','images')->findOrFail($id);
         Log::info('Edit Highlight ID: 2');
         $categories = Category::all();
         Log::info('Edit Highlight ID: 3');
-        return view('highlights.edit', compact('highlight', 'categories'));
+        $selectedTags = $highlight->tags->pluck('id')->toArray();
+        Log::info('Edit Highlight ID: 4');
+        return view('highlights.edit', compact('highlight', 'categories','selectedTags'));
     }
 
     public function update(Request $request, $id)
@@ -132,30 +139,36 @@ class HighlightController extends Controller
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:category,id',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'link' => 'nullable|url',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
 
         Log::info('Starting update process...');
         $highlight = Highlight::findOrFail($id);
-        $coverImagePath = $highlight->image;
-
-        // ✅ Update Cover Image
+        $manager = new ImageManager(new Driver());
+        $coverImagePath = $highlight->image; // ✅ ตั้งค่าเริ่มต้นให้เป็นภาพเดิม
+    
         if ($request->hasFile('cover_image')) {
             if ($highlight->image) {
                 Storage::disk('public')->delete($highlight->image);
             }
-            $coverImagePath = $request->file('cover_image')->store('highlightImage', 'public');
-        }
-
-        // ✅ Update Highlight Data
+            $image = $manager->read($request->file('cover_image')->getPathname())
+                ->scale(width: 1200)
+                ->encode(new JpegEncoder(80));
+                $fileName = 'highlightImage/' . uniqid() . '.jpg';
+                Storage::disk('public')->put($fileName, $image->toString());
+                $coverImagePath = $fileName;
+            }
+    
         $highlight->update([
             'title' => $request->title,
             'description' => $request->description,
-            'category_id' => $request->category_id,
-            'image' => $coverImagePath,
+            'link' => $request->link,
+            'image' => $coverImagePath, // ✅ ใช้ค่าที่กำหนด
         ]);
+    
+        $highlight->tags()->sync($request->tag_id);
 
-        // ✅ Remove images marked for deletion
         if ($request->deleted_images) {
             $deletedImageIds = json_decode($request->deleted_images, true);
             foreach ($deletedImageIds as $imageId) {
@@ -178,8 +191,7 @@ class HighlightController extends Controller
                 ]);
             }
         }
-
-        Log::info('Highlight updated successfully.');
+    
         return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
     }
 

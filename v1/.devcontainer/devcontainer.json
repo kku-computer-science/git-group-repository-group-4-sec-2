@@ -8,7 +8,8 @@
       "extensions": [
         "xdebug.php-pack",
         "bmewburn.vscode-intelephense-client",
-        "ms-azuretools.vscode-docker"
+        "ms-azuretools.vscode-docker",
+        "fabiospampinato.vscode-todo-plus"
       ]
     }
   },
