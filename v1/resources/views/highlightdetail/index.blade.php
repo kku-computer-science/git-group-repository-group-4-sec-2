@@ -53,7 +53,7 @@
                 <div class="px-0 py-2 d-flex justify-content-center align-items-center col-lg-4">
                     <span><b>เผยแพร่:</b>&nbsp;{{ $highlight->created_at->format('d/m/Y H:i') }}&nbsp;</span>
                 </div>
-                <div class="px-2 d-flex col-lg-8">
+                <div class="px-2 d-flex col-lg-4">
                     <div class="d-flex px-1 align-items-center" style="width: fit-content;">
                         <span><b>แท็ก:</b></span>
                         @if($highlight->tags->isNotEmpty())
@@ -65,6 +65,10 @@
                         @endif
                     </div>
                 </div>
+                <div class="px-0 py-2 d-flex justify-content-center align-items-center col-lg-4">
+                    <span><b>แหล่งข้อมูลเพิ่มเติม:</b>&nbsp;<a href="{{ $highlight->link }}" target="_blank" class="text-decoration-none">{{ $highlight->link }}</a>&nbsp;</span>
+                </div>
+
             </div>
         </div>
         <div class="p-0 d-flex justify-content-center align-items-center col-lg-2">
@@ -75,6 +79,7 @@
                 </button>
             </a>
         </div>
+
         <div class="text-center py-5 col-12">
             <h2>{{ $highlight->title }}</h2>
         </div>
@@ -140,6 +145,8 @@
                 behavior: "smooth"
             });
         });
+
+        ////
     });
 </script>
 
