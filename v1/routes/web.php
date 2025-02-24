@@ -71,6 +71,8 @@ Route::prefix('highlights')->group(function () {
     // DELETE route สำหรับลบ Highlight
     Route::delete('/{id}', [HighlightController::class, 'destroy'])->name('highlights.destroy');
     Route::get('/data', [HighlightController::class, 'dataTable'])->name('highlights.data');
+
+    Route::post('/reorder', [HighlightController::class, 'reorder'])->name('highlights.reorder');
 });
 
 
@@ -80,8 +82,9 @@ Route::get('/highlight/{id}', [HighlightdetailController::class, 'show'])->name(
 
 
 Route::prefix('tags')->group(function () {
-    Route::post('/store', [TagController::class, 'store'])->name('tags.store'); // ✅ เส้นทางสำหรับสร้าง Tag
-    Route::delete('/{id}', [TagController::class, 'destroy'])->name('tags.destroy'); // ✅ เส้นทางสำหรับลบ Tag
+    Route::post('/store', [TagController::class, 'store'])->name('tags.store');
+    Route::delete('/{id}', [TagController::class, 'destroy'])->name('tags.destroy');
+    Route::get('/check/{id}', [TagController::class, 'checkDelete']); // ตรวจสอบก่อนลบ
 });
 
 

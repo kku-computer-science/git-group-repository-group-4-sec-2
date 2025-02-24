@@ -1,46 +1,45 @@
 @extends('layouts.layout')
 
 <style>
-
     /* Related News Section */
-.related-container {
-    position: relative;
-    max-width: 100%;
-    padding: 20px 0;
-}
+    .related-container {
+        position: relative;
+        max-width: 100%;
+        padding: 20px 0;
+    }
 
-.related-wrapper {
-    display: flex;
-    gap: 15px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding-bottom: 10px;
-}
+    .related-wrapper {
+        display: flex;
+        gap: 15px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding-bottom: 10px;
+    }
 
-/* Hide Scrollbar */
-.related-wrapper::-webkit-scrollbar {
-    display: none;
-}
+    /* Hide Scrollbar */
+    .related-wrapper::-webkit-scrollbar {
+        display: none;
+    }
 
-.related-card {
-    flex: 0 0 18rem;
-    min-width: 18rem;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-}
+    .related-card {
+        flex: 0 0 18rem;
+        min-width: 18rem;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
 
-.related-card:hover {
-    transform: translateY(-5px);
-}
+    .related-card:hover {
+        transform: translateY(-5px);
+    }
 
-.related-card img {
-    height: 200px;
-    object-fit: cover;
-}
-
+    .related-card img {
+        height: 200px;
+        object-fit: cover;
+    }
 </style>
+
 @section('content')
 @if(isset($highlight))
 <div class="head-img">
@@ -58,15 +57,14 @@
                 </div>
                 <div class="px-2 d-flex col-lg-8">
                     <div class="d-flex px-1 align-items-center" style="width: fit-content;">
-                    <span><b>แท็ก:</b></span>
+                        <span><b>แท็ก:</b></span>
                         @if($highlight->tags->isNotEmpty())
-                            @foreach($highlight->tags as $tag)
-                                <span>&nbsp;{{ $tag->name }}</span>
-                            @endforeach
+                        @foreach($highlight->tags as $tag)
+                        <span>&nbsp;{{ $tag->name }}</span>
+                        @endforeach
                         @else
-                            <span class="text-muted">แท็ก: -</span>
+                        <span class="text-muted">แท็ก: -</span>
                         @endif
-                        <!-- </a> -->
                     </div>
                 </div>
             </div>
@@ -83,12 +81,13 @@
             <h2>{{ $highlight->title }}</h2>
         </div>
         <div class="py-2 col-12">
-            <span style="font-size: 1.3em;"><span style="font-family:Aptos,sans-serif">
-                    {{ $highlight->description }}
-                </span>
+            <span style="font-size:12pt; font-family:Aptos,sans-serif; white-space: normal; overflow-wrap: break-word; word-wrap: break-word;">
+                {{ $highlight->description }}
             </span>
         </div>
-        <br>
+
+
+        @if($highlight->images->isNotEmpty())
         <div class="py-2 col-12">
             <span class="text-muted">
                 อัลบั้ม รูปภาพ
@@ -97,9 +96,11 @@
             <div class="px-2 container-fluid">
                 <div class="row">
                     @foreach($highlight->images as $image)
-                    <div class="my-2 col-sm-12 col-md-6 col-lg-2">
-                        <img src="{{ asset('storage/' . $image->image) }}" class="img-thumbnail w-100"
-                            style="height: 150px; object-fit: cover; border-radius: 8px;" role="button" tabindex="0">
+                    <div class="my-2 col-md-6 col-lg-2">
+                        <img src="{{ asset('storage/' . $image->image) }}"
+                            class="img-thumbnail w-100"
+                            style="height: 150px; object-fit: cover; border-radius: 8px;"
+                            role="button" tabindex="0">
                     </div>
                     @endforeach
                 </div>
@@ -122,62 +123,33 @@
 <p>ไม่มีข้อมูล</p>
 @endif
 
-<!-- Related News Section -->
-<!-- <div class="container rlNews mt-5">
-    <h3 class="mb-4">ข่าวที่เกี่ยวข้อง</h3>
-
-            <a href="/content/news/category/{{ $highlight->category->name }}" style="text-decoration: none ">
-                <h4>{{ $highlight->category->name }} </h4>
-            </a>
-        </div>
-        @if($news->isNotEmpty())
-        <div class="related-wrapper" id="relatedNews">
-            @foreach($news as $new)
-            <div class="related-card">
-                <a href="{{ route('highlight.show', $new->id) }}">
-                    <img src="{{ asset('storage/' . $new->image) }}" class="card-img-top" alt="Related News Image">
-                </a>
-                <div class="card-body">
-                    <span class="badge bg-primary">{{ $new->category->name }}</span>
-                    <h6 class="card-title mt-2">{{ $new->title }}</h6>
-                    <p class="card-text">{{ Str::limit($new->description, 100) }}</p>
-                </div>
-            </div>
-            @endforeach
-        </div> -->
-
-        <!-- Navigation Arrows -->
-        <!-- <div class="d-flex justify-content-end mt-3">
-            <button class="btn btn-outline-primary me-2" id="scrollLeftRelated"><i class="fas fa-chevron-left"></i></button>
-            <button class="btn btn-outline-primary" id="scrollRightRelated"><i class="fas fa-chevron-right"></i></button>
-        </div>
-
-        @else
-        <p class="text-muted">ไม่มีข่าวที่เกี่ยวข้อง</p>
-        @endif
-    </div>
-</div> -->
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const container = document.getElementById("relatedNews");
         if (!container) return;
 
         const btnLeft = document.getElementById("scrollLeftRelated");
         const btnRight = document.getElementById("scrollRightRelated");
 
-        btnLeft.addEventListener("click", function () {
-            container.scrollBy({ left: -250, behavior: "smooth" });
+        btnLeft.addEventListener("click", function() {
+            container.scrollBy({
+                left: -250,
+                behavior: "smooth"
+            });
         });
 
-        btnRight.addEventListener("click", function () {
-            container.scrollBy({ left: 250, behavior: "smooth" });
+        btnRight.addEventListener("click", function() {
+            container.scrollBy({
+                left: 250,
+                behavior: "smooth"
+            });
         });
     });
 </script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const cardList = document.querySelector('.card-list');
         if (!cardList) return;
 

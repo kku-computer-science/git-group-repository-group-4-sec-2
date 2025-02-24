@@ -170,61 +170,6 @@
 
 
 
-
-
-
-
-    $(document).on('click', '.remove-tag', function() {
-        let tagId = $(this).data('id');
-        let tagElement = $(this).parent();
-
-        $.ajax({
-            url: `/tags/check/${tagId}`, // ตรวจสอบว่าลบได้หรือไม่
-            type: 'GET',
-            success: function(response) {
-                if (response.canDelete) {
-                    Swal.fire({
-                        title: "Are you sure?",
-                        text: "This tag will be deleted permanently!",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#d33",
-                        cancelButtonColor: "#3085d6",
-                        confirmButtonText: "Yes, delete it!",
-                        cancelButtonText: "No, cancel!"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $.ajax({
-                                url: `/tags/${tagId}`,
-                                type: 'DELETE',
-                                data: {
-                                    _token: '{{ csrf_token() }}'
-                                },
-                                success: function(deleteResponse) {
-                                    if (deleteResponse.success) {
-                                        tagElement.remove();
-                                        let tagSelect = $('#tag').val().filter(id => id != tagId);
-                                        $('#tag').val(tagSelect).trigger('change');
-                                    } else {
-                                        Swal.fire("Error", deleteResponse.message, "error");
-                                    }
-                                },
-                                error: function() {
-                                    Swal.fire("Error", "Failed to delete tag", "error");
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    Swal.fire("Cannot Delete", "This tag is linked to a highlight and cannot be removed.", "warning");
-                }
-            },
-            error: function() {
-                Swal.fire("Error", "Failed to check tag dependency", "error");
-            }
-        });
-    });
-
     function confirmCancel() {
         Swal.fire({
             title: "คุณแน่ใจหรือไม่?",

@@ -3,6 +3,8 @@
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <div class="container">
     <!-- แสดงข้อความแจ้งเตือน -->
@@ -19,9 +21,9 @@
     <!-- ✅ ตาราง Show  Highlights (ข้างบน) -->
     <h2>Show Highlights</h2>
     <table id="highlight-table" class="table table-striped">
-
         <thead>
             <tr>
+                <th>Priority</th>
                 <th>ID</th>
                 <th>Image</th>
                 <th>Title</th>
@@ -34,7 +36,11 @@
         </thead>
         <tbody>
             @foreach ($highlights as $highlight)
-            <tr id="highlight-row-{{ $highlight->id }}">
+            <tr id="highlight-row-{{ $highlight->id }}" data-id="{{ $highlight->id }}" data-priority="{{ $highlight->priority }}">
+                <td class="priority-controls">
+                    <button class="btn btn-sm btn-light move-up" data-id="{{ $highlight->id }}">⬆️</button>
+                    <button class="btn btn-sm btn-light move-down" data-id="{{ $highlight->id }}">⬇️</button>
+                </td>
                 <td>{{ $highlight->id }}</td>
                 <td>
                     @if($highlight->image)
@@ -46,23 +52,12 @@
                 <td>{{ $highlight->title }}</td>
                 <td>{{ $highlight->category->name ?? 'No Category' }}</td>
                 <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
+                <td>{{ optional($highlight->user)->fname_th ?? 'Unknown' }} {{ optional($highlight->user)->lname_th ?? '' }}</td>
                 <td>
-                    {{ optional($highlight->user)->fname_th ?? 'Unknown' }} {{ optional($highlight->user)->lname_th ?? '' }}
+                    <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
+                    <button type="button" class="btn btn-danger btn-delete" data-id="{{ $highlight->id }}"><i class="fas fa-trash-alt"></i></button>
                 </td>
                 <td>
-                    <!-- ปุ่ม Edit -->
-                    <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary">
-                        <i class="fas fa-edit"></i>
-                    </a>
-
-                    <!-- ปุ่ม Delete -->
-                    <button type="button" class="btn btn-danger btn-delete" data-id="{{ $highlight->id }}">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </td>
-
-                <td>
-                    <!-- ปุ่ม Remove from Highlight -->
                     <button type="button" class="btn btn-warning btn-remove" data-id="{{ $highlight->id }}">REMOVE</button>
                 </td>
             </tr>
@@ -396,9 +391,76 @@
             });
         });
     });
+
+
+    $("#highlight-table tbody tr").each(function() {
+        console.log($(this).attr("data-id"));
+    });
+    $(document).ready(function() {
+        $(".move-up, .move-down").click(function() {
+            let row = $(this).closest("tr");
+            let highlightId = $(this).data("id");
+            let moveUp = $(this).hasClass("move-up");
+            let siblingRow = moveUp ? row.prev() : row.next();
+
+            if (siblingRow.length === 0) return; // หยุดถ้าไม่มีแถวข้างบนหรือข้างล่าง
+
+            // ✅ สลับตำแหน่ง row
+            moveUp ? siblingRow.before(row) : siblingRow.after(row);
+
+            // ✅ อัปเดต priority ใหม่
+            let orderedIds = $("#highlight-table tbody tr").map(function() {
+                return $(this).data("id");
+            }).get();
+
+            console.log("🔍 Ordered IDs ส่งไปที่ API:", orderedIds); // 🔍 ตรวจสอบค่าก่อนส่ง API
+
+            $.ajax({
+                url: "/highlights/reorder",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    orderedIds: orderedIds
+                },
+                success: function(response) {
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "ลำดับ Priority ถูกอัปเดตแล้ว!",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                },
+                error: function(xhr) {
+                    console.error("❌ Error Response:", xhr); // 🔍 Debug ค่าที่ error
+                    Swal.fire("ผิดพลาด!", "ไม่สามารถอัปเดตลำดับ Priority ได้!", "error");
+                }
+            });
+        });
+    });
 </script>
 
 <style>
+    .priority-handle {
+        cursor: grab;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .sortable-placeholder {
+        background-color: #f8d7da;
+        height: 50px;
+        border: 2px dashed #dc3545;
+    }
+
+    #highlight-table tbody tr {
+        transition: all 0.2s ease-in-out;
+    }
+
+    #highlight-table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
     .table {
         table-layout: fixed;
         width: 100%;

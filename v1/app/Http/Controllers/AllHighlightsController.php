@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Highlight;
+use Illuminate\Http\Request;
+
+class AllHighlightsController extends Controller
+{
+    public function index()
+    {
+        // ดึงข้อมูล Highlight พร้อมความสัมพันธ์ tags, user, images และเรียงลำดับล่าสุด
+        $highlights = Highlight::with(['tags', 'user', 'images'])
+                        ->latest()
+                        ->paginate(10);
+                        
+        return view('allhighlights.index', compact('highlights'));
+    }
+
+    public function show($id)
+    {
+        // ดึงข้อมูล Highlight ที่มีความสัมพันธ์ tags, user, images ด้วย
+        $highlight = Highlight::with(['tags', 'user', 'images'])->findOrFail($id);
+        
+        return view('allhighlights.show', compact('highlight'));
+    }
+}

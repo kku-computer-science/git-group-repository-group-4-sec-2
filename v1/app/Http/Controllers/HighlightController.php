@@ -23,17 +23,17 @@ class HighlightController extends Controller
 {
     public function index()
     {
-        $highlights = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) 
+        $highlights = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images'])
             ->where('status', 1)
-            ->get(['id', 'image', 'title', 'user_id', 'created_at']); 
-    
-        $news = Highlight::whereNull('status')
-            ->with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) 
             ->get(['id', 'image', 'title', 'user_id', 'created_at']);
-    
+
+        $news = Highlight::whereNull('status')
+            ->with(['tags:id,name', 'user:id,fname_th,lname_th', 'images'])
+            ->get(['id', 'image', 'title', 'user_id', 'created_at']);
+
         // ✅ ดึงรายการ Tag ทั้งหมดไปใช้ใน View
         $tags = Tag::all(['id', 'name']);
-    
+
         return view('highlights.index', compact('highlights', 'news', 'tags'));
     }
 
@@ -88,10 +88,10 @@ class HighlightController extends Controller
             'status' => null,
             'user_id' => auth()->id(),
         ]);
-    
+
         // ✅ ใช้ `sync()` เชื่อม Many-to-Many ผ่าน Pivot Table `highlight_has_tag`
         $highlight->tags()->sync($request->tag_id);
-    
+
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $imageFile) {
                 $extension = $imageFile->getClientOriginalExtension();
@@ -124,13 +124,13 @@ class HighlightController extends Controller
     public function edit($id)
     {
         Log::info('Edit Highlight ID: 1');
-        $highlight = Highlight::with('tags','images')->findOrFail($id);
+        $highlight = Highlight::with('tags', 'images')->findOrFail($id);
         Log::info('Edit Highlight ID: 2');
         $categories = Category::all();
         Log::info('Edit Highlight ID: 3');
         $selectedTags = $highlight->tags->pluck('id')->toArray();
         Log::info('Edit Highlight ID: 4');
-        return view('highlights.edit', compact('highlight', 'categories','selectedTags'));
+        return view('highlights.edit', compact('highlight', 'categories', 'selectedTags'));
     }
 
     public function update(Request $request, $id)
@@ -146,11 +146,10 @@ class HighlightController extends Controller
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ]);
 
-        Log::info('Starting update process...');
         $highlight = Highlight::findOrFail($id);
         $manager = new ImageManager(new Driver());
         $coverImagePath = $highlight->image; // ✅ ตั้งค่าเริ่มต้นให้เป็นภาพเดิม
-    
+
         if ($request->hasFile('cover_image')) {
             if ($highlight->image) {
                 Storage::disk('public')->delete($highlight->image);
@@ -158,18 +157,18 @@ class HighlightController extends Controller
             $image = $manager->read($request->file('cover_image')->getPathname())
                 ->scale(width: 1200)
                 ->encode(new JpegEncoder(80));
-                $fileName = 'highlightImage/' . uniqid() . '.jpg';
-                Storage::disk('public')->put($fileName, $image->toString());
-                $coverImagePath = $fileName;
-            }
-    
+            $fileName = 'highlightImage/' . uniqid() . '.jpg';
+            Storage::disk('public')->put($fileName, $image->toString());
+            $coverImagePath = $fileName;
+        }
+
         $highlight->update([
             'title' => $request->title,
             'description' => $request->description,
             'link' => $request->link,
             'image' => $coverImagePath, // ✅ ใช้ค่าที่กำหนด
         ]);
-    
+
         $highlight->tags()->sync($request->tag_id);
 
         if ($request->deleted_images) {
@@ -194,7 +193,7 @@ class HighlightController extends Controller
                 ]);
             }
         }
-    
+
         return redirect()->route('highlights.index')->with('success', 'Highlight updated successfully!');
     }
 
@@ -249,27 +248,26 @@ class HighlightController extends Controller
     public function destroy($id)
     {
         $highlight = Highlight::findOrFail($id);
-    
+
         // ✅ ลบความสัมพันธ์กับ Tags ก่อน (Pivot Table)
         $highlight->tags()->detach();
-    
+
         // ✅ ลบรูปภาพหลักออกจาก Storage
         if ($highlight->image) {
             Storage::disk('public')->delete($highlight->image);
         }
-    
+
         // ✅ ลบรูปภาพทั้งหมดที่เกี่ยวข้องใน ImageCollection
         foreach ($highlight->images as $image) {
             Storage::disk('public')->delete($image->image);
             $image->delete(); // ลบจาก Database
         }
-    
+
         // ✅ ลบ Highlight ออกจาก Database
         $highlight->delete();
-    
+
         return response()->json(['success' => true, 'message' => 'Highlight deleted successfully.']);
     }
-
 
     public function dataTable(Request $request)
     {
@@ -309,5 +307,18 @@ class HighlightController extends Controller
             })
             ->rawColumns(['image', 'actions'])
             ->make(true);
+    }
+
+    public function reorder(Request $request)
+    {
+        dd($request->orderedIds); // 🔍 ตรวจสอบว่าค่าที่ส่งมาถูกต้องหรือไม่
+
+        $orderedIds = $request->orderedIds;
+
+        foreach ($orderedIds as $index => $id) {
+            Highlight::where('id', $id)->update(['priority' => $index + 1]);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Priority updated successfully!']);
     }
 }
