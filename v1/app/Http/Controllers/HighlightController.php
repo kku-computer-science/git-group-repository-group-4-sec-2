@@ -31,7 +31,10 @@ class HighlightController extends Controller
             ->with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) 
             ->get(['id', 'image', 'title', 'user_id', 'created_at']);
     
-        return view('highlights.index', compact('highlights', 'news'));
+        // ✅ ดึงรายการ Tag ทั้งหมดไปใช้ใน View
+        $tags = Tag::all(['id', 'name']);
+    
+        return view('highlights.index', compact('highlights', 'news', 'tags'));
     }
 
     public function create()
