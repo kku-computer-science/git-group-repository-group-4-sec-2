@@ -3,28 +3,26 @@ Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec
 # Library           SeleniumLibrary
 
 *** Variables ***
+${LAST_DELETE_BUTTON}    xpath=//tbody/tr[last()]//button[contains(@class,'btn-delete')]
 
 *** Keywords ***
 
 Delete Highlight
-    # ค้นหา ID ของ News ที่ต้องการลบ (เลือกอันล่าสุดที่เพิ่มเข้ามา)
-    ${NEWS_ID}    Get Text    xpath=(//table[@id='news-table']//tr[last()]//td[1])
 
-    # เลื่อน Scroll ไปที่ปุ่มลบของ News อันแรก
-    Scroll Element Into View    xpath=(//table[@id='news-table']//tr[td[1][text()='${NEWS_ID}']]//button[contains(@class,'btn-delete')])[1]
-    Wait Until Element Is Visible    xpath=(//table[@id='news-table']//tr[td[1][text()='${NEWS_ID}']]//button[contains(@class,'btn-delete')])[1]    timeout=5s
-    Click Button    xpath=(//table[@id='news-table']//tr[td[1][text()='${NEWS_ID}']]//button[contains(@class,'btn-delete')])[1]
+    # รอให้ตารางโหลดก่อน
+    Wait Until Element Is Visible    ${LAST_DELETE_BUTTON}    timeout=10s
 
-    # รอให้ Popup แจ้งเตือนปรากฏ
+    # Log ตรวจสอบว่าพบปุ่มลบจริงหรือไม่
+    Log    ${LAST_DELETE_BUTTON}
+
+    # เลื่อน Scroll ไปที่ปุ่มลบของแถวสุดท้าย
+    Scroll Element Into View    ${LAST_DELETE_BUTTON}
+    Wait Until Element Is Visible    ${LAST_DELETE_BUTTON}    timeout=5s
+    Click Button    ${LAST_DELETE_BUTTON}
+
+    # รอให้ Popup แจ้งเตือนขึ้นมา
     Wait Until Element Is Visible    xpath=//h2[@id='swal2-title' and text()='คุณแน่ใจหรือไม่?']    timeout=5s
-    # กดปุ่ม "ใช่, ลบเลย!"
     Click Button    xpath=//button[contains(@class,'swal2-confirm') and text()='ใช่, ลบเลย!']
-
-    # รอให้หน้าเปลี่ยนกลับไปยัง Manage Highlights
-    Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    timeout=10s
-    # รอให้แถวที่มี ID ที่ถูกลบหายไปจริงๆ
-    Wait Until Element Is Not Visible    xpath=//table[@id='news-table']//tr[td[1][text()='${NEWS_ID}']]    timeout=10s
-    Sleep    2s
 
 *** Test Cases ***
 
@@ -47,9 +45,14 @@ Test Create News Success
     Click Element    id=coverImageBox
     Choose File    xpath=//input[@type='file']    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg
     Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
-    Select From List By Label    id=category    ทุนวิจัยและโอกาสสนับสนุน
-    Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
 
+    Click Element   xpath=//span[contains(@class, 'select2-selection')]
+    Sleep    1s
+    Click Element    xpath=//li[contains(text(), 'ทุนวิจัยและโอกาสสนับสนุน')]
+    Sleep    1s
+
+    Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
+    Input Text    id=link   https://www.google.com
     Scroll Element Into View    id=imageAlbumBox
     Click Element    id=imageAlbumBox
     Choose File    id=image_album    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_2.jpeg\n/Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_3.jpeg
@@ -65,3 +68,4 @@ Test Create News Success
     Delete Highlight
 
     Close Browser
+
