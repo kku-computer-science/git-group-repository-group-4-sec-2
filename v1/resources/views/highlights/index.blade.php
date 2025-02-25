@@ -24,10 +24,10 @@
         <thead>
             <tr>
                 <th>Priority</th>
-                <th>ID</th>
+                <!-- <th>ID</th> -->
                 <th>Image</th>
                 <th>Title</th>
-                <th>Category</th>
+                <th>Tags</th>
                 <th>Date Time</th>
                 <th>Created By</th>
                 <th>Actions</th>
@@ -35,7 +35,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($highlights as $highlight)
+            @foreach ($highlights->sortBy('priority') as $highlight)
             <tr id="highlight-row-{{ $highlight->id }}" data-id="{{ $highlight->id }}" data-priority="{{ $highlight->priority }}">
                 <td class="priority-controls">
                     <div class="btn-group-vertical">
@@ -43,7 +43,7 @@
                         <button class="btn btn-sm btn-light move-down" data-id="{{ $highlight->id }}"><i class="fas fa-arrow-circle-down"></i></button>
                     </div>
                 </td>
-                <td>{{ $highlight->id }}</td>
+                <!-- <td>{{ $highlight->id }}</td> -->
                 <td>
                     @if($highlight->image)
                     <img src="{{ asset('storage/' . $highlight->image) }}" width="120">
@@ -80,10 +80,10 @@
 
         <thead>
             <tr>
-                <th>ID</th>
+                <!-- <th>ID</th> -->
                 <th>Image</th>
                 <th>Title</th>
-                <th>Category</th>
+                <th>Tags</th>
                 <th>Date Time</th>
                 <th>Created By</th>
                 <th>Actions</th>
@@ -93,7 +93,7 @@
         <tbody>
             @foreach ($news as $highlight)
             <tr id="news-row-{{ $highlight->id }}">
-                <td>{{ $highlight->id }}</td>
+                <!-- <td>{{ $highlight->id }}</td> -->
                 <td>
                     @if($highlight->image)
                     <img src="{{ asset('storage/' . $highlight->image) }}">
@@ -122,7 +122,6 @@
                 </td>
 
                 <td>
-                    <!-- ปุ่ม Add to Highlight -->
                     <button type="button" class="btn btn-success btn-add" data-id="{{ $highlight->id }}">ADD</button>
                 </td>
             </tr>
@@ -220,7 +219,7 @@
             let count = $("#highlight-table tbody tr").length;
             $("#highlight-count").val(count);
 
-            // ปิดปุ่ม ADD ถ้าครบ 5 ไฮไลท์
+            // Disable ADD buttons if 5 highlights already exist
             if (count >= 5) {
                 $(".btn-add").prop("disabled", true);
             } else {
@@ -228,10 +227,11 @@
             }
         }
 
-        // ✅ ฟังก์ชันกดปุ่ม ADD → ย้ายไปตาราง Highlights
+        // ADD button functionality - move row to Highlights table
         $(document).on("click", ".btn-add", function() {
             let row = $(this).closest("tr");
             let highlightId = $(this).attr("data-id");
+            let originalRowId = row.attr("id");
 
             let highlightCount = $("#highlight-table tbody tr").length;
             if (highlightCount >= 5) {
@@ -248,7 +248,10 @@
             $.ajax({
                 url: "/highlights/" + highlightId + "/add",
                 type: "POST",
-                data: { _token: "{{ csrf_token() }}", _method: "PUT" },
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content') || "{{ csrf_token() }}",
+                    _method: "PUT"
+                },
                 success: function(response) {
                     Swal.fire({
                         position: "center",
@@ -277,14 +280,20 @@
                         </td>
                     </tr>`;
 
-                    row.find(".btn-add")
-                        .removeClass("btn-success btn-add")
-                        .addClass("btn-warning btn-remove")
-                        .text("REMOVE");
+                    // ✅ เพิ่มแถวใหม่ไปตารางบน
+                    $("#highlight-table tbody").append(newRowHtml);
 
+                    // ✅ ลบแถวออกจากตารางล่างให้ถูกต้อง
+                    row.remove();
+
+                    // ✅ อัปเดตจำนวน highlight
                     updateHighlightCount();
+
+                    // ✅ อัปเดต priority
+                    updatePriorityOrder();
                 },
                 error: function(xhr) {
+                    console.error("Error response:", xhr);
                     Swal.fire("ผิดพลาด!", "เกิดข้อผิดพลาดบางอย่าง!", "error");
                 }
             });
@@ -298,7 +307,10 @@
             $.ajax({
                 url: "/highlights/" + highlightId + "/remove",
                 type: "POST",
-                data: { _token: "{{ csrf_token() }}", _method: "PUT" },
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content') || "{{ csrf_token() }}",
+                    _method: "PUT"
+                },
                 success: function(response) {
                     Swal.fire({
                         position: "center",
@@ -338,8 +350,12 @@
 
                     // ✅ อัปเดตจำนวน highlight
                     updateHighlightCount();
+
+                    // ✅ อัปเดต priority
+                    updatePriorityOrder();
                 },
                 error: function(xhr) {
+                    console.error("Error response:", xhr);
                     Swal.fire("ผิดพลาด!", "เกิดข้อผิดพลาดบางอย่าง!", "error");
                 }
             });
@@ -365,7 +381,10 @@
                     $.ajax({
                         url: "/highlights/" + highlightId,
                         type: "POST",
-                        data: { _token: "{{ csrf_token() }}", _method: "DELETE" },
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            _method: "DELETE"
+                        },
                         success: function(response) {
                             Swal.fire({
                                 icon: "success",
@@ -441,7 +460,6 @@
 
         // Initialize
         updateHighlightCount();
-    });
 
 
 
@@ -463,12 +481,10 @@
         setTimeout(function() {
             $(".alert-danger").fadeOut("slow");
         }, 2000);
-    });
 
-    $(document).ready(function() {
-        // ซ่อนข้อความที่ยาวเกิน 25 ตัวอักษรในคอลัมน์ Title
-        $('#highlight-table tbody tr').each(function() {
-            var titleCell = $(this).find('td:nth-child(3)'); // คอลัมน์ Title
+        // Shorten long titles
+        $('.table tbody tr').each(function() {
+            var titleCell = $(this).find('td:nth-child(3)'); // Title column
             var titleText = titleCell.text().trim();
 
             if (titleText.length > 100) {
@@ -477,16 +493,7 @@
             }
         });
 
-        $('#news-table tbody tr').each(function() {
-            var titleCell = $(this).find('td:nth-child(3)'); // คอลัมน์ Title
-            var titleText = titleCell.text().trim();
 
-            if (titleText.length > 25) {
-                var shortenedTitle = titleText.substring(0, 25) + '...'; // ย่อข้อความและเพิ่ม ...
-                titleCell.text(shortenedTitle);
-            }
-        });
-    });
 
         // delete teg
         $(document).ready(function() {
@@ -556,63 +563,9 @@
                                     });
                                 }
                             }
-                        },
-                        error: function(xhr) {
-                            if (xhr.status === 400) {
-                                Swal.fire("ไม่สามารถลบได้!", "Tag นี้ถูกใช้งานอยู่ ไม่สามารถลบได้", "warning");
-                            } else {
-                                Swal.fire("Error", "เกิดข้อผิดพลาด ไม่สามารถลบ Tag ได้", "error");
-                            }
-                        }
-                    });
-                }
-            });
-        });
-    });
-
-
-    $("#highlight-table tbody tr").each(function() {
-        console.log($(this).attr("data-id"));
-    });
-    $(document).ready(function() {
-        $(".move-up, .move-down").click(function() {
-            let row = $(this).closest("tr");
-            let highlightId = $(this).data("id");
-            let moveUp = $(this).hasClass("move-up");
-            let siblingRow = moveUp ? row.prev() : row.next();
-
-            if (siblingRow.length === 0) return; // หยุดถ้าไม่มีแถวข้างบนหรือข้างล่าง
-
-            // ✅ สลับตำแหน่ง row
-            moveUp ? siblingRow.before(row) : siblingRow.after(row);
-
-            // ✅ อัปเดต priority ใหม่
-            let orderedIds = $("#highlight-table tbody tr").map(function() {
-                return $(this).data("id");
-            }).get();
-
-            console.log("🔍 Ordered IDs ส่งไปที่ API:", orderedIds); // 🔍 ตรวจสอบค่าก่อนส่ง API
-
-            $.ajax({
-                url: "/highlights/reorder",
-                type: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    orderedIds: orderedIds
-                },
-                success: function(response) {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "ลำดับ Priority ถูกอัปเดตแล้ว!",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                },
-                error: function(xhr) {
-                    console.error("❌ Error Response:", xhr); // 🔍 Debug ค่าที่ error
-                    Swal.fire("ผิดพลาด!", "ไม่สามารถอัปเดตลำดับ Priority ได้!", "error");
-                }
+                        });
+                    }
+                });
             });
         });
 
