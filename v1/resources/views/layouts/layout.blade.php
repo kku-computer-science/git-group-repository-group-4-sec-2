@@ -67,9 +67,6 @@
                     <li class="nav-item {{ request()->is('/') ? 'active' : ''}} ">
                         <a class="nav-link" href="/">{{ trans('message.Home') }}</a>
                     </li>
-                    <li class="nav-item {{ request()->is('allhighlights') ? 'active' : ''}}">
-                        <a class="nav-link" href="/allhighlights">Highlights</a>
-                    </li>
                     <li
                         class="nav-item dropdown {{ Request::routeIs('researchers') ? 'active' : '' }} {{ request()->is('detail*') ? 'active' : ''}} ">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
@@ -136,7 +133,7 @@
                 <!-- ปุ่ม Logout -->
                 <a href="{{ route('logout') }}" class="btn btn-danger"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <span><i class="fa fa-sign-out-alt fa-lg"></i></span> Logout
+                    <i class="fa fa-sign-out-alt fa-lg"></i> Logout
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
@@ -145,7 +142,7 @@
                 @else
                 <!-- ปุ่ม Login -->
                 <a class="btn btn-primary" href="{{ route('login') }}">
-                    <span><i class="fa fa-sign-in-alt fa-lg"></i></span> Login
+                    <i class="fa fa-sign-in-alt fa-lg"></i> Login
                 </a>
 
                 @endauth

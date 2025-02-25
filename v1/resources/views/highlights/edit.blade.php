@@ -38,7 +38,7 @@
                     <input type="text" name="title" id="title" class="form-control" value="{{ $highlight->title }}" required>
                 </div>
 
-                <!-- ✅ Tag -->
+                <!-- ✅ Category -->
                 <div class="form-group">
                     <label for="tag">Tags</label>
                     <select name="tag_id[]" id="tag" class="form-control select2" multiple="multiple">
@@ -198,6 +198,15 @@ $(document).ready(function() {
     };
 });
 
+
+
+
+
+
+
+
+
+
     let deletedImages = [];
     let selectedFiles = [];
 
@@ -289,56 +298,6 @@ $(document).ready(function() {
         selectedFiles.splice(index, 1); // เอารูปใหม่ออกจาก array
         updateAlbumPreview(); // รีเฟรชตัวอย่าง
     }
-
-    document.getElementById("updateForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent immediate form submission
-
-        let title = document.getElementById("title").value;
-        let tag = document.getElementById("tag").value;
-        let coverPreview = document.getElementById("coverPreview").classList.contains("d-none");
-        let description = document.getElementById("description").value;
-
-        if (coverPreview) {
-            Swal.fire({
-                icon: "warning",
-                title: "กรุณาอัปโหลดรูปภาพ!",
-                text: "คุณต้องเลือกอัปโหลดรูปภาพก่อนส่งแบบฟอร์ม",
-                padding: "1.25rem",
-                confirmButtonText: "ตกลง",
-                confirmButtonColor: "#3085d6",
-            });
-        } else if (!title) {
-            Swal.fire({
-                icon: "warning",
-                title: "กรุณากรอกชื่อไฮไลท์!",
-                text: "คุณต้องกรอกชื่อไฮไลท์ก่อนส่งแบบฟอร์ม",
-                padding: "1.25rem",
-                confirmButtonText: "ตกลง",
-                confirmButtonColor: "#3085d6",
-            });
-        } else if (!tag) {
-            Swal.fire({
-                icon: "warning",
-                title: "กรุณาเลือก tag!",
-                text: "คุณต้องเลือก tag ก่อนส่งแบบฟอร์ม",
-                padding: "1.25rem",
-                confirmButtonText: "ตกลง",
-                confirmButtonColor: "#3085d6",
-            });
-        } else if (!description) {
-            Swal.fire({
-                icon: "warning",
-                title: "กรุณากรอกคำอธิบาย!",
-                text: "คุณต้องกรอกคำอธิบายก่อนส่งแบบฟอร์ม",
-                padding: "1.25rem",
-                confirmButtonText: "ตกลง",
-                confirmButtonColor: "#3085d6",
-            });
-        } else {
-            confirmUpdate();
-        }
-
-    });
 
 
 

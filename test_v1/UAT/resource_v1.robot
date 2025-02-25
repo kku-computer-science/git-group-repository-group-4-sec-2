@@ -88,6 +88,21 @@ Verify Researcher Dashboard
 #     Page Should Not Contain    Manage Programs
 #     Page Should Not Contain    Manage Highlights
 
+# Open Browser
+#     # สร้าง options สำหรับ Chrome
+#     ${chrome_options}    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()
+
+#     # ตั้งค่า binary_location ให้กับ chrome_options
+#     ${chrome_options.binary_location}    Set Variable    ${CHROME_BROWSER_PATH}
+
+#     # สร้าง service สำหรับ chromedriver
+#     ${service}    Evaluate    sys.modules['selenium.webdriver.chrome.service'].Service(executable_path="${CHROME_DRIVER_PATH}")
+
+#     # สร้าง WebDriver โดยใช้ options และ service
+#     Create Webdriver    Chrome    options=${chrome_options}    service=${service}
+
+#     Maximize Browser Window
+#     Go To    ${URL}
 
 Go To Login Page
     Open Browser    ${URL}    ${BROWSER}
