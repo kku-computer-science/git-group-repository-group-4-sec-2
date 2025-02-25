@@ -136,8 +136,8 @@
                 <!-- ปุ่ม Logout -->
                 <a href="{{ route('logout') }}" class="btn btn-danger"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <span><i class="fa fa-sign-out-alt fa-lg"></i></span> Logout
-                </a>
+                    <span><i class="fa fa-sign-out-alt fa-lg" style="padding: 0.625rem 0.25rem; font-size: 14px;">&nbsp;Logout</i></span>
+                    </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
@@ -145,7 +145,7 @@
                 @else
                 <!-- ปุ่ม Login -->
                 <a class="btn btn-primary" href="{{ route('login') }}">
-                    <span><i class="fa fa-sign-in-alt fa-lg"></i></span> Login
+                <span><i class="fa fa-sign-in-alt fa-lg" style="padding: 0.625rem 0.2rem; font-size: 14px;">&nbsp;Login</i></span>
                 </a>
 
                 @endauth

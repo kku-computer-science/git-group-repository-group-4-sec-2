@@ -82,26 +82,6 @@
     </div>
 </div>
 
-<!-- Modal for Creating New Tag -->
-<div class="modal fade" id="createTagModal" tabindex="-1" role="dialog" aria-labelledby="createTagLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Create New Tag</h5>
-                <button type="button" class="close close-modal" aria-label="Close">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <input type="text" id="newTagName" class="form-control" placeholder="Enter tag name">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light cancel-modal">Cancel</button>
-                <button type="button" class="btn btn-dark" id="saveTagBtn">Create</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script>
     // $(document).ready(function() {
@@ -163,75 +143,82 @@
 
     // });
     $(document).ready(function() {
-            $('.select2').select2({
-                placeholder: "Select tags or create new ones",
-                tags: true, // อนุญาตให้เพิ่มแท็กใหม่
-                tokenSeparators: [',', ' '],
-                createTag: function(params) {
-                    var term = $.trim(params.term);
-                    if (term === "") {
-                        return null;
+    $('.select2').select2({
+        placeholder: "Select tags or create new ones",
+        tags: true, // อนุญาตให้เพิ่มแท็กใหม่
+        tokenSeparators: [',', ' '],
+        createTag: function(params) {
+            var term = $.trim(params.term);
+            if (term === "") {
+                return null;
+            }
+            return {
+                id: term, // ใช้ชื่อแท็กเป็น ID ชั่วคราว
+                text: term,
+                newTag: true
+            };
+        }
+    });
+    
+    let newTags = {}; // เก็บ {ชื่อแท็ก: ID จริง}
+
+    // เมื่อสร้างแท็กใหม่ -> ส่งไปยังเซิร์ฟเวอร์เพื่อสร้างและรับ ID จริง
+    $('#tag').on('select2:select', function(e) {
+        var data = e.params.data;
+        if (data.newTag) {
+            $.ajax({
+                type: "POST",
+                url: "{{ route('tags.store') }}",
+                data: {
+                    name: data.text,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        console.log("New Tag Created: ", response.tag); // Debugging Log
+
+                        newTags[data.text] = response.tag.id; // เก็บ ID จริง
+                        
+                        // เก็บรายการแท็กทั้งหมดที่เลือกอยู่ในปัจจุบัน
+                        let currentValues = $('#tag').val() || [];
+                        
+                        // ลบตัวเลือกที่เป็นชื่อแท็กชั่วคราว
+                        $('#tag option[value="' + data.text + '"]').remove();
+
+                        // เพิ่มตัวเลือกใหม่ที่เป็น ID จริง
+                        let newOption = new Option(response.tag.name, response.tag.id, false, true);
+                        $('#tag').append(newOption);
+
+                        // แทนที่ค่า tag ที่เพิ่งสร้างด้วย ID จริงในรายการ values
+                        let updatedValues = currentValues.map(val => 
+                            val === data.text ? response.tag.id.toString() : val
+                        );
+                        
+                        // อัปเดตค่าให้ Select2 โดยยังคงเก็บแท็กอื่นๆ ที่เลือกไว้
+                        $('#tag').val(updatedValues).trigger('change');
                     }
-                    return {
-                        id: term, // ใช้ชื่อแท็กเป็น ID ชั่วคราว
-                        text: term,
-                        newTag: true
-                    };
+                },
+                error: function() {
+                    Swal.fire("Error", "Failed to create tag", "error");
                 }
             });
-            
+        }
+    });
 
-            let newTags = {}; // เก็บ {ชื่อแท็ก: ID จริง}
+    // ก่อนส่งฟอร์ม -> แทนที่ชื่อแท็กเป็น ID จริง
+    $('#newsForm').submit(function(event) {
+        let selectedTags = $('#tag').val() || [];
+        console.log("Before Conversion: ", selectedTags); // Debugging Log
 
-            // เมื่อสร้างแท็กใหม่ -> ส่งไปยังเซิร์ฟเวอร์เพื่อสร้างและรับ ID จริง
-            $('#tag').on('select2:select', function(e) {
-                var data = e.params.data;
-                if (data.newTag) {
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ route('tags.store') }}",
-                        data: {
-                            name: data.text,
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                console.log("New Tag Created: ", response.tag); // Debugging Log
+        let updatedTags = selectedTags.map(tag => newTags[tag] || tag); // ถ้ามี ID จริง ใช้ ID แทน
 
-                                newTags[data.text] = response.tag.id; // เก็บ ID จริง
+        console.log("After Conversion: ", updatedTags); // Debugging Log
 
-                                // ลบตัวเลือกที่เป็นชื่อแท็กชั่วคราว
-                                $('#tag option[value="' + data.text + '"]').remove();
+        $('#tag').val(updatedTags).trigger('change'); // อัปเดตค่าใน <select>
 
-                                // เพิ่มตัวเลือกใหม่ที่เป็น ID จริง
-                                let newOption = new Option(response.tag.name, response.tag.id, true, true);
-                                $('#tag').append(newOption);
-
-                                // 🔹 บังคับให้ Select2 อัปเดตค่าใหม่
-                                $('#tag').val(response.tag.id).trigger('change');
-                            }
-                        },
-                        error: function() {
-                            Swal.fire("Error", "Failed to create tag", "error");
-                        }
-                    });
-                }
-            });
-
-            // 🔹 ก่อนส่งฟอร์ม -> แทนที่ชื่อแท็กเป็น ID จริง
-            $('#newsForm').submit(function(event) {
-                let selectedTags = $('#tag').val() || [];
-                console.log("Before Conversion: ", selectedTags); // Debugging Log
-
-                let updatedTags = selectedTags.map(tag => newTags[tag] || tag); // ถ้ามี ID จริง ใช้ ID แทน
-
-                console.log("After Conversion: ", updatedTags); // Debugging Log
-
-                $('#tag').val(updatedTags).trigger('change'); // 🔹 อัปเดตค่าใน <select>
-
-                return true; // อนุญาตให้ฟอร์มส่ง
-            });
-        });
+        return true; // อนุญาตให้ฟอร์มส่ง
+    });
+});
    
     function confirmCancel() {
         Swal.fire({

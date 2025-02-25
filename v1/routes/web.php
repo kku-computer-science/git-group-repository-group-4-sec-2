@@ -81,7 +81,8 @@ Route::get('/highlight/{id}', [HighlightdetailController::class, 'show'])->name(
 Route::prefix('tags')->group(function () {
     Route::post('/store', [TagController::class, 'store'])->name('tags.store');
     Route::delete('/{id}', [TagController::class, 'destroy'])->name('tags.destroy');
-    Route::get('/check/{id}', [TagController::class, 'checkDelete']); // ตรวจสอบก่อนลบ
+    Route::get('/{id}/edit', [TagController::class, 'edit'])->name('tags.edit'); // format ควรมี / ก่อน {id}
+    Route::put('/{id}', [TagController::class, 'update'])->name('tags.update');
 });
 
 

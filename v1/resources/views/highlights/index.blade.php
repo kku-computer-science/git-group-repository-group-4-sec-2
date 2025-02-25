@@ -38,8 +38,10 @@
             @foreach ($highlights->sortBy('priority') as $highlight)
             <tr id="highlight-row-{{ $highlight->id }}" data-id="{{ $highlight->id }}" data-priority="{{ $highlight->priority }}">
                 <td class="priority-controls">
-                    <button class="btn btn-sm btn-light move-up" data-id="{{ $highlight->id }}">⬆️</button>
-                    <button class="btn btn-sm btn-light move-down" data-id="{{ $highlight->id }}">⬇️</button>
+                    <div class="btn-group-vertical">
+                        <button class="btn btn-sm btn-light move-up" data-id="{{ $highlight->id }}"><i class="fas fa-arrow-circle-up"></i></button>
+                        <button class="btn btn-sm btn-light move-down" data-id="{{ $highlight->id }}"><i class="fas fa-arrow-circle-down"></i></button>
+                    </div>
                 </td>
                 <!-- <td>{{ $highlight->id }}</td> -->
                 <td>
@@ -67,9 +69,9 @@
 
     <h2>Highlights</h2>
     <a href="{{ route('highlights.create') }}" class="btn btn-primary mb-3">+ Create</a>
-    <button type="button" class="btn btn-danger" id="deleteTagBtn">
+    <!-- <button type="button" class="btn btn-danger mb-3" id="deleteTagBtn">
         ลบ Tag
-    </button>
+    </button> -->
     <table id="news-table" class="table table-striped">
 
         <thead>
@@ -105,7 +107,6 @@
                     <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary">
                         <i class="fas fa-edit"></i>
                     </a>
-
                     <button type="button" class="btn btn-danger btn-delete" data-id="{{ $highlight->id }}">
                         <i class="fas fa-trash-alt"></i>
                     </button>
@@ -118,44 +119,87 @@
             @endforeach
         </tbody>
     </table>
+    <h2>Tags</h2>
+    <a href="#" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createTagModal">+ Create</a>
+    <table id="tag-table" class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Tag Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($tags as $tag)
+            <tr id="tag-row-{{ $tag->id }}" data-id="{{ $tag->id }}">
+                <td>{{ $tag->id }}</td>
+                <td>{{ $tag->name }}</td>
+                <td>
+                    <button type="button" class="btn btn-outline-primary btn-edit"
+                        data-id="{{ $tag->id }}"
+                        data-name="{{ $tag->name }}">
+                        <i class="fas fa-edit"></i>
+                    </button>
+
+                    <button type="button" class="btn btn-danger btn-delete delete-tag-btn" data-id="{{ $tag->id }}"><i class="fas fa-trash-alt"></i></button>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
 
-<!-- Modal แสดงรายการ Tag -->
-<div id="deleteTagModal" class="modal fade" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<!-- Popup สำหรับสร้าง Tag -->
+<div class="modal fade" id="createTagModal" tabindex="-1" aria-labelledby="createTagModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">เลือกลบ Tag</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>ชื่อ Tag</th>
-                            <th>ลบ</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($tags as $index => $tag)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $tag->name }}</td>
-                            <td>
-                                <button class="btn btn-danger delete-tag-btn" data-id="{{ $tag->id }}">ลบ</button>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
-            </div>
+            <form id="createTagForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createTagModalLabel">Create Tag</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="tagName" class="form-label">Tag Name</label>
+                        <input type="text" class="form-control" id="tagName" name="name" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+<!-- Popup สำหรับแก้ไข Tag -->
+
+<div class="modal fade" id="editTagModal" tabindex="-1" aria-labelledby="editTagModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editTagForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editTagModalLabel">Edit Tag</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editTagId" name="id">
+                    <div class="mb-3">
+                        <label for="editTagName" class="form-label">Tag Name</label>
+                        <input type="text" class="form-control" id="editTagName" name="name" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
@@ -209,21 +253,23 @@
                     });
 
                     let newRowHtml = `
-                        <tr id="highlight-row-${highlightId}" data-id="${highlightId}" data-priority="${response.priority || 0}">
-                            <td class="priority-controls">
-                                <button class="btn btn-sm btn-light move-up" data-id="${highlightId}">⬆️</button>
-                                <button class="btn btn-sm btn-light move-down" data-id="${highlightId}">⬇️</button>
-                            </td>
-                            <td>${row.find('td:nth-child(1)').html()}</td>
-                            <td>${row.find('td:nth-child(2)').html()}</td>
-                            <td>${row.find('td:nth-child(3)').html()}</td>
-                            <td>${row.find('td:nth-child(4)').html()}</td>
-                            <td>${row.find('td:nth-child(5)').html()}</td>
-                            <td>${row.find('td:nth-child(6)').html()}</td>
-                            <td>
-                                <button type="button" class="btn btn-warning btn-remove" data-id="${highlightId}">REMOVE</button>
-                            </td>
-                        </tr>`;
+                    <tr id="highlight-row-${highlightId}" data-id="${highlightId}" data-priority="${response.priority || 0}">
+                        <td class="priority-controls">
+                            <div class="btn-group-vertical">
+                                <button class="btn btn-sm btn-light move-up" data-id="${highlightId}"><i class="fas fa-arrow-circle-up"></i></button>
+                                <button class="btn btn-sm btn-light move-down" data-id="${highlightId}"><i class="fas fa-arrow-circle-down"></i></button>
+                            </div>
+                        </td>
+                        <td>${row.find('td:nth-child(1)').html()}</td>
+                        <td>${row.find('td:nth-child(2)').html()}</td>
+                        <td>${row.find('td:nth-child(3)').html()}</td>
+                        <td>${row.find('td:nth-child(4)').html()}</td>
+                        <td>${row.find('td:nth-child(5)').html()}</td>
+                        <td>${row.find('td:nth-child(6)').html()}</td>
+                        <td>
+                            <button type="button" class="btn btn-warning btn-remove" data-id="${highlightId}">REMOVE</button>
+                        </td>
+                    </tr>`;
 
                     // ✅ เพิ่มแถวใหม่ไปตารางบน
                     $("#highlight-table tbody").append(newRowHtml);
@@ -244,7 +290,7 @@
             });
         });
 
-        // REMOVE button functionality - move row back to News table
+        // REMOVE button functionality - ลบฟังก์ชันซ้ำและรวมเป็นฟังก์ชันเดียว
         $(document).on("click", ".btn-remove", function() {
             let row = $(this).closest("tr");
             let highlightId = $(this).attr("data-id");
@@ -265,54 +311,33 @@
                         timer: 1500
                     });
 
-                    // ✅ นำแถวกลับไปตารางล่าง
-                    row.appendTo("#news-table tbody").show();
+                    // ✅ สร้าง HTML สำหรับแถวในตาราง news
+                    let newNewsRow = `
+                    <tr id="news-row-${highlightId}">
+                        <td>${row.find('td:nth-child(2)').html()}</td>
+                        <td>${row.find('td:nth-child(3)').html()}</td>
+                        <td>${row.find('td:nth-child(4)').html()}</td>
+                        <td>${row.find('td:nth-child(5)').html()}</td>
+                        <td>${row.find('td:nth-child(6)').html()}</td>
+                        <td>
+                            <button type="button" class="btn btn-success btn-add" data-id="${highlightId}">ADD</button>
+                        </td>
+                    </tr>`;
 
-                    // ✅ อัปเดตจำนวน highlight
-                    updateHighlightCount();
+                    // ✅ ตรวจสอบว่ามี row นี้ในตาราง news อยู่แล้วหรือไม่
+                    if ($("#news-row-" + highlightId).length > 0) {
+                        // ถ้ามีอยู่แล้ว ก็ไม่ต้องเพิ่มใหม่
+                        console.log("Row already exists in news table - not adding again");
+                    } else {
+                        // ถ้ายังไม่มี ให้เพิ่มใหม่
+                        $("#news-table tbody").append(newNewsRow);
+                    }
 
-                    // ✅ อัปเดต priority
-                    updatePriorityOrder();
-                },
-                error: function(xhr) {
-                    console.error("Error response:", xhr);
-                    Swal.fire("ผิดพลาด!", "เกิดข้อผิดพลาดบางอย่าง!", "error");
-                }
-            });
-        });
+                    let table = $('#news-table').DataTable();
+                    table.row(row).remove().draw();
 
-        // DELETE button functionality - remove from database
-        $(document).on("click", ".btn-remove", function() {
-            let row = $(this).closest("tr");
-            let highlightId = $(this).attr("data-id");
-
-            $.ajax({
-                url: "/highlights/" + highlightId + "/remove",
-                type: "POST",
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content') || "{{ csrf_token() }}",
-                    _method: "PUT"
-                },
-                success: function(response) {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "นำออกจาก Highlights แล้ว!",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-
-                    // ✅ ลบปุ่ม Move Up / Move Down
-                    row.find(".priority-controls").remove();
-
-                    // ✅ เปลี่ยนปุ่ม REMOVE -> ADD
-                    row.find(".btn-remove")
-                        .removeClass("btn-warning btn-remove")
-                        .addClass("btn-success btn-add")
-                        .text("ADD");
-
-                    // ✅ ย้ายแถวกลับไปตารางล่าง
-                    row.appendTo("#news-table tbody").show();
+                    // ✅ ลบแถวออกจากตาราง highlights
+                    row.remove();
 
                     // ✅ อัปเดตจำนวน highlight
                     updateHighlightCount();
@@ -378,7 +403,6 @@
                 }
             });
         });
-
         // Helper function to update priority order after any changes
         function updatePriorityOrder() {
             console.log("-----------2");
@@ -428,9 +452,12 @@
         // Initialize
         updateHighlightCount();
 
+
+
         // Initialize DataTables
         $('#highlight-table').DataTable();
         $('#news-table').DataTable();
+        $('#tag-table').DataTable();
 
         // Auto-fade alerts
         setTimeout(function() {
@@ -445,8 +472,8 @@
             var titleCell = $(this).find('td:nth-child(3)'); // Title column
             var titleText = titleCell.text().trim();
 
-            if (titleText.length > 25) {
-                var shortenedTitle = titleText.substring(0, 25) + '...';
+            if (titleText.length > 100) {
+                var shortenedTitle = titleText.substring(0, 100) + '...';
                 titleCell.text(shortenedTitle);
             }
         });
@@ -455,12 +482,6 @@
 
         // delete teg
         $(document).ready(function() {
-            // เปิด Modal
-            $("#deleteTagBtn").click(function() {
-                $("#deleteTagModal").modal("show");
-            });
-
-            // ฟังก์ชันลบ Tag
             $(document).on("click", ".delete-tag-btn", function() {
                 let tagId = $(this).data("id");
 
@@ -470,31 +491,61 @@
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#d33",
+                    padding: "1.25rem",
                     cancelButtonColor: "#3085d6",
                     confirmButtonText: "ใช่, ลบเลย!",
                     cancelButtonText: "ยกเลิก"
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: `/tags/${tagId}`,
-                            type: "DELETE",
+                            url: '/tags/' + tagId,
+                            type: 'DELETE',
                             data: {
                                 _token: "{{ csrf_token() }}"
                             },
                             success: function(response) {
                                 if (response.success) {
-                                    Swal.fire("ลบสำเร็จ!", "Tag ถูกลบเรียบร้อย", "success").then(() => {
-                                        location.reload(); // รีโหลดหน้าเพื่ออัปเดตรายการ
+                                    Swal.fire({
+                                        title: "ลบสำเร็จ!",
+                                        text: "Tag ถูกลบเรียบร้อย",
+                                        icon: "success",
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        padding: '1.25rem'
+                                    }).then(() => {
+                                        location.reload();
                                     });
                                 } else {
-                                    Swal.fire("ไม่สามารถลบได้!", response.message, "warning");
+                                    Swal.fire({
+                                        title: "ไม่สามารถลบได้!",
+                                        text: response.message,
+                                        icon: "warning",
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        padding: '1.25rem'
+                                    });
                                 }
+
                             },
                             error: function(xhr) {
                                 if (xhr.status === 400) {
-                                    Swal.fire("ไม่สามารถลบได้!", "Tag นี้ถูกใช้งานอยู่ ไม่สามารถลบได้", "warning");
+                                    Swal.fire({
+                                        title: "ไม่สามารถลบได้!",
+                                        text: "Tag นี้ถูกใช้งานอยู่ ไม่สามารถลบได้",
+                                        icon: "warning",
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        padding: '1.25rem'
+                                    });
                                 } else {
-                                    Swal.fire("Error", "เกิดข้อผิดพลาด ไม่สามารถลบ Tag ได้", "error");
+                                    Swal.fire({
+                                        title: "Error!",
+                                        text: "เกิดข้อผิดพลาด ไม่สามารถลบ Tag ได้",
+                                        icon: "error",
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                        padding: '1.25rem'
+                                    });
                                 }
                             }
                         });
@@ -502,6 +553,111 @@
                 });
             });
         });
+
+
+        // สร้าง Tag ใหม่
+        $('#createTagForm').on('submit', function(e) {
+            e.preventDefault();
+            var tagName = $('#tagName').val();
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ route("tags.store") }}',
+                data: {
+                    name: tagName,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'สร้าง Tag สำเร็จ!',
+                            text: 'Tag ใหม่ถูกสร้างเรียบร้อยแล้ว',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function() {
+                            location.reload();
+                        });
+                    } else {
+                
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ไม่สามารถสร้าง Tag ได้',
+                            text: response.message || 'เกิดข้อผิดพลาดในการสร้าง Tag',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+            
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: error || 'เกิดข้อผิดพลาดในการสร้าง Tag',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            });
+        });
+
+
+        //เปิด Popup แก้ไข Tag
+        $(document).on('click', '.btn-edit', function() {
+            var tagId = $(this).data('id');
+            var tagName = $(this).data('name');
+
+            $('#editTagId').val(tagId);
+            $('#editTagName').val(tagName);
+
+            $('#editTagModal').modal('show');
+        });
+
+        // บันทึกการแก้ไข Tag
+        $('#editTagForm').on('submit', function(e) {
+            e.preventDefault();
+            var tagId = $('#editTagId').val();
+            var tagName = $('#editTagName').val();
+
+            $.ajax({
+                type: 'PUT',
+                url: '/tags/' + tagId,
+                data: {
+                    name: tagName,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'แก้ไข Tag สำเร็จ!',
+                            text: 'Tag ถูกแก้ไขเรียบร้อยแล้ว',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function() {
+                            location.reload(); // โหลดหน้าใหม่เมื่อแก้ไขสำเร็จ
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ไม่สามารถแก้ไข Tag ได้',
+                            text: response.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: 'เกิดข้อผิดพลาดในการแก้ไข Tag',
+                    });
+                }
+            });
+        });
+
     });
 </script>
 
@@ -552,14 +708,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        margin: 1.25rem;
         padding: 5px 10px;
         font-size: 14px;
-    }
-
-
-    th:nth-child(7),
-    td:nth-child(7) {
-        width: 300px;
     }
 
     td img {
@@ -567,6 +718,41 @@
         width: 100px !important;
         height: auto !important;
         object-fit: cover;
+    }
+
+    #news-table .btn {
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    #news-table td:nth-child(6) {
+        white-space: nowrap;
+        width: 300px;
+    }
+
+    #highlight-table .btn,
+    #news-table .btn {
+        padding: 5px 10px;
+        font-size: 16px;
+        justify-items: center;
+    }
+
+    .priority-controls {
+        width: 50px;
+    }
+
+    .btn-group-vertical {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+    }
+
+    .btn-group-vertical .btn {
+        width: 36px;
+        height: 36px;
+        padding: 6px;
+        margin: 0;
     }
 </style>
 

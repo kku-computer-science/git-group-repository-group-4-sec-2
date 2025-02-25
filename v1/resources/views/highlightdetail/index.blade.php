@@ -87,9 +87,9 @@
                 <div class="d-flex justify-content-end align-items-start col-lg-2">
                     <b>แชร์:</b>&nbsp;
                     <a href="javascript:void(0)" class="share-network-facebook">
-                    <button type="button" class="btn btn-outline-secondary btn-sm copy-url-btn" title="คัดลอกลิงก์">
-                        <i class="fas fa-copy" aria-hidden="true"></i>
-                    </button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm copy-url-btn" title="คัดลอกลิงก์">
+                            <i class="fas fa-copy" aria-hidden="true"></i>
+                        </button>
                     </a>
                 </div>
             </div>
@@ -99,18 +99,23 @@
             <h2>{{ $highlight->title }}</h2>
         </div>
         <div class="py-2 col-12">
-            <span style="font-size:12pt; font-family:Aptos,sans-serif; white-space: normal; overflow-wrap: break-word; word-wrap: break-word;">
-                {{ $highlight->description }}
-            </span>
+            <!-- <pre style="font-size:12pt; font-family:Aptos,sans-serif; white-space: normal; overflow-wrap: break-word; word-wrap: break-word;">
+            {{ $highlight->description }}
+            </pre> -->
+            <pre style="font-size: 12pt; font-family: Aptos, sans-serif; white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;">
+            {{ $highlight->description }}
+            </pre>
+
         </div>
-        <!-- <div class="my-4 d-flex flex-wrap justify-content-start align-items-center col-lg-12">
-            <b>แหล่งข้อมูลเพิ่มเติม:</b>&nbsp;
-            <span class="text-truncate d-inline-block">
-                <a href="{{ $highlight->link }}" target="_blank" class="text-decoration-none text-truncate d-inline-block w-100">
-                    {{ $highlight->link }}
-                </a>
-            </span>&nbsp;
+        <!-- <div class="my-4 d-flex align-items-center col-lg-12">
+            <b style="max-width: 30%" ;>แหล่งข้อมูลเพิ่มเติม:</b>&nbsp;
+            <a href="{{ $highlight->link }}" target="_blank"
+                class="text-decoration-none text-truncate d-inline-block"
+                style="max-width: 70%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                {{ $highlight->link }}
+            </a>
         </div> -->
+        @if($highlight->link)
         <div class="my-4 d-flex align-items-center col-lg-12">
             <b style="max-width: 30%" ;>แหล่งข้อมูลเพิ่มเติม:</b>&nbsp;
             <a href="{{ $highlight->link }}" target="_blank"
@@ -119,7 +124,7 @@
                 {{ $highlight->link }}
             </a>
         </div>
-
+        @endif
 
         @if($highlight->images->isNotEmpty())
         <div class="py-2 col-12">
@@ -229,11 +234,11 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const copyButton = document.querySelector(".copy-url-btn");
 
         if (copyButton) {
-            copyButton.addEventListener("click", function () {
+            copyButton.addEventListener("click", function() {
                 const currentURL = window.location.href;
 
                 navigator.clipboard.writeText(currentURL)
