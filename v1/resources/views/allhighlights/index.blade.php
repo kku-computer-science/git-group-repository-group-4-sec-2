@@ -88,14 +88,14 @@
         flex-wrap: wrap;
         justify-content: start;
         align-items: center;
+        /* background-color: red; */
         gap: 2rem;
         /* max-width: 1100px; */
         width: 100%;
         margin: auto;
         padding: 2rem;
-        padding-left: 8rem;
-        padding-right: 6rem;
-        min-height: 2rem;
+        padding-left: 2rem;
+        padding-right: 0rem;
         text-decoration: none;
     }
 
@@ -111,7 +111,16 @@
         transition: transform 0.3s ease;
         text-decoration: none;
     }
-
+    
+        /* ส่วนเนื้อหาใน Card */
+        .card_body {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            color: black;
+        }
+    
     /* Tag เฉพาะใน Card ที่กรอบล้อมรอบตัวอักษร */
     .card .tag-item {
         font-size: 0.75rem;
@@ -128,15 +137,6 @@
         text-decoration: none;
     }
 
-
-    /* ส่วนเนื้อหาใน Card */
-    .card_body {
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        color: black;
-    }
 
     /* หัวข้อใน Card */
     .card_body h4 {
@@ -343,25 +343,27 @@
     @endforeach
 </div> -->
 <!-- Dynamic Item Highlights -->
-<div class="container-card">
-    @foreach ($highlights as $highlight)
-    <a href="{{ route('highlight.show', $highlight->id) }}" class="card" data-tag="{{ $highlight->tags->isNotEmpty() ? $highlight->tags->pluck('name')->map(function($name) { return strtolower(trim($name)); })->implode('|') : '' }}">
-        <div class="card_header">
-            <img src="{{ asset('storage/' . $highlight->image) }}" alt="{{ $highlight->title }}" class="card_image">
-        </div>
-        <div class="card_body">
-            @if($highlight->tags->isNotEmpty())
-            <div class="tag-container">
-                @foreach ($highlight->tags as $tag)
-                <span class="tag-item">{{ $tag->name }}</span>
-                @endforeach
+<div class="container">
+    <div class="container-card">
+        @foreach ($highlights as $highlight)
+        <a href="{{ route('highlight.show', $highlight->id) }}" class="card" data-tag="{{ $highlight->tags->isNotEmpty() ? $highlight->tags->pluck('name')->map(function($name) { return strtolower(trim($name)); })->implode('|') : '' }}">
+            <div class="card_header">
+                <img src="{{ asset('storage/' . $highlight->image) }}" alt="{{ $highlight->title }}" class="card_image">
             </div>
-            @endif
-            <h4>{{ $highlight->title }}</h4>
-            <p>{{ Str::limit($highlight->description, 100) }}</p>
-        </div>
-    </a>
-    @endforeach
+            <div class="card_body">
+                @if($highlight->tags->isNotEmpty())
+                <div class="tag-container">
+                    @foreach ($highlight->tags as $tag)
+                    <span class="tag-item">{{ $tag->name }}</span>
+                    @endforeach
+                </div>
+                @endif
+                <h4>{{ $highlight->title }}</h4>
+                <p>{{ Str::limit($highlight->description, 100) }}</p>
+            </div>
+        </a>
+        @endforeach
+    </div>
 </div>
 
 
