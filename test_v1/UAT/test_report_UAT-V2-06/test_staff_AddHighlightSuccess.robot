@@ -21,7 +21,7 @@ Test Add News to Highlights
     Click Element    id=coverImageBox
     Choose File    xpath=//input[@type='file']    C:/Users/User/Pictures/Screenshots/Screenshot_2025-02-18_215543.png
     Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
-    Select From List By Label    id=category    ทุนวิจัยและโอกาสสนับสนุน
+    Select From List By Label    id=tag    ทุนวิจัยและโอกาสสนับสนุน
     Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
     Scroll Element Into View    id=imageAlbumBox
     Click Element    id=imageAlbumBox
