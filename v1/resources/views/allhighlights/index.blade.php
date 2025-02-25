@@ -326,7 +326,7 @@
                 <button id="scrollLeftTag" class="scroll-btn">&lt;</button>
                 <button id="scrollRightTag" class="scroll-btn">&gt;</button>
             </div>
-            <div class="tag-list-wrapper">
+            <!-- <div class="tag-list-wrapper">
                 <div class="tag-list">
                     <a href="{{ route('allhighlights.index') }}" 
                        class="tag-item tag-all {{ request('tag') ? '' : 'active' }}" 
@@ -341,7 +341,24 @@
                     </a>
                     @endforeach
                 </div>
-            </div>
+            </div> -->
+            <div class="tag-list-wrapper">
+    <div class="tag-list">
+        <a href="{{ route('allhighlights.index') }}" 
+           class="tag-item tag-all {{ request('tag') ? '' : 'active' }}" 
+           data-tag="all">All</a>
+        
+        @foreach ($tags as $tag)
+        <a href="{{ route('allhighlights.index', ['tag' => strtolower(trim($tag->name))]) }}"
+           class="tag-item {{ request('tag') == strtolower(trim($tag->name)) ? 'active' : '' }}" 
+           data-tag="{{ strtolower(trim($tag->name)) }}"
+           id="tag-{{ strtolower(trim($tag->name)) }}">
+            {{ $tag->name }}
+        </a>
+        @endforeach
+    </div>
+</div>
+
         </div>
     </div>
 </div>
@@ -396,77 +413,143 @@
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const tagItems = document.querySelectorAll('.tag-list > a.tag-item');
-        const cards = document.querySelectorAll('.container-card .card');
-        ////
-        const tagList = document.querySelector('.tag-list');
-        const btnLeft = document.getElementById('scrollLeftTag');
-        const btnRight = document.getElementById('scrollRightTag');
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     const tagItems = document.querySelectorAll('.tag-list > a.tag-item');
+    //     const cards = document.querySelectorAll('.container-card .card');
+    //     ////
+    //     const tagList = document.querySelector('.tag-list');
+    //     const btnLeft = document.getElementById('scrollLeftTag');
+    //     const btnRight = document.getElementById('scrollRightTag');
 
-        btnLeft.addEventListener('click', function() {
-            tagList.scrollBy({
-                left: -150,
-                behavior: 'smooth'
-            });
-        });
+    //     btnLeft.addEventListener('click', function() {
+    //         tagList.scrollBy({
+    //             left: -150,
+    //             behavior: 'smooth'
+    //         });
+    //     });
 
-        btnRight.addEventListener('click', function() {
-            tagList.scrollBy({
-                left: 150,
-                behavior: 'smooth'
-            });
-        });
-        ////
-        tagItems.forEach(tagItem => {
-            tagItem.addEventListener('click', function(event) {
-                event.preventDefault();
-                // ลบคลาส active จาก tag list ทั้งหมด
-                tagItems.forEach(t => t.classList.remove('active'));
-                // เพิ่ม active ให้กับ tag ที่ถูกคลิก
-                this.classList.add('active');
+    //     btnRight.addEventListener('click', function() {
+    //         tagList.scrollBy({
+    //             left: 150,
+    //             behavior: 'smooth'
+    //         });
+    //     });
+    //     ////
+    //     tagItems.forEach(tagItem => {
+    //         tagItem.addEventListener('click', function(event) {
+    //             event.preventDefault();
+    //             // ลบคลาส active จาก tag list ทั้งหมด
+    //             tagItems.forEach(t => t.classList.remove('active'));
+    //             // เพิ่ม active ให้กับ tag ที่ถูกคลิก
+    //             this.classList.add('active');
 
-                const selectedTag = this.getAttribute('data-tag'); // ค่าเป็น lowercase
-                cards.forEach(card => {
-                    const tagAttr = card.getAttribute('data-tag') || '';
-                    // แยกเป็น array ด้วยตัวคั่น '|' และ trim ค่าแต่ละตัว
-                    const cardTags = tagAttr.split('|').map(t => t.trim()).filter(t => t !== '');
+    //             const selectedTag = this.getAttribute('data-tag'); // ค่าเป็น lowercase
+    //             cards.forEach(card => {
+    //                 const tagAttr = card.getAttribute('data-tag') || '';
+    //                 // แยกเป็น array ด้วยตัวคั่น '|' และ trim ค่าแต่ละตัว
+    //                 const cardTags = tagAttr.split('|').map(t => t.trim()).filter(t => t !== '');
 
-                    if (selectedTag === 'all' || cardTags.includes(selectedTag)) {
-                        card.style.display = 'flex';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-        });
-        // const tagList = document.querySelector('.tag-list');
-        // const btnLeft = document.getElementById('scrollLeftTag');
-        // const btnRight = document.getElementById('scrollRightTag');
+    //                 if (selectedTag === 'all' || cardTags.includes(selectedTag)) {
+    //                     card.style.display = 'flex';
+    //                 } else {
+    //                     card.style.display = 'none';
+    //                 }
+    //             });
+    //         });
+    //     });
+    //     // const tagList = document.querySelector('.tag-list');
+    //     // const btnLeft = document.getElementById('scrollLeftTag');
+    //     // const btnRight = document.getElementById('scrollRightTag');
 
-        // ตรวจสอบว่ามีแท็กที่ถูกเลือกอยู่ใน URL หรือไม่
-        const selectedTag = "{{ request('tag') }}";
+    //     // ตรวจสอบว่ามีแท็กที่ถูกเลือกอยู่ใน URL หรือไม่
+    //     const selectedTag = "{{ request('tag') }}";
         
-        if (selectedTag) {
-            const tagElement = document.getElementById(`tag-${selectedTag}`);
-            if (tagElement) {
-                // เลื่อนไปที่แท็กที่ถูกเลือก
-                tagList.scrollTo({
-                    left: tagElement.offsetLeft - (window.innerWidth / 3),
-                    behavior: 'smooth'
-                });
-            }
+    //     if (selectedTag) {
+    //         const tagElement = document.getElementById(`tag-${selectedTag}`);
+    //         if (tagElement) {
+    //             // เลื่อนไปที่แท็กที่ถูกเลือก
+    //             tagList.scrollTo({
+    //                 left: tagElement.offsetLeft - (window.innerWidth / 3),
+    //                 behavior: 'smooth'
+    //             });
+    //         }
+    //     }
+
+    //     // ปุ่มเลื่อนซ้ายขวา
+    //     btnLeft.addEventListener('click', function() {
+    //         tagList.scrollBy({ left: -150, behavior: 'smooth' });
+    //     });
+
+    //     btnRight.addEventListener('click', function() {
+    //         tagList.scrollBy({ left: 150, behavior: 'smooth' });
+    //     });
+    // });
+
+
+
+    ////// ใช้ได้แต่ช้า
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const tagItems = document.querySelectorAll('.tag-list > a.tag-item');
+    const tagList = document.querySelector('.tag-list');
+    const btnLeft = document.getElementById('scrollLeftTag');
+    const btnRight = document.getElementById('scrollRightTag');
+
+    function updateTagSelection(selectedTag) {
+        tagItems.forEach(t => t.classList.remove('active'));
+
+        const selectedTagItem = document.querySelector(`.tag-item[data-tag="${selectedTag}"]`);
+        if (selectedTagItem) {
+            selectedTagItem.classList.add('active');
         }
+    }
 
-        // ปุ่มเลื่อนซ้ายขวา
-        btnLeft.addEventListener('click', function() {
-            tagList.scrollBy({ left: -150, behavior: 'smooth' });
-        });
+    function reloadPageWithTag(tag) {
+        const url = new URL(window.location);
+        url.searchParams.set('tag', tag);
+        window.location.href = url.toString();
+    }
 
-        btnRight.addEventListener('click', function() {
-            tagList.scrollBy({ left: 150, behavior: 'smooth' });
+    tagItems.forEach(tagItem => {
+        tagItem.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            const selectedTag = this.getAttribute('data-tag');
+
+            if (selectedTag === 'all') {
+                window.location.href = "{{ route('allhighlights.index') }}"; 
+            } else {
+                reloadPageWithTag(selectedTag);
+            }
         });
     });
+
+    // ตรวจสอบว่ามีค่า tag จาก URL หรือไม่
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedTag = urlParams.get('tag') || 'all';
+
+    updateTagSelection(selectedTag);
+
+    if (selectedTag !== 'all') {
+        const tagElement = document.getElementById(`tag-${selectedTag}`);
+        if (tagElement) {
+            tagList.scrollTo({
+                left: tagElement.offsetLeft - (window.innerWidth / 3),
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    // ปุ่มเลื่อนซ้ายขวา
+    btnLeft.addEventListener('click', function() {
+        tagList.scrollBy({ left: -150, behavior: 'smooth' });
+    });
+
+    btnRight.addEventListener('click', function() {
+        tagList.scrollBy({ left: 150, behavior: 'smooth' });
+    });
+});
+
 </script>
 
 

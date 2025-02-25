@@ -20,23 +20,41 @@ class AllHighlightsController extends Controller
 
     //     return view('allhighlights.index', compact('highlights', 'tags'));
     // }
+
+    // public function index(Request $request)
+    // {
+    //     $query = Highlight::with(['tags', 'user', 'images'])->latest();
+
+    //     if ($request->has('tag')) {
+    //         $tag = strtolower(trim($request->tag));
+    //         $query->whereHas('tags', function ($q) use ($tag) {
+    //             $q->whereRaw('LOWER(name) = ?', [$tag]);
+    //         });
+    //     }
+
+    //     $highlights = $query->paginate(10);
+    //     $tags = Tag::all();
+
+    //     return view('allhighlights.index', compact('highlights', 'tags'));
+    // }
+
     public function index(Request $request)
     {
         $query = Highlight::with(['tags', 'user', 'images'])->latest();
-
-        if ($request->has('tag')) {
-            $tag = strtolower(trim($request->tag));
-            $query->whereHas('tags', function ($q) use ($tag) {
-                $q->whereRaw('LOWER(name) = ?', [$tag]);
+    
+        // ถ้ามีการส่งค่า tag มา ให้กรองเฉพาะ Highlights ที่มี tag นั้น ๆ
+        if ($request->has('tag') && $request->tag !== 'all') {
+            $query->whereHas('tags', function ($q) use ($request) {
+                $q->where('name', $request->tag);
             });
         }
-
+    
         $highlights = $query->paginate(10);
         $tags = Tag::all();
-
+    
         return view('allhighlights.index', compact('highlights', 'tags'));
     }
-
+    
 
     public function show($id)
     {
