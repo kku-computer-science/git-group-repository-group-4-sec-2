@@ -8,18 +8,35 @@ use Illuminate\Http\Request;
 
 class AllHighlightsController extends Controller
 {
-    public function index()
-    {
-        // ดึงข้อมูล Highlight พร้อมความสัมพันธ์ tags, user, images และเรียงลำดับล่าสุด
-        $highlights = Highlight::with(['tags', 'user', 'images'])
-                        ->latest()
-                        ->paginate(10);
+    // public function index()
+    // {
+    //     // ดึงข้อมูล Highlight พร้อมความสัมพันธ์ tags, user, images และเรียงลำดับล่าสุด
+    //     $highlights = Highlight::with(['tags', 'user', 'images'])
+    //                     ->latest()
+    //                     ->paginate(10);
 
-        // ดึงข้อมูล tag ทั้งหมด
+    //     // ดึงข้อมูล tag ทั้งหมด
+    //     $tags = Tag::all();
+
+    //     return view('allhighlights.index', compact('highlights', 'tags'));
+    // }
+    public function index(Request $request)
+    {
+        $query = Highlight::with(['tags', 'user', 'images'])->latest();
+
+        if ($request->has('tag')) {
+            $tag = strtolower(trim($request->tag));
+            $query->whereHas('tags', function ($q) use ($tag) {
+                $q->whereRaw('LOWER(name) = ?', [$tag]);
+            });
+        }
+
+        $highlights = $query->paginate(10);
         $tags = Tag::all();
 
         return view('allhighlights.index', compact('highlights', 'tags'));
     }
+
 
     public function show($id)
     {

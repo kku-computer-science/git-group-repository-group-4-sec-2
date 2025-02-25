@@ -88,14 +88,14 @@
         flex-wrap: wrap;
         justify-content: start;
         align-items: center;
+        /* background-color: red; */
         gap: 2rem;
         /* max-width: 1100px; */
         width: 100%;
         margin: auto;
         padding: 2rem;
-        padding-left: 8rem;
-        padding-right: 6rem;
-        min-height: 2rem;
+        padding-left: 2rem;
+        padding-right: 0rem;
         text-decoration: none;
     }
 
@@ -111,7 +111,16 @@
         transition: transform 0.3s ease;
         text-decoration: none;
     }
-
+    
+        /* ส่วนเนื้อหาใน Card */
+        .card_body {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            color: black;
+        }
+    
     /* Tag เฉพาะใน Card ที่กรอบล้อมรอบตัวอักษร */
     .card .tag-item {
         font-size: 0.75rem;
@@ -128,15 +137,6 @@
         text-decoration: none;
     }
 
-
-    /* ส่วนเนื้อหาใน Card */
-    .card_body {
-        padding: 1rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        color: black;
-    }
 
     /* หัวข้อใน Card */
     .card_body h4 {
@@ -299,7 +299,7 @@
     </div>
 </div> -->
 <!-- Dynamic Tag list -->
-<div class="container">
+<!-- <div class="container">
     <div>
         <div class="container">
             <div class="btn-group-tag">
@@ -312,6 +312,33 @@
                     <a href="#" class="tag-item tag-all active" data-tag="all">All</a>
                     @foreach ($tags as $tag)
                     <a href="#" class="tag-item" data-tag="{{ strtolower(trim($tag->name)) }}">{{ $tag->name }}</a>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="container">
+    <div>
+        <div class="container">
+            <div class="btn-group-tag">
+                <h4>Tags : </h4>
+                <button id="scrollLeftTag" class="scroll-btn">&lt;</button>
+                <button id="scrollRightTag" class="scroll-btn">&gt;</button>
+            </div>
+            <div class="tag-list-wrapper">
+                <div class="tag-list">
+                    <a href="{{ route('allhighlights.index') }}" 
+                       class="tag-item tag-all {{ request('tag') ? '' : 'active' }}" 
+                       data-tag="all">All</a>
+                    
+                    @foreach ($tags as $tag)
+                    <a href="{{ route('allhighlights.index', ['tag' => strtolower(trim($tag->name))]) }}"
+                       class="tag-item {{ request('tag') == strtolower(trim($tag->name)) ? 'active' : '' }}" 
+                       data-tag="{{ strtolower(trim($tag->name)) }}"
+                       id="tag-{{ strtolower(trim($tag->name)) }}">
+                        {{ $tag->name }}
+                    </a>
                     @endforeach
                 </div>
             </div>
@@ -343,25 +370,27 @@
     @endforeach
 </div> -->
 <!-- Dynamic Item Highlights -->
-<div class="container-card">
-    @foreach ($highlights as $highlight)
-    <a href="{{ route('highlight.show', $highlight->id) }}" class="card" data-tag="{{ $highlight->tags->isNotEmpty() ? $highlight->tags->pluck('name')->map(function($name) { return strtolower(trim($name)); })->implode('|') : '' }}">
-        <div class="card_header">
-            <img src="{{ asset('storage/' . $highlight->image) }}" alt="{{ $highlight->title }}" class="card_image">
-        </div>
-        <div class="card_body">
-            @if($highlight->tags->isNotEmpty())
-            <div class="tag-container">
-                @foreach ($highlight->tags as $tag)
-                <span class="tag-item">{{ $tag->name }}</span>
-                @endforeach
+<div class="container">
+    <div class="container-card">
+        @foreach ($highlights as $highlight)
+        <a href="{{ route('highlight.show', $highlight->id) }}" class="card" data-tag="{{ $highlight->tags->isNotEmpty() ? $highlight->tags->pluck('name')->map(function($name) { return strtolower(trim($name)); })->implode('|') : '' }}">
+            <div class="card_header">
+                <img src="{{ asset('storage/' . $highlight->image) }}" alt="{{ $highlight->title }}" class="card_image">
             </div>
-            @endif
-            <h4>{{ $highlight->title }}</h4>
-            <p>{{ Str::limit($highlight->description, 100) }}</p>
-        </div>
-    </a>
-    @endforeach
+            <div class="card_body">
+                @if($highlight->tags->isNotEmpty())
+                <div class="tag-container">
+                    @foreach ($highlight->tags as $tag)
+                    <span class="tag-item">{{ $tag->name }}</span>
+                    @endforeach
+                </div>
+                @endif
+                <h4>{{ $highlight->title }}</h4>
+                <p>{{ Str::limit($highlight->description, 100) }}</p>
+            </div>
+        </a>
+        @endforeach
+    </div>
 </div>
 
 
@@ -410,6 +439,32 @@
                     }
                 });
             });
+        });
+        // const tagList = document.querySelector('.tag-list');
+        // const btnLeft = document.getElementById('scrollLeftTag');
+        // const btnRight = document.getElementById('scrollRightTag');
+
+        // ตรวจสอบว่ามีแท็กที่ถูกเลือกอยู่ใน URL หรือไม่
+        const selectedTag = "{{ request('tag') }}";
+        
+        if (selectedTag) {
+            const tagElement = document.getElementById(`tag-${selectedTag}`);
+            if (tagElement) {
+                // เลื่อนไปที่แท็กที่ถูกเลือก
+                tagList.scrollTo({
+                    left: tagElement.offsetLeft - (window.innerWidth / 3),
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // ปุ่มเลื่อนซ้ายขวา
+        btnLeft.addEventListener('click', function() {
+            tagList.scrollBy({ left: -150, behavior: 'smooth' });
+        });
+
+        btnRight.addEventListener('click', function() {
+            tagList.scrollBy({ left: 150, behavior: 'smooth' });
         });
     });
 </script>
