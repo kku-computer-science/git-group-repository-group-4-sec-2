@@ -143,7 +143,6 @@ Test Create News Unsuccess Empty Description:
     Click Element    xpath=//li[contains(text(), 'ทุนวิจัยและโอกาสสนับสนุน')]
     Sleep    1s
 
-    Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
     Input Text    id=link   https://www.google.com
     
     Scroll Element Into View    id=imageAlbumBox
