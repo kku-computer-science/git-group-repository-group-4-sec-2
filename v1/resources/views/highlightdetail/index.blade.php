@@ -43,24 +43,24 @@
 @section('content')
 @if(isset($highlight))
 <div class="head-img">
-    @if($highlights->isNotEmpty())
-    @foreach($highlights as $highlight)
     <img src="{{ asset('storage/' . $highlight->image) }}" class="w-100" style="height: 600px; object-fit: cover;">
 </div>
 
 <div class="container">
     <div class="row">
-        <div class="py-3 px-0 d-flex align-items-center col-lg-10">
-            <div class="row mx-0 w-100">
-                <div class="px-0 py-2 d-flex justify-content-center align-items-center col-lg-4">
+        <div class="py-3 px-0">
+            <div class="row mt-2 w-100 d-flex justify-content-center align-items-start col-lg-12">
+                <div class="d-flex justify-content-start align-items-start col-lg-3">
                     <span><b>เผยแพร่:</b>&nbsp;{{ $highlight->created_at->format('d/m/Y H:i') }}&nbsp;</span>
                 </div>
-                <div class="px-2 d-flex col-lg-8">
-                    <div class="d-flex px-1 align-items-center" style="width: fit-content;">
-                        <span><b>แท็ก:</b></span>
+                <!-- <div class="d-flex justify-content-start align-items-start col-lg-7">
+                    <span class="px-1"><b>แท็ก:&nbsp;</b></span>
+                    <div class="d-flex flex-wrap" class="text-decoration-none">
                         @if($highlight->tags->isNotEmpty())
                         @foreach($highlight->tags as $tag)
-                        <span>&nbsp;{{ $tag->name }}</span>
+                        <span>
+                            <a href="/" class="text-decoration-none">{{ $tag->name }}</a>&nbsp;
+                        </span>
                         @endforeach
                         @else
                         <span class="text-muted">แท็ก: -</span>
@@ -94,15 +94,8 @@
                 </div>
             </div>
         </div>
-        <div class="p-0 d-flex justify-content-center align-items-center col-lg-2">
-            แชร์ &nbsp;
-            <a href="javascript:void(0)" class="share-network-facebook">
-                <button type="button" class="btn btn-outline-primary btn-sm">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </button>
-            </a>
-        </div>
-        <div class="text-center py-5 col-12">
+
+        <div class="text-center my-4 col-12">
             <h2>{{ $highlight->title }}</h2>
         </div>
         <div class="py-2 col-12">
@@ -135,11 +128,8 @@
 
         @if($highlight->images->isNotEmpty())
         <div class="py-2 col-12">
-            <span class="text-muted">
-                อัลบั้ม รูปภาพ
-            </span>
-
-            <div class="px-2 container-fluid">
+            <span class="text-muted">อัลบั้ม รูปภาพ</span>
+            <div class="container-fluid px-2">
                 <div class="row">
                     @foreach($highlight->images as $image)
                     <div class="my-2 col-md-6 col-lg-2">
@@ -160,8 +150,10 @@
             </h6>
         </div>
         <div class="d-flex justify-content-end col-12">
-            <span><b>อัปเดตล่าสุด: </b></span>
-            <span>&nbsp;{{ $highlight->updated_at->format('d/m/Y H:i') }}</span>
+            <div>
+                <span><b>อัปเดตล่าสุด: </b></span>
+                <span>&nbsp;{{ $highlight->updated_at->format('d/m/Y H:i') }}</span>
+            </div>
         </div>
     </div>
 </div>
@@ -191,6 +183,8 @@
                 behavior: "smooth"
             });
         });
+
+        ////
     });
 </script>
 

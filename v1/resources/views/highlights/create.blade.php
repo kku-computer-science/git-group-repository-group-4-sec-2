@@ -18,7 +18,7 @@
                     <label for="cover_image">Cover Image</label>
                     <div class="image-upload-box" id="coverImageBox" onclick="document.getElementById('cover_image').click();">
                         <input type="file" name="cover_image" id="cover_image" class="d-none" accept="image/*" onchange="previewCoverImage(event)">
-                        <div class="upload-placeholder" id="coverPlaceholder" >
+                        <div class="upload-placeholder" id="coverPlaceholder">
                             <div class="placeholder-content">
                                 <i class="mdi mdi-cloud-upload-outline"></i>
                                 <p>คลิกเพื่อเพิ่มรูปภาพ</p>
@@ -33,7 +33,7 @@
 
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" name="title" id="title" class="form-control" required>
+                    <input type="text" name="title" id="title" class="form-control" placeholder="Enter the title">
                 </div>
 
                 <div class="form-group">
@@ -46,12 +46,11 @@
                         </option>
                         @endforeach
                     </select>
-                    <button type="button" class="btn btn-dark mt-2" id="createTagBtn">Create</button>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea name="description" id="description" class="form-control description-box" rows="6"></textarea>
+                    <textarea name="description" id="description" class="form-control description-box" rows="6" placeholder="Enter description"></textarea>
                 </div>
 
                 <div class="form-group">
@@ -63,7 +62,7 @@
                     <label for="image_album">Image Album</label>
                     <div class="image-upload-box small" id="imageAlbumBox" onclick="document.getElementById('image_album').click();">
                         <input type="file" name="images[]" id="image_album" class="d-none" multiple accept="image/*">
-                        <div class="upload-placeholder" id="albumPlaceholder" >
+                        <div class="upload-placeholder" id="albumPlaceholder">
                             <div class="placeholder-content">
                                 <i class="mdi mdi-cloud-upload-outline"></i>
                                 <p>คลิกเพื่อเพิ่มรูปภาพ</p>
@@ -85,6 +84,64 @@
 
 
 <script>
+    // $(document).ready(function() {
+    //     $('.select2').select2({
+    //         placeholder: "Select tags",
+    //         tags: true,
+    //         tokenSeparators: [',', ' ']
+    //     });
+
+    //     // Show create tag modal
+    //     $('#createTagBtn').click(function() {
+    //         $('#createTagModal').modal('show');
+    //     });
+
+    //     // Handle Cancel button with SweetAlert
+    //     $(document).on('click', '.cancel-modal, .close-modal', function() {
+    //         Swal.fire({
+    //             title: "Are you sure?",
+    //             text: "Your input will be lost!",
+    //             icon: "warning",
+    //             showCancelButton: true,
+    //             confirmButtonColor: "#d33",
+    //             cancelButtonColor: "#3085d6",
+    //             confirmButtonText: "Yes, cancel!",
+    //             cancelButtonText: "No, keep editing"
+    //         }).then((result) => {
+    //             if (result.isConfirmed) {
+    //                 $('#createTagModal').modal('hide'); // ปิด Modal
+    //                 $('#newTagName').val(''); // เคลียร์ input
+    //             }
+    //         });
+    //     });
+
+    //     // Save new tag
+    //     $('#saveTagBtn').click(function() {
+    //         let tagName = $('#newTagName').val().trim();
+    //         if (tagName === '') {
+    //             Swal.fire("Error", "Tag name cannot be empty!", "error");
+    //             return;
+    //         }
+
+    //         $.post("{{ route('tags.store') }}", {
+    //             name: tagName,
+    //             _token: '{{ csrf_token() }}'
+    //         }, function(response) {
+    //             if (response.success) {
+    //                 let newTagId = response.tag.id;
+    //                 let newTagOption = new Option(tagName, newTagId, true, true);
+    //                 $('#tag').append(newTagOption).trigger('change');
+    //                 $('#createTagModal').modal('hide');
+    //                 $('#newTagName').val('');
+    //             } else {
+    //                 Swal.fire("Error", response.message, "error");
+    //             }
+    //         }).fail(function() {
+    //             Swal.fire("Error", "Failed to create tag", "error");
+    //         });
+    //     });
+
+    // });
     $(document).ready(function() {
     $('.select2').select2({
         placeholder: "Select tags or create new ones",
@@ -261,23 +318,43 @@
     document.getElementById("newsForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent immediate form submission
 
+        let title = document.getElementById("title").value;
         let tag = document.getElementById("tag").value;
         let coverPreview = document.getElementById("coverPreview").classList.contains("d-none");
+        let description = document.getElementById("description").value;
 
-        if (!tag) {
-            Swal.fire({
-                icon: "warning",
-                title: "กรุณาเลือกหมวดหมู่!",
-                text: "คุณต้องเลือกหมวดหมู่ก่อนส่งแบบฟอร์ม",
-                padding: "1.25rem",
-                confirmButtonText: "ตกลง",
-                confirmButtonColor: "#3085d6",
-            });
-        } else if (coverPreview) { // เช็คว่าไม่ได้อัปโหลดรูปภาพ
+        if (coverPreview) {
             Swal.fire({
                 icon: "warning",
                 title: "กรุณาอัปโหลดรูปภาพ!",
                 text: "คุณต้องเลือกอัปโหลดรูปภาพก่อนส่งแบบฟอร์ม",
+                padding: "1.25rem",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#3085d6",
+            });
+        } else if (!title) {
+            Swal.fire({
+                icon: "warning",
+                title: "กรุณากรอกชื่อไฮไลท์!",
+                text: "คุณต้องกรอกชื่อไฮไลท์ก่อนส่งแบบฟอร์ม",
+                padding: "1.25rem",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#3085d6",
+            });
+        } else if (!tag) {
+            Swal.fire({
+                icon: "warning",
+                title: "กรุณาเลือก tag!",
+                text: "คุณต้องเลือก tag ก่อนส่งแบบฟอร์ม",
+                padding: "1.25rem",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#3085d6",
+            });
+        } else if (!description) {
+            Swal.fire({
+                icon: "warning",
+                title: "กรุณากรอกคำอธิบาย!",
+                text: "คุณต้องกรอกคำอธิบายก่อนส่งแบบฟอร์ม",
                 padding: "1.25rem",
                 confirmButtonText: "ตกลง",
                 confirmButtonColor: "#3085d6",
@@ -299,15 +376,6 @@
             document.getElementById("newsForm").submit(); // Submit the form after SweetAlert closes
         });
     }
-
-
-    // $(document).ready(function() {
-    //     $('.select2').select2({
-    //         placeholder: "Select tags",
-    //         tags: true,
-    //         tokenSeparators: [',', ' ']
-    //     });
-    // });
 </script>
 
 <style>

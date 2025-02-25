@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\ImageCollection;
 use Illuminate\Http\Request;
 use App\Models\Highlight;
-use App\Models\Category;
+use App\Models\Tag;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Imagick\Driver;
@@ -25,21 +25,23 @@ class HighlightController extends Controller
     {
         $highlights = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images'])
             ->where('status', 1)
-            ->get(['id', 'image', 'title', 'user_id', 'created_at']);
-
+            ->orderBy('priority', 'asc') // ✅ เรียงตาม priority
+            ->get(['id', 'image', 'title', 'user_id', 'created_at', 'priority']); // ✅ ดึง priority มาด้วย
+    
         $news = Highlight::whereNull('status')
             ->with(['tags:id,name', 'user:id,fname_th,lname_th', 'images'])
+            ->orderBy('created_at', 'desc') // ✅ เรียงตามวันที่ล่าสุด
             ->get(['id', 'image', 'title', 'user_id', 'created_at']);
-
+    
         // ✅ ดึงรายการ Tag ทั้งหมดไปใช้ใน View
         $tags = Tag::all(['id', 'name']);
-
+    
         return view('highlights.index', compact('highlights', 'news', 'tags'));
     }
 
     public function create()
     {
-        $categories = Category::all();
+        $categories = Tag::all();
         return view('highlights.create', compact('categories'));
     }
 
@@ -126,7 +128,7 @@ class HighlightController extends Controller
         Log::info('Edit Highlight ID: 1');
         $highlight = Highlight::with('tags', 'images')->findOrFail($id);
         Log::info('Edit Highlight ID: 2');
-        $categories = Category::all();
+        $categories = Tag::all();
         Log::info('Edit Highlight ID: 3');
         $selectedTags = $highlight->tags->pluck('id')->toArray();
         Log::info('Edit Highlight ID: 4');
@@ -135,12 +137,10 @@ class HighlightController extends Controller
 
     public function update(Request $request, $id)
     {
-        Log::info("🛠 UPDATE FUNCTION CALLED FOR HIGHLIGHT ID: " . $id);
-        Log::info("🔍 REQUEST DATA:", $request->all());
-
         $request->validate([
             'title' => 'required|string|max:255',
-            'category_id' => 'required|exists:category,id',
+            'tag_id' => 'required|array',
+            'tag_id.*' => 'exists:tag,id',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
             'link' => 'nullable|url',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
@@ -204,20 +204,32 @@ class HighlightController extends Controller
 
         // Check if the limit has been reached
         if ($highlightCount >= 5) {
-            return redirect()->back()->with('error', 'Cannot add more than 5 highlights.');
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot add more than 5 highlights.'
+            ], 400);
         }
+
         // Find the news item and update status
         $highlight = Highlight::findOrFail($id);
-        $highlight->status = 1; // Set as highlight
+
+        // Set as highlight and assign the next priority number
+        $highlight->status = 1;
+        $highlight->priority = $highlightCount + 1;
         $highlight->save();
 
-        return redirect()->back()->with('success', 'Highlight added successfully.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Highlight added successfully.',
+            'priority' => $highlight->priority
+        ]);
     }
 
     public function removeFromHighlights($id)
     {
         $highlight = Highlight::findOrFail($id);
         $highlight->status = null;
+        $highlight->priority = null; // ✅ ตั้งค่า priority เป็น null
         $highlight->save();
 
         return redirect()->route('highlights.index')->with('success', 'Removed from Highlights!');
@@ -273,7 +285,7 @@ class HighlightController extends Controller
     {
         $type = $request->query('type');
 
-        $query = Highlight::with(['category', 'user'])
+        $query = Highlight::with(['tag', 'user'])
             ->when($type === 'highlights', function ($q) {
                 return $q->where('status', 1)->latest()->take(5);
             })
@@ -282,8 +294,8 @@ class HighlightController extends Controller
             });
 
         return datatables()->eloquent($query)
-            ->addColumn('category', function ($highlight) {
-                return $highlight->category->name ?? 'No Category';
+            ->addColumn('tag', function ($highlight) {
+                return $highlight->tag->name ?? 'No Tag';
             })
             ->addColumn('created_by', function ($highlight) {
                 return optional($highlight->user)->fname_th . ' ' . optional($highlight->user)->lname_th ?? 'Unknown';
@@ -311,14 +323,30 @@ class HighlightController extends Controller
 
     public function reorder(Request $request)
     {
-        dd($request->orderedIds); // 🔍 ตรวจสอบว่าค่าที่ส่งมาถูกต้องหรือไม่
+        Log::info('📌 Ordered IDs ที่ได้รับ:', ['ids' => $request->orderedIds]);
 
-        $orderedIds = $request->orderedIds;
-
-        foreach ($orderedIds as $index => $id) {
-            Highlight::where('id', $id)->update(['priority' => $index + 1]);
+        if (!is_array($request->orderedIds) || empty($request->orderedIds)) {
+            Log::error("❌ ไม่มีข้อมูล Ordered IDs ส่งมา");
+            return response()->json(['success' => false, 'message' => 'ไม่มีข้อมูล Ordered IDs'], 400);
         }
 
+        foreach ($request->orderedIds as $index => $id) {
+            // ตรวจสอบว่า ID มีอยู่จริงใน Database หรือไม่
+            $highlight = Highlight::find($id);
+
+            if (!$highlight) {
+                Log::error("❌ ไม่พบ Highlight ID: " . $id);
+                continue; // ข้าม ID ที่ไม่มี
+            }
+
+            // ตรวจสอบค่าก่อนอัปเดต
+            Log::info("🟢 กำลังอัปเดต ID: $id เป็น Priority: " . ($index + 1));
+
+            // อัปเดต Priority
+            $highlight->update(['priority' => $index + 1]);
+        }
+
+        Log::info("✅ อัปเดต Priority สำเร็จ!");
         return response()->json(['success' => true, 'message' => 'Priority updated successfully!']);
     }
 }
