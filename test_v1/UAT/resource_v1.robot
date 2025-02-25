@@ -9,20 +9,20 @@ Library           SeleniumLibrary
 *** Variables ***
 ${BROWSER}       chrome
 # สำหรับทดสอบ localhost
-# ${LOCALHOST}     127.0.0.1:8000
-# ${LOCALHOST}     localhost
-# ${URL}           http://${LOCALHOST}/
-# ${LOGIN_URL}     http://${LOCALHOST}/login
-# ${DASHBOARD_URL}  http://${LOCALHOST}/dashboard
-# ${MANAGE_HIGHLIGHTS_URL}    http://${LOCALHOST}/highlights
-# ${CREATE_NEWS_URL}    http://${LOCALHOST}/highlights/create
+${LOCALHOST}     127.0.0.1:8000
+${LOCALHOST}     localhost
+${URL}           http://localhost/
+${LOGIN_URL}     http://localhost/login
+${DASHBOARD_URL}  http://localhost/dashboard
+${MANAGE_HIGHLIGHTS_URL}    http://localhost/highlights
+${CREATE_NEWS_URL}    http://localhost/highlights/create
 # สำหรับทดสอบ host จริง
-${HOST}          cs04sec267.cpkkuhost.com
-${URL}           https://${HOST}/
-${LOGIN_URL}     https://${HOST}/login
-${DASHBOARD_URL}  https://${HOST}/dashboard
-${MANAGE_HIGHLIGHTS_URL}    https://${HOST}/highlights
-${CREATE_NEWS_URL}    https://${HOST}/highlights/create
+# ${HOST}          cs04sec267.cpkkuhost.com
+# ${URL}           https://${HOST}/
+# ${LOGIN_URL}     https://${HOST}/login
+# ${DASHBOARD_URL}  https://${HOST}/dashboard
+# ${MANAGE_HIGHLIGHTS_URL}    https://${HOST}/highlights
+# ${CREATE_NEWS_URL}    https://${HOST}/highlights/create
 ${ADMIN_USERNAME}      admin@gmail.com
 ${ADMIN_PASSWORD}      12345678
 ${STAFF_USERNAME}      staff@gmail.com
