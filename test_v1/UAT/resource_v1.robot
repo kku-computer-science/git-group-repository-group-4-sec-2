@@ -10,20 +10,20 @@ Library           SeleniumLibrary
 ${BROWSER}       chrome
 # สำหรับทดสอบ localhost
 # ${LOCALHOST}     127.0.0.1:8000
-${LOCALHOST}     localhost
-${URL}           http://${LOCALHOST}/
-${LOGIN_URL}     http://${LOCALHOST}/login
-${DASHBOARD_URL}  http://${LOCALHOST}/dashboard
-${MANAGE_HIGHLIGHTS_URL}    http://${LOCALHOST}/highlights
-${CREATE_NEWS_URL}    http://${LOCALHOST}/highlights/create
+# ${LOCALHOST}     localhost
+# ${URL}           http://${LOCALHOST}/
+# ${LOGIN_URL}     http://${LOCALHOST}/login
+# ${DASHBOARD_URL}  http://${LOCALHOST}/dashboard
+# ${MANAGE_HIGHLIGHTS_URL}    http://${LOCALHOST}/highlights
+# ${CREATE_NEWS_URL}    http://${LOCALHOST}/highlights/create
 
 # สำหรับทดสอบ host จริง
-# ${HOST}          cs04sec267.cpkkuhost.com
-# ${URL}           https://${HOST}/
-# ${LOGIN_URL}     https://${HOST}/login
-# ${DASHBOARD_URL}  https://${HOST}/dashboard
-# ${MANAGE_HIGHLIGHTS_URL}    https://${HOST}/highlights
-# ${CREATE_NEWS_URL}    https://${HOST}/highlights/create
+${HOST}          cs04sec267.cpkkuhost.com
+${URL}           https://${HOST}/
+${LOGIN_URL}     https://${HOST}/login
+${DASHBOARD_URL}  https://${HOST}/dashboard
+${MANAGE_HIGHLIGHTS_URL}    https://${HOST}/highlights
+${CREATE_NEWS_URL}    https://${HOST}/highlights/create
 ${ADMIN_USERNAME}      admin@gmail.com
 ${ADMIN_PASSWORD}      12345678
 ${STAFF_USERNAME}      staff@gmail.com
@@ -111,7 +111,8 @@ Go To Login Page
     # 1. เปิดเว็บไซต์ที่หน้าแรก
     Location Should Be    ${URL}
     # 2. คลิกปุ่ม Login
-    # Click Link    xpath=//a[@class='btn-solid-sm' and text()='Login']
+    # Click Link    xpath=//a[@class='btn-solid-sm' and text(🙁'Login']
+    Sleep    1s
     Click Link    xpath=//a[contains(@class, 'btn-primary') and contains(., 'Login')]
     # <a class="btn btn-primary" href="http://localhost/login">Login</a>
     # สลับไปยังแท็บใหม่ถ้ามี target="_blank"
