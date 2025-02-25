@@ -25,15 +25,17 @@ class HighlightController extends Controller
     {
         $highlights = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images'])
             ->where('status', 1)
-            ->get(['id', 'image', 'title', 'user_id', 'created_at']);
-
+            ->orderBy('priority', 'asc') // ✅ เรียงตาม priority
+            ->get(['id', 'image', 'title', 'user_id', 'created_at', 'priority']); // ✅ ดึง priority มาด้วย
+    
         $news = Highlight::whereNull('status')
             ->with(['tags:id,name', 'user:id,fname_th,lname_th', 'images'])
+            ->orderBy('created_at', 'desc') // ✅ เรียงตามวันที่ล่าสุด
             ->get(['id', 'image', 'title', 'user_id', 'created_at']);
-
+    
         // ✅ ดึงรายการ Tag ทั้งหมดไปใช้ใน View
         $tags = Tag::all(['id', 'name']);
-
+    
         return view('highlights.index', compact('highlights', 'news', 'tags'));
     }
 
@@ -202,14 +204,25 @@ class HighlightController extends Controller
 
         // Check if the limit has been reached
         if ($highlightCount >= 5) {
-            return redirect()->back()->with('error', 'Cannot add more than 5 highlights.');
+            return response()->json([
+                'success' => false,
+                'message' => 'Cannot add more than 5 highlights.'
+            ], 400);
         }
+
         // Find the news item and update status
         $highlight = Highlight::findOrFail($id);
-        $highlight->status = 1; // Set as highlight
+
+        // Set as highlight and assign the next priority number
+        $highlight->status = 1;
+        $highlight->priority = $highlightCount + 1;
         $highlight->save();
 
-        return redirect()->back()->with('success', 'Highlight added successfully.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Highlight added successfully.',
+            'priority' => $highlight->priority
+        ]);
     }
 
     public function removeFromHighlights($id)
@@ -313,13 +326,27 @@ class HighlightController extends Controller
         Log::info('📌 Ordered IDs ที่ได้รับ:', ['ids' => $request->orderedIds]);
 
         if (!is_array($request->orderedIds) || empty($request->orderedIds)) {
+            Log::error("❌ ไม่มีข้อมูล Ordered IDs ส่งมา");
             return response()->json(['success' => false, 'message' => 'ไม่มีข้อมูล Ordered IDs'], 400);
         }
 
         foreach ($request->orderedIds as $index => $id) {
-            Highlight::where('id', $id)->update(['priority' => $index + 1]);
+            // ตรวจสอบว่า ID มีอยู่จริงใน Database หรือไม่
+            $highlight = Highlight::find($id);
+
+            if (!$highlight) {
+                Log::error("❌ ไม่พบ Highlight ID: " . $id);
+                continue; // ข้าม ID ที่ไม่มี
+            }
+
+            // ตรวจสอบค่าก่อนอัปเดต
+            Log::info("🟢 กำลังอัปเดต ID: $id เป็น Priority: " . ($index + 1));
+
+            // อัปเดต Priority
+            $highlight->update(['priority' => $index + 1]);
         }
 
+        Log::info("✅ อัปเดต Priority สำเร็จ!");
         return response()->json(['success' => true, 'message' => 'Priority updated successfully!']);
     }
 }
