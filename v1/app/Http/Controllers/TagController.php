@@ -7,6 +7,12 @@ use App\Models\Tag;
 
 class TagController extends Controller
 {
+    public function index()
+    {
+        $tags = Tag::all();
+        return view('tags.index', compact('tags'));
+    }
+
     // ✅ ฟังก์ชันสร้าง Tag ใหม่
     public function store(Request $request)
     {
@@ -42,5 +48,32 @@ class TagController extends Controller
         $tag->delete();
 
         return response()->json(['success' => true, 'message' => 'ลบ Tag สำเร็จ']);
+    }
+
+    public function edit($id)
+    {
+        $tag = Tag::find($id);
+
+        if (!$tag) {
+            return response()->json(['success' => false, 'message' => 'ไม่พบ Tag นี้'], 404);
+        }
+
+        return response()->json(['success' => true, 'tag' => $tag]);
+    }
+
+    // ✅ อัปเดต Tag (เฉพาะชื่อ)
+    public function update(Request $request, $id)
+    {
+        $request->validate(['name' => 'required|string|max:255']);
+
+        $tag = Tag::find($id);
+        if (!$tag) {
+            return response()->json(['success' => false, 'message' => 'ไม่พบ Tag นี้'], 404);
+        }
+
+        $tag->name = $request->name;
+        $tag->save();
+
+        return response()->json(['success' => true, 'message' => 'อัปเดต Tag สำเร็จ']);
     }
 }

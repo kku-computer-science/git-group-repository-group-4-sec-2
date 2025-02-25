@@ -66,6 +66,31 @@
                         <span class="text-muted">แท็ก: -</span>
                         @endif
                     </div>
+                </div> -->
+
+                <div class="d-flex justify-content-start align-items-start col-lg-7">
+                    <span class="px-1"><b>แท็ก:&nbsp;</b></span>
+                    <div class="d-flex flex-wrap">
+                        @if($highlight->tags->isNotEmpty())
+                        @foreach($highlight->tags as $tag)
+                        <span>
+                            <a href="{{ route('allhighlights.index', ['tag' => strtolower(trim($tag->name))]) }}"
+                                class="text-decoration-none">{{ $tag->name }}</a>&nbsp;
+                        </span>
+                        @endforeach
+                        @else
+                        <span class="text-muted">แท็ก: -</span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end align-items-start col-lg-2">
+                    <b>แชร์:</b>&nbsp;
+                    <a href="javascript:void(0)" class="share-network-facebook">
+                        <button type="button" class="btn btn-outline-secondary btn-sm copy-url-btn" title="คัดลอกลิงก์">
+                            <i class="fas fa-copy" aria-hidden="true"></i>
+                        </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -81,11 +106,32 @@
             <h2>{{ $highlight->title }}</h2>
         </div>
         <div class="py-2 col-12">
-            <span style="font-size:12pt; font-family:Aptos,sans-serif; white-space: normal; overflow-wrap: break-word; word-wrap: break-word;">
-                {{ $highlight->description }}
-            </span>
-        </div>
+            <!-- <pre style="font-size:12pt; font-family:Aptos,sans-serif; white-space: normal; overflow-wrap: break-word; word-wrap: break-word;">
+            {{ $highlight->description }}
+            </pre> -->
+            <pre style="font-size: 12pt; font-family: Aptos, sans-serif; white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;">
+            {{ $highlight->description }}
+            </pre>
 
+        </div>
+        <!-- <div class="my-4 d-flex align-items-center col-lg-12">
+            <b style="max-width: 30%" ;>แหล่งข้อมูลเพิ่มเติม:</b>&nbsp;
+            <a href="{{ $highlight->link }}" target="_blank"
+                class="text-decoration-none text-truncate d-inline-block"
+                style="max-width: 70%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                {{ $highlight->link }}
+            </a>
+        </div> -->
+        @if($highlight->link)
+        <div class="my-4 d-flex align-items-center col-lg-12">
+            <b style="max-width: 30%" ;>แหล่งข้อมูลเพิ่มเติม:</b>&nbsp;
+            <a href="{{ $highlight->link }}" target="_blank"
+                class="text-decoration-none text-truncate d-inline-block"
+                style="max-width: 70%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                {{ $highlight->link }}
+            </a>
+        </div>
+        @endif
 
         @if($highlight->images->isNotEmpty())
         <div class="py-2 col-12">
@@ -192,4 +238,29 @@
     });
 </script>
 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const copyButton = document.querySelector(".copy-url-btn");
+
+        if (copyButton) {
+            copyButton.addEventListener("click", function() {
+                const currentURL = window.location.href;
+
+                navigator.clipboard.writeText(currentURL)
+                    .then(() => {
+                        copyButton.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i>';
+                        copyButton.classList.add("btn-success");
+                        setTimeout(() => {
+                            copyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i>';
+                            copyButton.classList.remove("btn-success");
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error("ไม่สามารถคัดลอก URL ได้: ", err);
+                    });
+            });
+        }
+    });
+</script>
 @endsection
