@@ -10,10 +10,10 @@ Resource          D:/projectSoftEn/git-group-repository-group-4-sec-2/test_v1/UA
 Test Add News to Highlights
      # ✅ Passed
     [Tags]    UAT-V1-03
-    [Documentation]    ทดสอบการมีข่าวแล้วนำเข้า Highlights
+    [Documentation]    ทดสอบการจัดการไฮไลต์ โดยเจ้าหน้าที่ฝ่ายบริหาร
     Go To Manage Highlights Page
     
-    # เพิ่มข่าว
+    # เพิ่มไฮไลต์
     Scroll Element Into View    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
     Click Link    xpath=//a[contains(text(), '+ Create')]
     Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
@@ -35,14 +35,14 @@ Test Add News to Highlights
     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
 
-    # ค้นหาข้อมูล News ที่ต้องการเพิ่มไปยัง Highlights (เลือกอันล่าสุดที่เพิ่มเข้ามา)
+    # ค้นหาข้อมูล Highlights ที่ต้องการเพิ่มไปยัง Show Highlights (เลือกอันล่าสุดที่เพิ่มเข้ามา)
     ${NEWS_ID}    Get Text    xpath=(//table[@id='news-table']//tr[last()]//td[1])
-    # เลื่อน Scroll ไปที่ปุ่ม ADD ของ News อันล่าสุด
+    # เลื่อน Scroll ไปที่ปุ่ม ADD ของ Highlights อันล่าสุด
     Scroll Element Into View    xpath=(//table[@id='news-table']//tr[td[contains(text(),'${NEWS_ID}')]]//button[contains(@class,'btn-add')])[1]
     # รอจนกว่าปุ่ม ADD จะมองเห็นและคลิก
     Wait Until Element Is Visible    xpath=(//table[@id='news-table']//tr[td[contains(text(),'${NEWS_ID}')]]//button[contains(@class,'btn-add')])[1]    timeout=5s
     Click Button    xpath=(//table[@id='news-table']//tr[td[contains(text(),'${NEWS_ID}')]]//button[contains(@class,'btn-add')])[1]
-    # รอให้ Popup แจ้งเตือนปรากฏว่าเพิ่มลงใน Highlights
+    # รอให้ Popup แจ้งเตือนปรากฏว่าเพิ่มลงใน Show Highlights
     Wait Until Element Is Visible    xpath=//div[contains(@class,'swal2-popup')]//h2[contains(text(),'เพิ่มลงใน Highlights แล้ว!')]    timeout=10s
     # รอให้ ID ถูกเพิ่มลงในตาราง highlight-table
     Wait Until Element Is Visible    xpath=//table[@id='highlight-table']//tr[td[normalize-space(text())='${NEWS_ID}']]    timeout=10s
@@ -57,7 +57,7 @@ Test Add News to Highlights
     Should Not Be Equal    ${news_table_row}    ${NEWS_ID}    # ตรวจสอบว่า ${NEWS_ID} ไม่ปรากฏในตาราง news-table
    
     # ลบ highlight
-    # ค้นหา ID ของ News ที่ต้องการนำออกจาก Highlights (เลือกอันล่าสุดที่เพิ่มเข้ามา)
+    # ค้นหา ID ของ Highlights ที่ต้องการนำออกจาก Show Highlights (เลือกอันล่าสุดที่เพิ่มเข้ามา)
     ${HIGHLIGHT_ID}    Get Text    xpath=(//table[@id='highlight-table']//tr[last()]//td[1])
     # เลื่อน Scroll ไปที่ปุ่ม REMOVE ของ Highlight อันล่าสุด
     Scroll Element Into View    xpath=(//table[@id='highlight-table']//tr[td[contains(text(),'${HIGHLIGHT_ID}')]]//button[contains(@class,'btn-remove')])[1]
@@ -65,15 +65,15 @@ Test Add News to Highlights
     Click Button    xpath=(//table[@id='highlight-table']//tr[td[contains(text(),'${HIGHLIGHT_ID}')]]//button[contains(@class,'btn-remove')])[1]
     # รอให้ Popup แจ้งเตือนปรากฏ
     Wait Until Element Is Visible    xpath=//div[contains(@class,'swal2-popup')]//h2[contains(text(),'นำออกจาก Highlights แล้ว!')]    timeout=5s
-    # รอให้ Highlight หายไปจากตาราง Highlights
+    # รอให้ Highlight หายไปจากตาราง Show Highlights
     Wait Until Element Is Not Visible    xpath=//table[@id='highlight-table']//tr[td[normalize-space(text())='${HIGHLIGHT_ID}']]    timeout=10s
     # รอให้ตารางอัปเดตก่อนตรวจสอบ
     Sleep    2s
 
-    #ลบข่าวที่สร้างขึ้นมาล่าสุด
-    # ค้นหา ID ของ News ที่ต้องการลบ (เลือกอันล่าสุดที่เพิ่มเข้ามา)
+    #ลบไฮไลต์ที่สร้างขึ้นมาล่าสุด
+    # ค้นหา ID ของ Highlights ที่ต้องการลบ (เลือกอันล่าสุดที่เพิ่มเข้ามา)
     ${NEWS_ID}    Get Text    xpath=(//table[@id='news-table']//tr[last()]//td[1])
-    # เลื่อน Scroll ไปที่ปุ่มลบของ News อันแรก
+    # เลื่อน Scroll ไปที่ปุ่มลบของ Highlights อันล่าสุด
     Scroll Element Into View    xpath=(//table[@id='news-table']//tr[td[1][text()='${NEWS_ID}']]//button[contains(@class,'btn-delete')])[1]
     Wait Until Element Is Visible    xpath=(//table[@id='news-table']//tr[td[1][text()='${NEWS_ID}']]//button[contains(@class,'btn-delete')])[1]    timeout=5s
     Click Button    xpath=(//table[@id='news-table']//tr[td[1][text()='${NEWS_ID}']]//button[contains(@class,'btn-delete')])[1]
