@@ -87,9 +87,9 @@
                 <div class="d-flex justify-content-end align-items-start col-lg-2">
                     <b>แชร์:</b>&nbsp;
                     <a href="javascript:void(0)" class="share-network-facebook">
-                        <button type="button" class="btn btn-outline-primary btn-sm">
-                            <i class="fab fa-facebook" aria-hidden="true"></i>
-                        </button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm copy-url-btn" title="คัดลอกลิงก์">
+                        <i class="fas fa-copy" aria-hidden="true"></i>
+                    </button>
                     </a>
                 </div>
             </div>
@@ -227,4 +227,29 @@
     });
 </script>
 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const copyButton = document.querySelector(".copy-url-btn");
+
+        if (copyButton) {
+            copyButton.addEventListener("click", function () {
+                const currentURL = window.location.href;
+
+                navigator.clipboard.writeText(currentURL)
+                    .then(() => {
+                        copyButton.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i>';
+                        copyButton.classList.add("btn-success");
+                        setTimeout(() => {
+                            copyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i>';
+                            copyButton.classList.remove("btn-success");
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error("ไม่สามารถคัดลอก URL ได้: ", err);
+                    });
+            });
+        }
+    });
+</script>
 @endsection
