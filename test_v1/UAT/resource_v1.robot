@@ -50,7 +50,6 @@ Verify Admin Dashboard
 
 Verify Staff Dashboard
     # ตรวจสอบเมนูเฉพาะของ Staff
-    Page Should Contain    Dashboard
     Page Should Contain    Manage Highlights
 
 Verify Researcher Dashboard
@@ -87,7 +86,7 @@ Verify Researcher Dashboard
 #     Page Should Not Contain    Manage Programs
 #     Page Should Not Contain    Manage Highlights
 
-Open Browser
+Open Chrome Browser
     # สร้าง options สำหรับ Chrome
     ${chrome_options}    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()
 

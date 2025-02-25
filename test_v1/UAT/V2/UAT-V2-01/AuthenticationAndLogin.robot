@@ -16,8 +16,8 @@ Test Open Home Page
      # ✅ Passed
     [Tags]    UAT-V2-01
     [Documentation]    ทดสอบการเปิดเว็บไซต์
-    Open Browser
-    # Maximize Browser Window
+    Open Chrome Browser
+    Maximize Browser Window
     Close Browser
 
 Test Go To Login Page
