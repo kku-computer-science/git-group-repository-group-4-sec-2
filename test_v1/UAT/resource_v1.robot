@@ -148,7 +148,7 @@ Login Researcher
 Go To Manage Highlights Page
     Go To Login Page
     Login Staff
-    Verify Staff Dashboard
+    Verify Staff Dashboard 
     # 7. คลิกปุ่ม Manage Highlights
     Click Link    xpath=//a[@class='nav-link' and contains(span, 'Manage Highlights')]
     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    ${DELAY}

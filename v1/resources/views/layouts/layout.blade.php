@@ -67,6 +67,9 @@
                     <li class="nav-item {{ request()->is('/') ? 'active' : ''}} ">
                         <a class="nav-link" href="/">{{ trans('message.Home') }}</a>
                     </li>
+                    <li class="nav-item {{ request()->is('allhighlights') ? 'active' : ''}}">
+                        <a class="nav-link" href="/allhighlights">Highlights</a>
+                    </li>
                     <li
                         class="nav-item dropdown {{ Request::routeIs('researchers') ? 'active' : '' }} {{ request()->is('detail*') ? 'active' : ''}} ">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
@@ -133,8 +136,8 @@
                 <!-- ปุ่ม Logout -->
                 <a href="{{ route('logout') }}" class="btn btn-danger"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class="fa fa-sign-out-alt fa-lg"></i> Logout
-                </a>
+                    <span><i class="fa fa-sign-out-alt fa-lg" style="padding: 0.625rem 0.25rem; font-size: 14px;">&nbsp;Logout</i></span>
+                    </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
@@ -142,7 +145,7 @@
                 @else
                 <!-- ปุ่ม Login -->
                 <a class="btn btn-primary" href="{{ route('login') }}">
-                    <i class="fa fa-sign-in-alt fa-lg"></i> Login
+                <span><i class="fa fa-sign-in-alt fa-lg" style="padding: 0.625rem 0.2rem; font-size: 14px;">&nbsp;Login</i></span>
                 </a>
 
                 @endauth

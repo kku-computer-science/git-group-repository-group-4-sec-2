@@ -43,10 +43,13 @@ use App\Http\Controllers\TcicallController;
 use App\Http\Controllers\HighlightController;
 use App\Http\Controllers\HighlightdetailController;
 
+use App\Http\Controllers\AllHighlightsController;
+use App\Http\Controllers\TagController;
 
-Route::get('/test-permission', function () {
-    return \Illuminate\Support\Facades\Gate::allows('manage-highlights') ? 'Allowed' : 'Denied';
-});
+Route::get('/allhighlights', [AllHighlightsController::class, 'index'])->name('allhighlights.index');
+Route::get('/allhighlights/{id}', [AllHighlightsController::class, 'show'])->name('allhighlights.show');
+
+
 
 Route::prefix('highlights')->group(function () {
     Route::get('/', [HighlightController::class, 'index'])->name('highlights.index');
@@ -55,8 +58,8 @@ Route::prefix('highlights')->group(function () {
     Route::get('/{id}/edit', [HighlightController::class, 'edit'])->name('highlights.edit');
     Route::put('/{id}', [HighlightController::class, 'update'])->name('highlights.update');
 
-    Route::put('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.add'); // ✅ เพิ่มฟังก์ชันนี้
-    Route::put('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.remove'); // ✅ เพิ่มฟังก์ชันนี้
+    Route::put('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.addd'); // ✅ เพิ่มฟังก์ชันนี้
+    Route::put('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.removee'); // ✅ เพิ่มฟังก์ชันนี้
 
     Route::post('/{id}/add', [HighlightController::class, 'addToHighlights'])->name('highlights.add');
     Route::post('/{id}/remove', [HighlightController::class, 'removeFromHighlights'])->name('highlights.remove');
@@ -65,12 +68,25 @@ Route::prefix('highlights')->group(function () {
     // DELETE route สำหรับลบ Highlight
     Route::delete('/{id}', [HighlightController::class, 'destroy'])->name('highlights.destroy');
     Route::get('/data', [HighlightController::class, 'dataTable'])->name('highlights.data');
+
+    Route::post('/reorder', [HighlightController::class, 'reorder'])->name('highlights.reorder');
 });
 
 
 
 Route::get('highlightdetail', [HighlightdetailController::class, 'index'])->name('highlightdetail');
 Route::get('/highlight/{id}', [HighlightdetailController::class, 'show'])->name('highlight.show');
+
+
+Route::prefix('tags')->group(function () {
+    Route::post('/store', [TagController::class, 'store'])->name('tags.store');
+    Route::delete('/{id}', [TagController::class, 'destroy'])->name('tags.destroy');
+    Route::get('/{id}/edit', [TagController::class, 'edit'])->name('tags.edit'); // format ควรมี / ก่อน {id}
+    Route::put('/{id}', [TagController::class, 'update'])->name('tags.update');
+});
+
+
+
 
 // Route::get('/news/{id}', [HighlightdetailController::class, 'show'])->name('news.show');
 
@@ -123,6 +139,39 @@ Route::get('/clear-all', function () {
         'optimize' => 'Class loader optimized'
     ], 200);
 });
+
+Route::get('/clear-storage', function () {
+    // ลบโฟลเดอร์ public/storage
+    exec('rm -rf public/storage', $output, $return_var);
+
+    // สร้าง symlink ใหม่สำหรับ storage
+    Artisan::call('storage:link');
+
+    // ตรวจสอบผลลัพธ์ของคำสั่ง
+    if ($return_var !== 0) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to remove storage folder',
+            'output' => $output
+        ], 500);
+    }
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Storage folder removed and symlink created successfully',
+    ], 200);
+});
+
+Route::get('/storage-link', function () {
+    // รันคำสั่ง php artisan storage:link
+    Artisan::call('storage:link');
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Storage symlink created successfully',
+    ], 200);
+});
+
 
 
 Route::middleware(['middleware' => 'PreventBackHistory'])->group(function () {
