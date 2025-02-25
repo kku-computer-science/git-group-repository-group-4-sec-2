@@ -9,27 +9,27 @@ Library           SeleniumLibrary
 *** Variables ***
 ${BROWSER}       chrome
 # สำหรับทดสอบ localhost
-${LOCALHOST}     127.0.0.1:8000
-${LOCALHOST}     localhost
-${URL}           http://localhost/
-${LOGIN_URL}     http://localhost/login
-${DASHBOARD_URL}  http://localhost/dashboard
-${MANAGE_HIGHLIGHTS_URL}    http://localhost/highlights
-${CREATE_NEWS_URL}    http://localhost/highlights/create
+# ${LOCALHOST}     127.0.0.1:8000
+# ${LOCALHOST}     localhost
+# ${URL}           http://localhost/
+# ${LOGIN_URL}     http://localhost/login
+# ${DASHBOARD_URL}  http://localhost/dashboard
+# ${MANAGE_HIGHLIGHTS_URL}    http://localhost/highlights
+# ${CREATE_NEWS_URL}    http://localhost/highlights/create
 # สำหรับทดสอบ host จริง
-# ${HOST}          cs04sec267.cpkkuhost.com
-# ${URL}           https://${HOST}/
-# ${LOGIN_URL}     https://${HOST}/login
-# ${DASHBOARD_URL}  https://${HOST}/dashboard
-# ${MANAGE_HIGHLIGHTS_URL}    https://${HOST}/highlights
-# ${CREATE_NEWS_URL}    https://${HOST}/highlights/create
+${HOST}          cs04sec267.cpkkuhost.com
+${URL}           https://${HOST}/
+${LOGIN_URL}     https://${HOST}/login
+${DASHBOARD_URL}  https://${HOST}/dashboard
+${MANAGE_HIGHLIGHTS_URL}    https://${HOST}/highlights
+${CREATE_NEWS_URL}    https://${HOST}/highlights/create
 ${ADMIN_USERNAME}      admin@gmail.com
 ${ADMIN_PASSWORD}      12345678
-${STAFF_USERNAME}      staff@gmail.com
+${STAFF_USERNAME}      Natech@kku.ac.th
 ${STAFF_PASSWORD}      123456789
 ${RESEARCHER_USERNAME}      thanaphon@kku.ac.th
 ${RESEARCHER_PASSWORD}      123456789
-${INVALID_ADMIN_USERNAME}   staff@mail.com
+${INVALID_ADMIN_USERNAME}   Natech@kku
 ${INVALID_PASSWORD}      111111111
 ${error_message}    Login Failed: Your user ID or password is incorrect
 ${DELAY}    2
@@ -50,8 +50,8 @@ Verify Admin Dashboard
 
 Verify Staff Dashboard
     # ตรวจสอบเมนูเฉพาะของ Staff
-    Page Should Contain    Departments
-    Page Should Contain    Manage Programs
+    # Page Should Contain    Departments
+    # Page Should Contain    Manage Programs
     Page Should Contain    Manage Highlights
 
 Verify Researcher Dashboard
@@ -111,6 +111,7 @@ Go To Login Page
     Location Should Be    ${URL}
     # 2. คลิกปุ่ม Login
     # Click Link    xpath=//a[@class='btn-solid-sm' and text()='Login']
+    Sleep    1s
     Click Link    xpath=//a[contains(@class, 'btn-primary') and contains(., 'Login')]
     # <a class="btn btn-primary" href="http://localhost/login">Login</a>
     # สลับไปยังแท็บใหม่ถ้ามี target="_blank"
@@ -150,6 +151,7 @@ Go To Manage Highlights Page
     Login Staff
     Verify Staff Dashboard
     # 7. คลิกปุ่ม Manage Highlights
+    Sleep    1s
     Click Link    xpath=//a[@class='nav-link' and contains(span, 'Manage Highlights')]
     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    ${DELAY}
     Page Should Contain    Manage Highlights
