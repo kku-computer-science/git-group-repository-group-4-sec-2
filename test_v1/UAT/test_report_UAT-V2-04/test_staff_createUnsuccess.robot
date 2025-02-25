@@ -59,11 +59,6 @@ Test Create News Unsuccess Empty Title:
     Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
     Location Should Be    ${CREATE_NEWS_URL}
 
-    Scroll Element Into View    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
-    Click Link    xpath=//a[contains(text(), '+ Create')]
-    Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
-    Location Should Be    ${CREATE_NEWS_URL}
-
     Click Element    id=coverImageBox
     Choose File    xpath=//input[@type='file']    C:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg
 
@@ -104,11 +99,6 @@ Test Create News Unsuccess Empty Tag:
     Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
     Location Should Be    ${CREATE_NEWS_URL}
 
-    Scroll Element Into View    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
-    Click Link    xpath=//a[contains(text(), '+ Create')]
-    Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
-    Location Should Be    ${CREATE_NEWS_URL}
-
     Click Element    id=coverImageBox
     Choose File    xpath=//input[@type='file']    C:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg
     Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
@@ -139,11 +129,6 @@ Test Create News Unsuccess Empty Description:
     Go To Manage Highlights Page
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
     Sleep    3s
-    Scroll Element Into View    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
-    Click Link    xpath=//a[contains(text(), '+ Create')]
-    Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
-    Location Should Be    ${CREATE_NEWS_URL}
-
     Scroll Element Into View    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
     Click Link    xpath=//a[contains(text(), '+ Create')]
     Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
