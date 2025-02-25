@@ -53,7 +53,7 @@
                 <div class="d-flex justify-content-start align-items-start col-lg-3">
                     <span><b>เผยแพร่:</b>&nbsp;{{ $highlight->created_at->format('d/m/Y H:i') }}&nbsp;</span>
                 </div>
-                <div class="d-flex justify-content-start align-items-start col-lg-7">
+                <!-- <div class="d-flex justify-content-start align-items-start col-lg-7">
                     <span class="px-1"><b>แท็ก:&nbsp;</b></span>
                     <div class="d-flex flex-wrap" class="text-decoration-none">
                         @if($highlight->tags->isNotEmpty())
@@ -66,10 +66,23 @@
                         <span class="text-muted">แท็ก: -</span>
                         @endif
                     </div>
-                </div>
-                <!-- <div class="d-flex flex-wrap justify-content-start align-items-center col-lg-3">
-                    <b>แหล่งข้อมูลเพิ่มเติม:</b>&nbsp;<span><a href="{{ $highlight->link }}" target="_blank" class="text-decoration-none">{{ $highlight->link }}</a>&nbsp;</span>
                 </div> -->
+
+                <div class="d-flex justify-content-start align-items-start col-lg-7">
+                    <span class="px-1"><b>แท็ก:&nbsp;</b></span>
+                    <div class="d-flex flex-wrap">
+                        @if($highlight->tags->isNotEmpty())
+                        @foreach($highlight->tags as $tag)
+                        <span>
+                            <a href="{{ route('allhighlights.index', ['tag' => strtolower(trim($tag->name))]) }}"
+                                class="text-decoration-none">{{ $tag->name }}</a>&nbsp;
+                        </span>
+                        @endforeach
+                        @else
+                        <span class="text-muted">แท็ก: -</span>
+                        @endif
+                    </div>
+                </div>
 
                 <div class="d-flex justify-content-end align-items-start col-lg-2">
                     <b>แชร์:</b>&nbsp;
@@ -99,13 +112,13 @@
             </span>&nbsp;
         </div> -->
         <div class="my-4 d-flex align-items-center col-lg-12">
-    <b style="max-width: 30%";>แหล่งข้อมูลเพิ่มเติม:</b>&nbsp;
-    <a href="{{ $highlight->link }}" target="_blank" 
-       class="text-decoration-none text-truncate d-inline-block" 
-       style="max-width: 70%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
-        {{ $highlight->link }}
-    </a>
-</div>
+            <b style="max-width: 30%" ;>แหล่งข้อมูลเพิ่มเติม:</b>&nbsp;
+            <a href="{{ $highlight->link }}" target="_blank"
+                class="text-decoration-none text-truncate d-inline-block"
+                style="max-width: 70%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                {{ $highlight->link }}
+            </a>
+        </div>
 
 
         @if($highlight->images->isNotEmpty())

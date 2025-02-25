@@ -299,7 +299,7 @@
     </div>
 </div> -->
 <!-- Dynamic Tag list -->
-<div class="container">
+<!-- <div class="container">
     <div>
         <div class="container">
             <div class="btn-group-tag">
@@ -312,6 +312,33 @@
                     <a href="#" class="tag-item tag-all active" data-tag="all">All</a>
                     @foreach ($tags as $tag)
                     <a href="#" class="tag-item" data-tag="{{ strtolower(trim($tag->name)) }}">{{ $tag->name }}</a>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="container">
+    <div>
+        <div class="container">
+            <div class="btn-group-tag">
+                <h4>Tags : </h4>
+                <button id="scrollLeftTag" class="scroll-btn">&lt;</button>
+                <button id="scrollRightTag" class="scroll-btn">&gt;</button>
+            </div>
+            <div class="tag-list-wrapper">
+                <div class="tag-list">
+                    <a href="{{ route('allhighlights.index') }}" 
+                       class="tag-item tag-all {{ request('tag') ? '' : 'active' }}" 
+                       data-tag="all">All</a>
+                    
+                    @foreach ($tags as $tag)
+                    <a href="{{ route('allhighlights.index', ['tag' => strtolower(trim($tag->name))]) }}"
+                       class="tag-item {{ request('tag') == strtolower(trim($tag->name)) ? 'active' : '' }}" 
+                       data-tag="{{ strtolower(trim($tag->name)) }}"
+                       id="tag-{{ strtolower(trim($tag->name)) }}">
+                        {{ $tag->name }}
+                    </a>
                     @endforeach
                 </div>
             </div>
@@ -412,6 +439,32 @@
                     }
                 });
             });
+        });
+        // const tagList = document.querySelector('.tag-list');
+        // const btnLeft = document.getElementById('scrollLeftTag');
+        // const btnRight = document.getElementById('scrollRightTag');
+
+        // ตรวจสอบว่ามีแท็กที่ถูกเลือกอยู่ใน URL หรือไม่
+        const selectedTag = "{{ request('tag') }}";
+        
+        if (selectedTag) {
+            const tagElement = document.getElementById(`tag-${selectedTag}`);
+            if (tagElement) {
+                // เลื่อนไปที่แท็กที่ถูกเลือก
+                tagList.scrollTo({
+                    left: tagElement.offsetLeft - (window.innerWidth / 3),
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // ปุ่มเลื่อนซ้ายขวา
+        btnLeft.addEventListener('click', function() {
+            tagList.scrollBy({ left: -150, behavior: 'smooth' });
+        });
+
+        btnRight.addEventListener('click', function() {
+            tagList.scrollBy({ left: 150, behavior: 'smooth' });
         });
     });
 </script>
