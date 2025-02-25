@@ -2,6 +2,10 @@
 
 @section('content')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
 <div class="container">
     <div class="card p-4">
@@ -34,18 +38,19 @@
                     <input type="text" name="title" id="title" class="form-control" value="{{ $highlight->title }}" required>
                 </div>
 
-                <!-- ✅ Category -->
+                <!-- ✅ Tag -->
                 <div class="form-group">
-                    <label for="category">Category</label>
-                    <select name="category_id" id="category" class="form-control" required>
-                        <option value="">Select Category</option>
-                        @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" {{ $highlight->category_id == $category->id ? 'selected' : '' }}>
-                            {{ $category->name }}
+                    <label for="tag">Tags</label>
+                    <select name="tag_id[]" id="tag" class="form-control select2" multiple="multiple">
+                        @foreach ($categories as $tag)
+                        <option value="{{ $tag->id }}" {{ in_array($tag->id, $selectedTags) ? 'selected' : '' }}>
+                            {{ $tag->name }}
                         </option>
                         @endforeach
                     </select>
+                    <button type="button" class="btn btn-dark mt-2" id="createTagBtn">Create</button>
                 </div>
+
 
                 <!-- ✅ Description -->
                 <div class="form-group">
@@ -53,12 +58,18 @@
                     <textarea name="description" id="description" class="form-control description-box" rows="6">{{ $highlight->description }}</textarea>
                 </div>
 
+                <div class="form-group">
+                    <label for="research_link">Link Research</label>
+                    <input type="url" class="form-control" name="link" value="{{ $highlight->link ?? '' }}" placeholder="Enter your link">
+                </div>
+
+
                 <!-- ✅ Image Album -->
                 <div class="form-group">
                     <label for="image_album">Image Album</label>
                     <div class="image-upload-box small" id="imageAlbumBox" onclick="document.getElementById('image_album').click();">
                         <input type="file" name="images[]" id="image_album" class="d-none" multiple accept="image/*">
-                        <div class="upload-placeholder" >
+                        <div class="upload-placeholder">
                             <div class="placeholder-content">
                                 <i class="mdi mdi-cloud-upload-outline"></i>
                                 <p>Click to upload images</p>
@@ -90,7 +101,103 @@
     </div>
 </div>
 
+<!-- Modal for Creating New Tag -->
+<div class="modal fade" id="createTagModal" tabindex="-1" role="dialog" aria-labelledby="createTagLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create New Tag</h5>
+                <button type="button" class="close close-modal" aria-label="Close">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="newTagName" class="form-control" placeholder="Enter tag name">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light cancel-modal">Cancel</button>
+                <button type="button" class="btn btn-dark" id="saveTagBtn">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+$(document).ready(function() {
+    $('.select2').select2({
+        placeholder: "Select tags",
+        tags: true,
+        tokenSeparators: [',', ' ']
+    });
+
+    let selectedTags = @json($selectedTags);
+
+    // ✅ ตั้งค่า Select2 ให้เลือก Tag ที่มีอยู่แล้ว
+    $('#tag').val(selectedTags).trigger('change');
+
+    // ✅ กดปุ่ม ✖ แล้วลบ Tag ออกจาก UI (แต่ยังไม่อัปเดต Database)
+    $(document).on('click', '.remove-tag', function() {
+        let tagId = $(this).data('id');
+
+        // ซ่อนจาก UI
+        $(this).parent().remove();
+
+        // อัปเดตค่าที่เลือกใน Select2 (ลบออก)
+        let tagSelect = $('#tag').val();
+        tagSelect = tagSelect.filter(id => id != tagId);
+        $('#tag').val(tagSelect).trigger('change');
+    });
+
+    // ✅ Show Create Tag Modal
+    $('#createTagBtn').click(function() {
+        $('#createTagModal').modal('show');
+    });
+
+    // ✅ Save New Tag
+    $('#saveTagBtn').click(function() {
+        let tagName = $('#newTagName').val().trim();
+        if (tagName === '') {
+            Swal.fire("Error", "Tag name cannot be empty!", "error");
+            return;
+        }
+
+        $.post("{{ route('tags.store') }}", {
+            name: tagName,
+            _token: '{{ csrf_token() }}'
+        }, function(response) {
+            if (response.success) {
+                let newTagId = response.tag.id;
+                let newTagOption = new Option(tagName, newTagId, true, true);
+                $('#tag').append(newTagOption).trigger('change');
+                $('#createTagModal').modal('hide');
+                $('#newTagName').val('');
+            } else {
+                Swal.fire("Error", response.message, "error");
+            }
+        }).fail(function() {
+            Swal.fire("Error", "Failed to create tag", "error");
+        });
+    });
+
+    // ✅ Confirm Update
+    window.confirmUpdate = function() {
+        Swal.fire({
+            title: "ยืนยันการอัปเดต?",
+            text: "คุณแน่ใจหรือไม่ว่าต้องการอัปเดตข้อมูลนี้",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "ใช่, อัปเดตเลย!",
+            cancelButtonText: "ยกเลิก"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById("updateForm").submit();
+            }
+        });
+    };
+});
+
     let deletedImages = [];
     let selectedFiles = [];
 
@@ -107,12 +214,6 @@
         }
     }
 
-
-    // function removeCoverImage() {
-    //     document.getElementById("cover_image").value = "";
-    //     document.getElementById("coverPreview").classList.add("d-none");
-    //     document.getElementById("coverPlaceholder").classList.remove("d-none");
-    // }
     function removeCoverImage() {
         event.stopPropagation();
         document.getElementById("cover_image").value = ""; // Clear input
@@ -133,30 +234,26 @@
     }
 
 
-
+    // ลบรูปเก่า
     function markImageForDeletion(id, element) {
-        deletedImages.push(id);
+        deletedImages.push(id); // เก็บ id ของรูปเก่าที่จะลบ
         document.getElementById('deletedImagesInput').value = JSON.stringify(deletedImages);
-        element.parentElement.remove();
+        element.parentElement.remove(); // ลบออกจากหน้า
     }
-
     document.getElementById('image_album').addEventListener('change', function(event) {
         const newFiles = Array.from(event.target.files);
         selectedFiles = selectedFiles.concat(newFiles);
         updateAlbumPreview();
     });
 
+
     function updateAlbumPreview() {
         const previewContainer = document.getElementById('albumPreview');
 
-        // ✅ ตรวจสอบว่ามีรูปเก่าอยู่แล้วหรือไม่ ถ้าไม่ให้ดึงข้อมูลใหม่
-        if (!document.querySelector('.existing-image')) {
-            document.querySelectorAll('.existing-image').forEach(existing => {
-                previewContainer.appendChild(existing);
-            });
-        }
+        // ✅ ล้างเฉพาะรูปใหม่ ไม่แตะรูปเก่า (existing-image)
+        previewContainer.querySelectorAll('.image-item:not(.existing-image)').forEach(el => el.remove());
 
-        // ✅ แสดงรูปที่เพิ่งเพิ่ม
+        // ✅ แสดงรูปใหม่
         selectedFiles.forEach((file, index) => {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -165,13 +262,13 @@
 
                 const imgElement = document.createElement('img');
                 imgElement.src = e.target.result;
-                imgElement.alt = "Image Preview";
+                imgElement.alt = "New Image Preview";
 
                 const removeBtn = document.createElement('button');
                 removeBtn.innerHTML = '✖';
                 removeBtn.classList.add('remove-btn');
                 removeBtn.onclick = function() {
-                    removeImage(index);
+                    removeNewImage(index);
                 };
 
                 imgWrapper.appendChild(imgElement);
@@ -181,15 +278,69 @@
             reader.readAsDataURL(file);
         });
 
+        // ✅ อัปเดตไฟล์ใน input type="file"
         const dt = new DataTransfer();
         selectedFiles.forEach(file => dt.items.add(file));
-        document.getElementById("image_album").files = dt.files;
+        document.getElementById('image_album').files = dt.files;
     }
 
-    function removeImage(index) {
-        selectedFiles.splice(index, 1);
-        updateAlbumPreview();
+    // ลบรูปใหม่
+    function removeNewImage(index) {
+        selectedFiles.splice(index, 1); // เอารูปใหม่ออกจาก array
+        updateAlbumPreview(); // รีเฟรชตัวอย่าง
     }
+
+    document.getElementById("updateForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent immediate form submission
+
+        let title = document.getElementById("title").value;
+        let tag = document.getElementById("tag").value;
+        let coverPreview = document.getElementById("coverPreview").classList.contains("d-none");
+        let description = document.getElementById("description").value;
+
+        if (coverPreview) {
+            Swal.fire({
+                icon: "warning",
+                title: "กรุณาอัปโหลดรูปภาพ!",
+                text: "คุณต้องเลือกอัปโหลดรูปภาพก่อนส่งแบบฟอร์ม",
+                padding: "1.25rem",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#3085d6",
+            });
+        } else if (!title) {
+            Swal.fire({
+                icon: "warning",
+                title: "กรุณากรอกชื่อไฮไลท์!",
+                text: "คุณต้องกรอกชื่อไฮไลท์ก่อนส่งแบบฟอร์ม",
+                padding: "1.25rem",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#3085d6",
+            });
+        } else if (!tag) {
+            Swal.fire({
+                icon: "warning",
+                title: "กรุณาเลือก tag!",
+                text: "คุณต้องเลือก tag ก่อนส่งแบบฟอร์ม",
+                padding: "1.25rem",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#3085d6",
+            });
+        } else if (!description) {
+            Swal.fire({
+                icon: "warning",
+                title: "กรุณากรอกคำอธิบาย!",
+                text: "คุณต้องกรอกคำอธิบายก่อนส่งแบบฟอร์ม",
+                padding: "1.25rem",
+                confirmButtonText: "ตกลง",
+                confirmButtonColor: "#3085d6",
+            });
+        } else {
+            confirmUpdate();
+        }
+
+    });
+
+
 
     function confirmCancel() {
         Swal.fire({
@@ -341,6 +492,27 @@
         padding: 5px;
         border-radius: 50%;
         font-size: 12px;
+    }
+
+    .select2-selection--multiple {
+        border: 1px solid #d1c7bd !important;
+        border-radius: 10px !important;
+        min-height: 50px !important;
+    }
+
+    .select2-selection__choice {
+        color: #fff !important;
+        border: none !important;
+        ;
+        border-radius: 25px !important;
+        padding: 8px 25px !important;
+        font-size: 14px !important;
+    }
+
+    .select2-selection__choice__remove {
+        color: #fff !important;
+        font-size: 20px !important;
+        margin: 5px !important;
     }
 </style>
 @endsection

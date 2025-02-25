@@ -1,86 +1,125 @@
 @extends('layouts.layout')
 
 <style>
-
     /* Related News Section */
-.related-container {
-    position: relative;
-    max-width: 100%;
-    padding: 20px 0;
-}
+    .related-container {
+        position: relative;
+        max-width: 100%;
+        padding: 20px 0;
+    }
 
-.related-wrapper {
-    display: flex;
-    gap: 15px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    padding-bottom: 10px;
-}
+    .related-wrapper {
+        display: flex;
+        gap: 15px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding-bottom: 10px;
+    }
 
-/* Hide Scrollbar */
-.related-wrapper::-webkit-scrollbar {
-    display: none;
-}
+    /* Hide Scrollbar */
+    .related-wrapper::-webkit-scrollbar {
+        display: none;
+    }
 
-.related-card {
-    flex: 0 0 18rem;
-    min-width: 18rem;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-}
+    .related-card {
+        flex: 0 0 18rem;
+        min-width: 18rem;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease-in-out;
+    }
 
-.related-card:hover {
-    transform: translateY(-5px);
-}
+    .related-card:hover {
+        transform: translateY(-5px);
+    }
 
-.related-card img {
-    height: 200px;
-    object-fit: cover;
-}
-
+    .related-card img {
+        height: 200px;
+        object-fit: cover;
+    }
 </style>
+
 @section('content')
-@if($highlights->isNotEmpty())
-@foreach($highlights as $highlight)
+@if(isset($highlight))
 <div class="head-img">
     <img src="{{ asset('storage/' . $highlight->image) }}" class="w-100" style="height: 600px; object-fit: cover;">
 </div>
 
 <div class="container">
     <div class="row">
-        <div class="py-3 px-0 d-flex align-items-center col-lg-10">
-            <div class="row mx-0 w-100">
-                <div class="px-0 py-2 d-flex justify-content-center align-items-center col-lg-4">
-                    <span>เผยแพร่&nbsp;{{ $highlight->created_at->format('d/m/Y H:i') }}&nbsp;</span>
+        <div class="py-3 px-0">
+            <div class="row mt-2 w-100 d-flex justify-content-center align-items-start col-lg-12">
+                <div class="d-flex justify-content-start align-items-start col-lg-3">
+                    <span><b>เผยแพร่:</b>&nbsp;{{ $highlight->created_at->format('d/m/Y H:i') }}&nbsp;</span>
                 </div>
-                <div class="px-2 d-flex col-lg-8">
-                    <div class="d-flex px-1 align-items-center" style="width: fit-content;">
-                        <span>หมวดหมู่:</span>
-                        <!-- <a href="/content/news/category/{{ $highlight->category->name }}"> -->
-                            <span>&nbsp;{{ $highlight->category->name }}</span>
-                        <!-- </a> -->
+                <!-- <div class="d-flex justify-content-start align-items-start col-lg-7">
+                    <span class="px-1"><b>แท็ก:&nbsp;</b></span>
+                    <div class="d-flex flex-wrap" class="text-decoration-none">
+                        @if($highlight->tags->isNotEmpty())
+                        @foreach($highlight->tags as $tag)
+                        <span>
+                            <a href="/" class="text-decoration-none">{{ $tag->name }}</a>&nbsp;
+                        </span>
+                        @endforeach
+                        @else
+                        <span class="text-muted">แท็ก: -</span>
+                        @endif
                     </div>
+                </div> -->
+
+                <div class="d-flex justify-content-start align-items-start col-lg-7">
+                    <span class="px-1"><b>แท็ก:&nbsp;</b></span>
+                    <div class="d-flex flex-wrap">
+                        @if($highlight->tags->isNotEmpty())
+                        @foreach($highlight->tags as $tag)
+                        <span>
+                            <a href="{{ route('allhighlights.index', ['tag' => strtolower(trim($tag->name))]) }}"
+                                class="text-decoration-none">{{ $tag->name }}</a>&nbsp;
+                        </span>
+                        @endforeach
+                        @else
+                        <span class="text-muted">แท็ก: -</span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end align-items-start col-lg-2">
+                    <b>แชร์:</b>&nbsp;
+                    <a href="javascript:void(0)" class="share-network-facebook">
+                    <button type="button" class="btn btn-outline-secondary btn-sm copy-url-btn" title="คัดลอกลิงก์">
+                        <i class="fas fa-copy" aria-hidden="true"></i>
+                    </button>
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="p-0 d-flex justify-content-center align-items-center col-lg-2">
-            แชร์ &nbsp;
-            <a href="javascript:void(0)" class="share-network-facebook">
-                <button type="button" class="btn btn-outline-primary btn-sm">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </button>
-            </a>
-        </div>
-        <div class="text-center py-5 col-12">
+
+        <div class="text-center my-4 col-12">
             <h2>{{ $highlight->title }}</h2>
         </div>
         <div class="py-2 col-12">
-            <span style="font-size:12pt; font-family:Aptos,sans-serif;">
+            <span style="font-size:12pt; font-family:Aptos,sans-serif; white-space: normal; overflow-wrap: break-word; word-wrap: break-word;">
                 {{ $highlight->description }}
             </span>
         </div>
+        <!-- <div class="my-4 d-flex flex-wrap justify-content-start align-items-center col-lg-12">
+            <b>แหล่งข้อมูลเพิ่มเติม:</b>&nbsp;
+            <span class="text-truncate d-inline-block">
+                <a href="{{ $highlight->link }}" target="_blank" class="text-decoration-none text-truncate d-inline-block w-100">
+                    {{ $highlight->link }}
+                </a>
+            </span>&nbsp;
+        </div> -->
+        <div class="my-4 d-flex align-items-center col-lg-12">
+            <b style="max-width: 30%" ;>แหล่งข้อมูลเพิ่มเติม:</b>&nbsp;
+            <a href="{{ $highlight->link }}" target="_blank"
+                class="text-decoration-none text-truncate d-inline-block"
+                style="max-width: 70%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                {{ $highlight->link }}
+            </a>
+        </div>
+
 
         @if($highlight->images->isNotEmpty())
         <div class="py-2 col-12">
@@ -89,9 +128,9 @@
                 <div class="row">
                     @foreach($highlight->images as $image)
                     <div class="my-2 col-md-6 col-lg-2">
-                        <img src="{{ asset('storage/' . $image->image) }}" 
-                            class="img-thumbnail w-100" 
-                            style="height: 150px; object-fit: cover; border-radius: 8px;" 
+                        <img src="{{ asset('storage/' . $image->image) }}"
+                            class="img-thumbnail w-100"
+                            style="height: 150px; object-fit: cover; border-radius: 8px;"
                             role="button" tabindex="0">
                     </div>
                     @endforeach
@@ -106,71 +145,46 @@
             </h6>
         </div>
         <div class="d-flex justify-content-end col-12">
-            <h6>
-                อัปเดตล่าสุด:
-                <span>{{ $highlight->updated_at->format('d/m/Y H:i') }}</span>
-            </h6>
+            <div>
+                <span><b>อัปเดตล่าสุด: </b></span>
+                <span>&nbsp;{{ $highlight->updated_at->format('d/m/Y H:i') }}</span>
+            </div>
         </div>
     </div>
 </div>
-@endforeach
 @else
 <p>ไม่มีข้อมูล</p>
 @endif
 
-<!-- Related News Section -->
-<div class="container rlNews mt-5">
-    <h3 class="mb-4">ข่าวที่เกี่ยวข้อง</h3>
-
-    <div class="related-container">
-        @if($news->isNotEmpty())
-        <div class="related-wrapper" id="relatedNews">
-            @foreach($news as $new)
-            <div class="related-card">
-                <a href="{{ route('highlight.show', $new->id) }}">
-                    <img src="{{ asset('storage/' . $new->image) }}" class="card-img-top" alt="Related News Image">
-                </a>
-                <div class="card-body">
-                    <span class="badge bg-primary">{{ $new->category->name }}</span>
-                    <h6 class="card-title mt-2">{{ $new->title }}</h6>
-                    <p class="card-text">{{ Str::limit($new->description, 100) }}</p>
-                </div>
-            </div>
-            @endforeach
-        </div>
-
-        <!-- Navigation Arrows -->
-        <div class="d-flex justify-content-end mt-3">
-            <button class="btn btn-outline-primary me-2" id="scrollLeftRelated"><i class="fas fa-chevron-left"></i></button>
-            <button class="btn btn-outline-primary" id="scrollRightRelated"><i class="fas fa-chevron-right"></i></button>
-        </div>
-
-        @else
-        <p class="text-muted">ไม่มีข่าวที่เกี่ยวข้อง</p>
-        @endif
-    </div>
-</div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const container = document.getElementById("relatedNews");
         if (!container) return;
 
         const btnLeft = document.getElementById("scrollLeftRelated");
         const btnRight = document.getElementById("scrollRightRelated");
 
-        btnLeft.addEventListener("click", function () {
-            container.scrollBy({ left: -250, behavior: "smooth" });
+        btnLeft.addEventListener("click", function() {
+            container.scrollBy({
+                left: -250,
+                behavior: "smooth"
+            });
         });
 
-        btnRight.addEventListener("click", function () {
-            container.scrollBy({ left: 250, behavior: "smooth" });
+        btnRight.addEventListener("click", function() {
+            container.scrollBy({
+                left: 250,
+                behavior: "smooth"
+            });
         });
+
+        ////
     });
 </script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         const cardList = document.querySelector('.card-list');
         if (!cardList) return;
 
@@ -213,4 +227,29 @@
     });
 </script>
 
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const copyButton = document.querySelector(".copy-url-btn");
+
+        if (copyButton) {
+            copyButton.addEventListener("click", function () {
+                const currentURL = window.location.href;
+
+                navigator.clipboard.writeText(currentURL)
+                    .then(() => {
+                        copyButton.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i>';
+                        copyButton.classList.add("btn-success");
+                        setTimeout(() => {
+                            copyButton.innerHTML = '<i class="fas fa-copy" aria-hidden="true"></i>';
+                            copyButton.classList.remove("btn-success");
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error("ไม่สามารถคัดลอก URL ได้: ", err);
+                    });
+            });
+        }
+    });
+</script>
 @endsection

@@ -208,13 +208,12 @@
 
 
     <!-- News -->
-
+<!-- 
     <div class="container news mt-5">
         <h3 class="mb-4">HIGHLIGHT NEWS</h3>
 
         <div class="highlight-container">
 
-            <!-- รายการข่าว -->
             <div class="highlight-wrapper" id="highlightNews">
                 @foreach($highlights as $highlight)
                 <div class="highlight-card">
@@ -222,7 +221,7 @@
                         <img src="{{ asset('storage/' . $highlight->image) }}" class="card-img-top" alt="Highlight Image">
                     </a>
                     <div class="card-body">
-                        <span class="badge bg-primary">{{ $highlight->category->name }}</span>
+                        <span class="badge bg-primary">{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}</span>
                         <h6 class="card-title mt-2">{{ $highlight->title }}</h6>
                         <p class="card-text">{{ Str::limit($highlight->description, 100) }}</p>
                     </div>
@@ -235,7 +234,7 @@
                 <button class="btn btn-outline-primary" id="scrollRight"><i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Modal -->
 
