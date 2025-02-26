@@ -6,7 +6,7 @@ Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec
 ${LAST_ROW}    xpath=//table[@id='news-table']//tbody/tr[last()]
 ${LAST_DELETE_BUTTON}    xpath=//table[@id='news-table']//tbody/tr[last()]//button[contains(@class,'btn-delete')]
 ${one_picture}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg
-${two_pictures}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_2.jpeg\n/Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test
+${two_pictures}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_2.jpeg\n/Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_3.jpeg
 
 *** Keywords ***
 
@@ -38,7 +38,7 @@ Test Go To Manage Highlights Page
 
 Test Create Highlight Success
     # ✅ Passed
-    [Tags]    UAT-V1-03
+    [Tags]    UAT-V2-02
     [Documentation]    ทดสอบการสร้างข่าวใหม่สำเร็จ
     Go To Manage Highlights Page
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
@@ -77,7 +77,7 @@ Test Create Highlight Success
 
 Test Create Highlight Unsuccess Empty Cover Image
     # ✅ Passed
-    [Tags]    UAT-V1-03
+    [Tags]    UAT-V2-02
     [Documentation]    ทดสอบการสร้างข่าวใหม่ไม่สำเร็จ เนื่องจากไม่ใส่รูปภาพ Cover Image
     Go To Manage Highlights Page
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
@@ -115,7 +115,7 @@ Test Create Highlight Unsuccess Empty Cover Image
 
 Test Create Highlight Unsuccess Empty Title:
     # ✅ Passed
-    [Tags]    UAT-V1-03
+    [Tags]    UAT-V2-02
     [Documentation]    ทดสอบการสร้างข่าวใหม่ไม่สำเร็จ เนื่องจากไม่ใส่ Title
     Go To Manage Highlights Page
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
@@ -155,7 +155,7 @@ Test Create Highlight Unsuccess Empty Title:
 #Test Create Unsuccess Empty TAG:
 Test Create Highlight Unsuccess Empty Tag:
     # ✅ Passed
-    [Tags]    UAT-V1-03
+    [Tags]    UAT-V2-02
     [Documentation]    ทดสอบการสร้างข่าวใหม่ไม่สำเร็จ เนื่องจากไม่เลือก Tag
     Go To Manage Highlights Page
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
@@ -190,7 +190,7 @@ Test Create Highlight Unsuccess Empty Tag:
 
 Test Create Highlight Unsuccess Empty Description:
     # ✅ Passed
-    [Tags]    UAT-V1-03
+    [Tags]    UAT-V2-02
     [Documentation]    ทดสอบการสร้างข่าวใหม่ไม่สำเร็จ เนื่องจากไม่ใส่ Description
     Go To Manage Highlights Page
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}

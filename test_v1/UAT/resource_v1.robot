@@ -103,7 +103,7 @@ Open Chrome Browser
     Go To    ${URL}
 
 Go To Login Page
-    Open Browser
+    Open Chrome Browser
     Maximize Browser Window
     # 1. เปิดเว็บไซต์ที่หน้าแรก
     Location Should Be    ${URL}

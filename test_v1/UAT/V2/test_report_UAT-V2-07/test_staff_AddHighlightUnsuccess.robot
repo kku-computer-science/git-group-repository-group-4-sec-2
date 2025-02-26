@@ -1,10 +1,12 @@
 *** Settings ***
-Resource          D:/projectSoftEn/git-group-repository-group-4-sec-2/test_v1/UAT/resource_v1.robot
+Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/UAT/resource_v1.robot
 # Library           SeleniumLibrary
 
 *** Variables ***
 ${LAST_ROW}    xpath=//table[@id='news-table']//tbody/tr[last()]
 ${LAST_DELETE_BUTTON}    xpath=//table[@id='news-table']//tbody/tr[last()]//button[contains(@class,'btn-delete')]
+${one_picture}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg
+${two_pictures}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_2.jpeg\n/Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_3.jpeg
 
 
 * Keywords *
@@ -17,7 +19,7 @@ Create Highlight
     Location Should Be    ${CREATE_NEWS_URL}
 
     Click Element    id=coverImageBox
-    Choose File    xpath=//input[@type='file']    C:/Users/User/Pictures/Screenshots/Screenshot_2025-02-18_215543.png
+    Choose File    xpath=//input[@type='file']    ${one_picture} 
     Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
 
     Click Element   xpath=//span[contains(@class, 'select2-selection')]
@@ -29,7 +31,7 @@ Create Highlight
     Input Text    id=link   https://www.google.com
     Scroll Element Into View    id=imageAlbumBox
     Click Element    id=imageAlbumBox
-    Choose File    id=image_album    C:/Users/User/Pictures/Screenshots/Screenshot_2025-02-18_215543.png
+    Choose File    id=image_album    ${two_pictures}
     Scroll Element Into View    xpath=//button[@type='submit' and contains(text(),'Save')]
 
     # หรือใช้ Wait Until Element Is Visible ก่อนคลิก
