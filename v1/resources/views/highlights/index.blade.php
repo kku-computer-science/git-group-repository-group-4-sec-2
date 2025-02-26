@@ -51,15 +51,11 @@
                     No Image
                     @endif
                 </td>
-                <td> <span class="truncate-text" title="{{ $highlight->title }}">{{ $highlight->title }}</span>
-                </td>
-                <td> <span class="truncate-text" title="{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}">
-                        {{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}
-                    </span></td>
+                <td>{{ $highlight->title }}</td>
+                <td>{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}</td>
                 <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
                 <td>{{ optional($highlight->user)->fname_th ?? 'Unknown' }} {{ optional($highlight->user)->lname_th ?? '' }}</td>
                 <td>
-                    <a href="{{ route('highlight.show', $highlight->id) }}" class="btn btn-outline-primary"><i class="fas fa-eye"></i></a>
                     <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary"><i class="fas fa-edit"></i></a>
                     <button type="button" class="btn btn-danger btn-delete" data-id="{{ $highlight->id }}"><i class="fas fa-trash-alt"></i></button>
                 </td>
@@ -101,18 +97,13 @@
                     No Image
                     @endif
                 </td>
-                <td> <span class="truncate-text" title="{{ $highlight->title }}">{{ $highlight->title }}</span>
-                </td>
-                <td> <span class="truncate-text" title="{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}">
-                        {{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}
-                    </span></td>
+                <td>{{ $highlight->title }}</td>
+                <td>{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}</td>
                 <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
                 <td>
                     {{ optional($highlight->user)->fname_th ?? 'Unknown' }} {{ optional($highlight->user)->lname_th ?? '' }}
                 </td>
                 <td>
-                    <a href="{{ route('highlight.show', $highlight->id) }}" class="btn btn-outline-primary"><i class="fas fa-eye"></i></a>
-
                     <a href="{{ route('highlights.edit', $highlight->id) }}" class="btn btn-outline-primary">
                         <i class="fas fa-edit"></i>
                     </a>
@@ -468,12 +459,6 @@
         $('#news-table').DataTable();
         $('#tag-table').DataTable();
 
-        // Remove row from highlightTable DataTable
-        highlightTable.row(row).remove().draw();
-
-        // Append row to newsTable DataTable
-        newsTable.row.add(newNewsRow).draw();
-
         // Auto-fade alerts
         setTimeout(function() {
             $(".alert-success").fadeOut("slow");
@@ -594,7 +579,7 @@
                             location.reload();
                         });
                     } else {
-
+                
                         Swal.fire({
                             icon: 'error',
                             title: 'ไม่สามารถสร้าง Tag ได้',
@@ -605,7 +590,7 @@
                     }
                 },
                 error: function(xhr, status, error) {
-
+            
                     Swal.fire({
                         icon: 'error',
                         title: 'เกิดข้อผิดพลาด',
@@ -745,11 +730,6 @@
         width: 300px;
     }
 
-    #highlight-table td:nth-child(7) {
-        white-space: nowrap;
-        width: 300px;
-    }
-
     #highlight-table .btn,
     #news-table .btn {
         padding: 5px 10px;
@@ -773,38 +753,6 @@
         height: 36px;
         padding: 6px;
         margin: 0;
-    }
-
-    .truncate-text {
-        max-width: 200px;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        line-height: 1.5;
-        max-height: 4.5em; /* 3 lines × 1.5 line-height */
-    }
-    
-    /* Add tooltip on hover */
-    .truncate-text:hover {
-        position: relative;
-    }
-    
-    .truncate-text:hover:after {
-        content: attr(title);
-        position: absolute;
-        left: 0;
-        top: 100%;
-        z-index: 1000;
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-        border-radius: 4px;
-        padding: 5px 8px;
-        white-space: normal;
-        max-width: 300px;
-        word-wrap: break-word;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 </style>
 

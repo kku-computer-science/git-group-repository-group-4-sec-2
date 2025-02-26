@@ -1,0 +1,20 @@
+1740514898415	geckodriver	INFO	Listening on 127.0.0.1:54440
+1740514898421	mozrunner::runner	INFO	Running command: MOZ_CRASHREPORTER="1" MOZ_CRASHREPORTER_NO_REPORT="1" MOZ_CRASHREPORTER_SHUTDOWN="1" "/Applications/Firefox. ... s" "localhost" "-foreground" "-no-remote" "-profile" "/var/folders/vs/n9xn05s944n97vrh_pnrvtz00000gn/T/rust_mozprofileE0y4bv"
+console.warn: services.settings: Ignoring preference override of remote settings server
+console.warn: services.settings: Allow by setting MOZ_REMOTE_SETTINGS_DEVTOOLS=1 in the environment
+1740514898606	Marionette	INFO	Marionette enabled
+console.error: "Warning: unrecognized command line flag" "-remote-allow-hosts"
+1740514898809	Marionette	INFO	Listening on port 54446
+WebDriver BiDi listening on ws://127.0.0.1:54441
+Read port: 54446
+1740514898932	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+UNSUPPORTED (log once): POSSIBLE ISSUE: unit 1 GLD_TEXTURE_INDEX_2D is unloadable and bound to sampler type (Float) - using zero texture because texture unloadable
+2025-02-26 03:21:39.610 firefox[95849:15365865] +[IMKClient subclass]: chose IMKClient_Modern
+2025-02-26 03:21:39.610 firefox[95849:15365865] +[IMKInputSession subclass]: chose IMKInputSession_Modern
+DevTools listening on ws://127.0.0.1:54441/devtools/browser/aa344103-8cbb-45c9-8768-52c61c9b605d
+JavaScript error: resource:///modules/sessionstore/SessionStore.sys.mjs, line 3624: TypeError: this._windows[aWindow.__SSi] is undefined
+1740516204208	Marionette	INFO	Stopped listening on port 54446
+console.error: "Failed to fetch https://spocs.getpocket.com/user:" "NetworkError when attempting to fetch resource."
+console.warn: TopSitesFeed: Failed to fetch data from Contile server: NetworkError when attempting to fetch resource.
+console.error: ({})
+console.error: ({})
