@@ -50,6 +50,8 @@ Verify Admin Dashboard
 
 Verify Staff Dashboard
     # ตรวจสอบเมนูเฉพาะของ Staff
+    # Page Should Contain    Departments
+    # Page Should Contain    Manage Programs
     Page Should Contain    Manage Highlights
 
 Verify Researcher Dashboard
@@ -86,24 +88,24 @@ Verify Researcher Dashboard
 #     Page Should Not Contain    Manage Programs
 #     Page Should Not Contain    Manage Highlights
 
-Open Chrome Browser
-    # สร้าง options สำหรับ Chrome
-    ${chrome_options}    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()
+# Open Browser
+#     # สร้าง options สำหรับ Chrome
+#     ${chrome_options}    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()
 
-    # ตั้งค่า binary_location ให้กับ chrome_options
-    ${chrome_options.binary_location}    Set Variable    ${CHROME_BROWSER_PATH}
+#     # ตั้งค่า binary_location ให้กับ chrome_options
+#     ${chrome_options.binary_location}    Set Variable    ${CHROME_BROWSER_PATH}
 
-    # สร้าง service สำหรับ chromedriver
-    ${service}    Evaluate    sys.modules['selenium.webdriver.chrome.service'].Service(executable_path="${CHROME_DRIVER_PATH}")
+#     # สร้าง service สำหรับ chromedriver
+#     ${service}    Evaluate    sys.modules['selenium.webdriver.chrome.service'].Service(executable_path="${CHROME_DRIVER_PATH}")
 
-    # สร้าง WebDriver โดยใช้ options และ service
-    Create Webdriver    Chrome    options=${chrome_options}    service=${service}
+#     # สร้าง WebDriver โดยใช้ options และ service
+#     Create Webdriver    Chrome    options=${chrome_options}    service=${service}
 
-    Maximize Browser Window
-    Go To    ${URL}
+#     Maximize Browser Window
+#     Go To    ${URL}
 
 Go To Login Page
-    Open Chrome Browser
+    Open Browser    ${URL}    ${BROWSER}
     Maximize Browser Window
     # 1. เปิดเว็บไซต์ที่หน้าแรก
     Location Should Be    ${URL}
@@ -147,7 +149,7 @@ Login Researcher
 Go To Manage Highlights Page
     Go To Login Page
     Login Staff
-    Verify Staff Dashboard 
+    Verify Staff Dashboard
     # 7. คลิกปุ่ม Manage Highlights
     Sleep    1s
     Click Link    xpath=//a[@class='nav-link' and contains(span, 'Manage Highlights')]
