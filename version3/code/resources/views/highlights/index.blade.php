@@ -51,11 +51,8 @@
                     No Image
                     @endif
                 </td>
-                <td> <span class="truncate-text" title="{{ $highlight->title }}">{{ $highlight->title }}</span>
-                </td>
-                <td> <span class="truncate-text" title="{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}">
-                        {{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}
-                    </span></td>
+                <td>{{ $highlight->title }}</td>
+                <td>{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}</td>
                 <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
                 <td>{{ optional($highlight->user)->fname_th ?? 'Unknown' }} {{ optional($highlight->user)->lname_th ?? '' }}</td>
                 <td>
@@ -101,11 +98,8 @@
                     No Image
                     @endif
                 </td>
-                <td> <span class="truncate-text" title="{{ $highlight->title }}">{{ $highlight->title }}</span>
-                </td>
-                <td> <span class="truncate-text" title="{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}">
-                        {{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}
-                    </span></td>
+                <td>{{ $highlight->title }}</td>
+                <td>{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}</td>
                 <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
                 <td>
                     {{ optional($highlight->user)->fname_th ?? 'Unknown' }} {{ optional($highlight->user)->lname_th ?? '' }}
@@ -290,7 +284,6 @@
 
                     // ✅ อัปเดต priority
                     updatePriorityOrder();
-
                 },
                 error: function(xhr) {
                     console.error("Error response:", xhr);
@@ -320,22 +313,15 @@
                         timer: 1500
                     });
 
-                    // ✅ สร้าง HTML ของแถวใหม่ใน Highlights
+                    // ✅ คัดลอกข้อมูลทุกช่องจากแถวที่ถูก Remove
                     let newNewsRow = `
             <tr id="news-row-${highlightId}">
-                <td>${row.find('td:nth-child(2)').html()}</td>
-                <td>${row.find('td:nth-child(3)').html()}</td>
-                <td>${row.find('td:nth-child(4)').html()}</td>
-                <td>${row.find('td:nth-child(5)').html()}</td>
-                <td>${row.find('td:nth-child(6)').html()}</td>
-                <td>
-                    <button type="button" class="btn btn-outline-primary btn-edit" data-id="${highlightId}">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger btn-delete" data-id="${highlightId}">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </td>
+                <td>${row.find('td:nth-child(2)').html()}</td>  <!-- Image -->
+                <td>${row.find('td:nth-child(3)').html()}</td>  <!-- Title -->
+                <td>${row.find('td:nth-child(4)').html()}</td>  <!-- Tags -->
+                <td>${row.find('td:nth-child(5)').html()}</td>  <!-- Date Time -->
+                <td>${row.find('td:nth-child(6)').html()}</td>  <!-- Created By -->
+                <td>${row.find('td:nth-child(7)').html()}</td>  <!-- Actions (รวมปุ่ม View, Edit, Delete) -->
                 <td>
                     <button type="button" class="btn btn-success btn-add" data-id="${highlightId}">ADD</button>
                 </td>
@@ -463,7 +449,6 @@
         $('#highlight-table').DataTable();
         $('#news-table').DataTable();
         $('#tag-table').DataTable();
-
 
         // Auto-fade alerts
         setTimeout(function() {
@@ -687,15 +672,14 @@
     #highlight-table tbody tr:hover {
         background-color: #f1f1f1;
     }
+    #highlight-table td:nth-child(7) {
+    white-space: nowrap;
+    width: 300px;
+}
 
     .table {
         table-layout: fixed;
         width: 100%;
-    }
-
-    #highlight-table td:nth-child(7) {
-        white-space: nowrap;
-        width: 300px;
     }
 
     .table th,
@@ -765,39 +749,7 @@
         padding: 6px;
         margin: 0;
     }
-
-    .truncate-text {
-        max-width: 200px;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        line-height: 1.5;
-        max-height: 4.5em;
-        /* 3 lines × 1.5 line-height */
-    }
-
-    /* Add tooltip on hover */
-    .truncate-text:hover {
-        position: relative;
-    }
-
-    .truncate-text:hover:after {
-        content: attr(title);
-        position: absolute;
-        left: 0;
-        top: 100%;
-        z-index: 1000;
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-        border-radius: 4px;
-        padding: 5px 8px;
-        white-space: normal;
-        max-width: 300px;
-        word-wrap: break-word;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
+    
 </style>
 
 @endsection
