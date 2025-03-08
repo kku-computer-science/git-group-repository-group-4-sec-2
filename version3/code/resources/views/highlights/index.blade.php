@@ -51,11 +51,8 @@
                     No Image
                     @endif
                 </td>
-                <td> <span class="truncate-text" title="{{ $highlight->title }}">{{ $highlight->title }}</span>
-                </td>
-                <td> <span class="truncate-text" title="{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}">
-                        {{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}
-                    </span></td>
+                <td>{{ $highlight->title }}</td>
+                <td>{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}</td>
                 <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
                 <td>{{ optional($highlight->user)->fname_th ?? 'Unknown' }} {{ optional($highlight->user)->lname_th ?? '' }}</td>
                 <td>
@@ -101,11 +98,8 @@
                     No Image
                     @endif
                 </td>
-                <td> <span class="truncate-text" title="{{ $highlight->title }}">{{ $highlight->title }}</span>
-                </td>
-                <td> <span class="truncate-text" title="{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}">
-                        {{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}
-                    </span></td>
+                <td>{{ $highlight->title }}</td>
+                <td>{{ $highlight->tags->pluck('name')->implode(', ') ?? 'No Tag' }}</td>
                 <td>{{ $highlight->created_at->format('d/m/Y h:i:s A') }}</td>
                 <td>
                     {{ optional($highlight->user)->fname_th ?? 'Unknown' }} {{ optional($highlight->user)->lname_th ?? '' }}
@@ -155,57 +149,59 @@
             @endforeach
         </tbody>
     </table>
-</div>
 
-<!-- Popup สำหรับสร้าง Tag -->
-<div class="modal fade" id="createTagModal" tabindex="-1" aria-labelledby="createTagModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="createTagForm">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createTagModalLabel">Create Tag</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="tagName" class="form-label">Tag Name</label>
-                        <input type="text" class="form-control" id="tagName" name="name" required>
+    <!-- Popup สำหรับสร้าง Tag -->
+    <div class="modal fade" id="createTagModal" tabindex="-1" aria-labelledby="createTagModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="createTagForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createTagModalLabel">Create Tag</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </form>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="tagName" class="form-label">Tag Name</label>
+                            <input type="text" class="form-control" id="tagName" name="name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup สำหรับแก้ไข Tag -->
+
+    <div class="modal fade" id="editTagModal" tabindex="-1" aria-labelledby="editTagModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="editTagForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editTagModalLabel">Edit Tag</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="editTagId" name="id">
+                        <div class="mb-3">
+                            <label for="editTagName" class="form-label">Tag Name</label>
+                            <input type="text" class="form-control" id="editTagName" name="name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Popup สำหรับแก้ไข Tag -->
 
-<div class="modal fade" id="editTagModal" tabindex="-1" aria-labelledby="editTagModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="editTagForm">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editTagModalLabel">Edit Tag</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="editTagId" name="id">
-                    <div class="mb-3">
-                        <label for="editTagName" class="form-label">Tag Name</label>
-                        <input type="text" class="form-control" id="editTagName" name="name" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 
 
@@ -214,6 +210,11 @@
 <script src="https://cdn.datatables.net/1.12.0/js/dataTables.bootstrap4.min.js" defer></script>
 <script>
     $(document).ready(function() {
+        // Initialize DataTables
+        $('#highlight-table').DataTable();
+        $('#news-table').DataTable();
+        $('#tag-table').DataTable();
+
         function updateHighlightCount() {
             let count = $("#highlight-table tbody tr").length;
             $("#highlight-count").val(count);
@@ -290,7 +291,6 @@
 
                     // ✅ อัปเดต priority
                     updatePriorityOrder();
-
                 },
                 error: function(xhr) {
                     console.error("Error response:", xhr);
@@ -320,39 +320,28 @@
                         timer: 1500
                     });
 
-                    // ✅ สร้าง HTML สำหรับแถวในตาราง news
+                    // ✅ คัดลอกข้อมูลทุกช่องจากแถวที่ถูก Remove
                     let newNewsRow = `
-                    <tr id="news-row-${highlightId}">
-                        <td>${row.find('td:nth-child(2)').html()}</td>
-                        <td>${row.find('td:nth-child(3)').html()}</td>
-                        <td>${row.find('td:nth-child(4)').html()}</td>
-                        <td>${row.find('td:nth-child(5)').html()}</td>
-                        <td>${row.find('td:nth-child(6)').html()}</td>
-                        <td>
-                            <button type="button" class="btn btn-success btn-add" data-id="${highlightId}">ADD</button>
-                        </td>
-                    </tr>`;
+            <tr id="news-row-${highlightId}">
+                <td>${row.find('td:nth-child(2)').html()}</td>  <!-- Image -->
+                <td>${row.find('td:nth-child(3)').html()}</td>  <!-- Title -->
+                <td>${row.find('td:nth-child(4)').html()}</td>  <!-- Tags -->
+                <td>${row.find('td:nth-child(5)').html()}</td>  <!-- Date Time -->
+                <td>${row.find('td:nth-child(6)').html()}</td>  <!-- Created By -->
+                <td>${row.find('td:nth-child(7)').html()}</td>  <!-- Actions (รวมปุ่ม View, Edit, Delete) -->
+                <td>
+                    <button type="button" class="btn btn-success btn-add" data-id="${highlightId}">ADD</button>
+                </td>
+            </tr>`;
 
-                    // ✅ ตรวจสอบว่ามี row นี้ในตาราง news อยู่แล้วหรือไม่
-                    if ($("#news-row-" + highlightId).length > 0) {
-                        // ถ้ามีอยู่แล้ว ก็ไม่ต้องเพิ่มใหม่
-                        console.log("Row already exists in news table - not adding again");
-                    } else {
-                        // ถ้ายังไม่มี ให้เพิ่มใหม่
-                        $("#news-table tbody").append(newNewsRow);
-                    }
+                    // ✅ เพิ่มแถวกลับไปที่ตาราง Highlights (ด้านล่าง)
+                    $("#news-table tbody").append(newNewsRow);
 
-                    let table = $('#news-table').DataTable();
-                    table.row(row).remove().draw();
-
-                    // ✅ ลบแถวออกจากตาราง highlights
+                    // ✅ ลบแถวออกจากตาราง Show Highlights (ด้านบน)
                     row.remove();
 
                     // ✅ อัปเดตจำนวน highlight
                     updateHighlightCount();
-
-                    // ✅ อัปเดต priority
-                    updatePriorityOrder();
                 },
                 error: function(xhr) {
                     console.error("Error response:", xhr);
@@ -468,7 +457,6 @@
         $('#news-table').DataTable();
         $('#tag-table').DataTable();
 
-
         // Auto-fade alerts
         setTimeout(function() {
             $(".alert-success").fadeOut("slow");
@@ -476,17 +464,6 @@
         setTimeout(function() {
             $(".alert-danger").fadeOut("slow");
         }, 2000);
-
-        // Shorten long titles
-        $('.table tbody tr').each(function() {
-            var titleCell = $(this).find('td:nth-child(3)'); // Title column
-            var titleText = titleCell.text().trim();
-
-            if (titleText.length > 100) {
-                var shortenedTitle = titleText.substring(0, 100) + '...';
-                titleCell.text(shortenedTitle);
-            }
-        });
 
 
 
@@ -691,15 +668,14 @@
     #highlight-table tbody tr:hover {
         background-color: #f1f1f1;
     }
+    #highlight-table td:nth-child(7) {
+    white-space: nowrap;
+    width: 300px;
+}
 
     .table {
         table-layout: fixed;
         width: 100%;
-    }
-
-    #highlight-table td:nth-child(7) {
-        white-space: nowrap;
-        width: 300px;
     }
 
     .table th,
@@ -769,39 +745,7 @@
         padding: 6px;
         margin: 0;
     }
-
-    .truncate-text {
-        max-width: 200px;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        line-height: 1.5;
-        max-height: 4.5em;
-        /* 3 lines × 1.5 line-height */
-    }
-
-    /* Add tooltip on hover */
-    .truncate-text:hover {
-        position: relative;
-    }
-
-    .truncate-text:hover:after {
-        content: attr(title);
-        position: absolute;
-        left: 0;
-        top: 100%;
-        z-index: 1000;
-        background-color: #f8f9fa;
-        border: 1px solid #dee2e6;
-        border-radius: 4px;
-        padding: 5px 8px;
-        white-space: normal;
-        max-width: 300px;
-        word-wrap: break-word;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    }
+    
 </style>
 
 @endsection
