@@ -126,7 +126,7 @@
         </div>
         @endif
 
-        @if($highlight->images->isNotEmpty())
+        <!-- @if($highlight->images->isNotEmpty())
         <div class="py-2 col-12">
             <span class="text-muted">อัลบั้ม รูปภาพ</span>
             <div class="container-fluid px-2">
@@ -142,6 +142,27 @@
                 </div>
             </div>
         </div>
+        @endif -->
+
+        @if($highlight->images->isNotEmpty())
+        <div class="py-2 col-12">
+            <span class="text-muted">อัลบั้ม รูปภาพ</span>
+            <div class="container-fluid px-2">
+                <div class="row">
+                    @foreach($highlight->images as $image)
+                    <div class="my-2 col-md-6 col-lg-2">
+                        <a href="{{ asset('storage/' . $image->image) }}" data-lightbox="highlight-gallery" data-title="{{ $highlight->title }}">
+                            <img src="{{ asset('storage/' . $image->image) }}"
+                                class="img-thumbnail w-100"
+                                style="height: 150px; object-fit: cover; border-radius: 8px;"
+                                role="button" tabindex="0">
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
         @endif
 
         <div class="d-flex justify-content-end col-12">
