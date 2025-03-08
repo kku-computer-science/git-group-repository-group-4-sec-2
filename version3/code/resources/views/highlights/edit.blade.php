@@ -122,146 +122,146 @@
 </div>
 
 <script>
-// $(document).ready(function() {
-//     $('.select2').select2({
-//         placeholder: "Select tags",
-//         tags: true,
-//         tokenSeparators: [',', ' ']
-//     });
+    // $(document).ready(function() {
+    //     $('.select2').select2({
+    //         placeholder: "Select tags",
+    //         tags: true,
+    //         tokenSeparators: [',', ' ']
+    //     });
 
-//     let selectedTags = @json($selectedTags);
+    //     let selectedTags = @json($selectedTags);
 
-//     // ✅ ตั้งค่า Select2 ให้เลือก Tag ที่มีอยู่แล้ว
-//     $('#tag').val(selectedTags).trigger('change');
+    //     // ✅ ตั้งค่า Select2 ให้เลือก Tag ที่มีอยู่แล้ว
+    //     $('#tag').val(selectedTags).trigger('change');
 
-//     // ✅ กดปุ่ม ✖ แล้วลบ Tag ออกจาก UI (แต่ยังไม่อัปเดต Database)
-//     $(document).on('click', '.remove-tag', function() {
-//         let tagId = $(this).data('id');
+    //     // ✅ กดปุ่ม ✖ แล้วลบ Tag ออกจาก UI (แต่ยังไม่อัปเดต Database)
+    //     $(document).on('click', '.remove-tag', function() {
+    //         let tagId = $(this).data('id');
 
-//         // ซ่อนจาก UI
-//         $(this).parent().remove();
+    //         // ซ่อนจาก UI
+    //         $(this).parent().remove();
 
-//         // อัปเดตค่าที่เลือกใน Select2 (ลบออก)
-//         let tagSelect = $('#tag').val();
-//         tagSelect = tagSelect.filter(id => id != tagId);
-//         $('#tag').val(tagSelect).trigger('change');
-//     });
+    //         // อัปเดตค่าที่เลือกใน Select2 (ลบออก)
+    //         let tagSelect = $('#tag').val();
+    //         tagSelect = tagSelect.filter(id => id != tagId);
+    //         $('#tag').val(tagSelect).trigger('change');
+    //     });
 
-//     // ✅ Show Create Tag Modal
-//     $('#createTagBtn').click(function() {
-//         $('#createTagModal').modal('show');
-//     });
+    //     // ✅ Show Create Tag Modal
+    //     $('#createTagBtn').click(function() {
+    //         $('#createTagModal').modal('show');
+    //     });
 
-//     // ✅ Save New Tag
-//     $('#saveTagBtn').click(function() {
-//         let tagName = $('#newTagName').val().trim();
-//         if (tagName === '') {
-//             Swal.fire("Error", "Tag name cannot be empty!", "error");
-//             return;
-//         }
+    //     // ✅ Save New Tag
+    //     $('#saveTagBtn').click(function() {
+    //         let tagName = $('#newTagName').val().trim();
+    //         if (tagName === '') {
+    //             Swal.fire("Error", "Tag name cannot be empty!", "error");
+    //             return;
+    //         }
 
-//         $.post("{{ route('tags.store') }}", {
-//             name: tagName,
-//             _token: '{{ csrf_token() }}'
-//         }, function(response) {
-//             if (response.success) {
-//                 let newTagId = response.tag.id;
-//                 let newTagOption = new Option(tagName, newTagId, true, true);
-//                 $('#tag').append(newTagOption).trigger('change');
-//                 $('#createTagModal').modal('hide');
-//                 $('#newTagName').val('');
-//             } else {
-//                 Swal.fire("Error", response.message, "error");
-//             }
-//         }).fail(function() {
-//             Swal.fire("Error", "Failed to create tag", "error");
-//         });
-//     });
+    //         $.post("{{ route('tags.store') }}", {
+    //             name: tagName,
+    //             _token: '{{ csrf_token() }}'
+    //         }, function(response) {
+    //             if (response.success) {
+    //                 let newTagId = response.tag.id;
+    //                 let newTagOption = new Option(tagName, newTagId, true, true);
+    //                 $('#tag').append(newTagOption).trigger('change');
+    //                 $('#createTagModal').modal('hide');
+    //                 $('#newTagName').val('');
+    //             } else {
+    //                 Swal.fire("Error", response.message, "error");
+    //             }
+    //         }).fail(function() {
+    //             Swal.fire("Error", "Failed to create tag", "error");
+    //         });
+    //     });
 
-   
-// });
 
-$(document).ready(function() {
-    $('.select2').select2({
-        placeholder: "Select tags or create new ones",
-        tags: true, // อนุญาตให้เพิ่มแท็กใหม่
-        tokenSeparators: [',', ' '],
-        createTag: function(params) {
-            var term = $.trim(params.term);
-            if (term === "") {
-                return null;
-            }
-            return {
-                id: term, // ใช้ชื่อแท็กเป็น ID ชั่วคราว
-                text: term,
-                newTag: true
-            };
-        }
-    });
-    
-    // ตั้งค่า Select2 ให้เลือก Tag ที่มีอยู่แล้ว
-    let selectedTags = @json($selectedTags);
-    $('#tag').val(selectedTags).trigger('change');
-    
-    let newTags = {}; // เก็บ {ชื่อแท็ก: ID จริง}
+    // });
 
-    // เมื่อสร้างแท็กใหม่ -> ส่งไปยังเซิร์ฟเวอร์เพื่อสร้างและรับ ID จริง
-    $('#tag').on('select2:select', function(e) {
-        var data = e.params.data;
-        if (data.newTag) {
-            $.ajax({
-                type: "POST",
-                url: "{{ route('tags.store') }}",
-                data: {
-                    name: data.text,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    if (response.success) {
-                        console.log("New Tag Created: ", response.tag); // Debugging Log
-
-                        newTags[data.text] = response.tag.id; // เก็บ ID จริง
-
-                        // ดึงค่า tags ที่เลือกทั้งหมดปัจจุบัน
-                        let currentValues = $('#tag').val() || [];
-                        
-                        // แทนที่ค่า tag ที่เพิ่งสร้างด้วย ID จริง
-                        let updatedValues = currentValues.map(val => 
-                            val === data.text ? response.tag.id.toString() : val
-                        );
-
-                        // เพิ่มตัวเลือกใหม่ที่เป็น ID จริงเข้าไปใน dropdown
-                        let newOption = new Option(response.tag.name, response.tag.id, false, false);
-                        $('#tag').append(newOption);
-                        
-                        // อัปเดตค่าที่เลือก (โดยไม่รีเซ็ตตัวเลือกเดิม)
-                        $('#tag').val(updatedValues).trigger('change');
-                    }
-                },
-                error: function() {
-                    Swal.fire("Error", "Failed to create tag", "error");
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Select tags or create new ones",
+            tags: true, // อนุญาตให้เพิ่มแท็กใหม่
+            tokenSeparators: [',', ' '],
+            createTag: function(params) {
+                var term = $.trim(params.term);
+                if (term === "") {
+                    return null;
                 }
-            });
-        }
+                return {
+                    id: term, // ใช้ชื่อแท็กเป็น ID ชั่วคราว
+                    text: term,
+                    newTag: true
+                };
+            }
+        });
+
+        // ตั้งค่า Select2 ให้เลือก Tag ที่มีอยู่แล้ว
+        let selectedTags = @json($selectedTags);
+        $('#tag').val(selectedTags).trigger('change');
+
+        let newTags = {}; // เก็บ {ชื่อแท็ก: ID จริง}
+
+        // เมื่อสร้างแท็กใหม่ -> ส่งไปยังเซิร์ฟเวอร์เพื่อสร้างและรับ ID จริง
+        $('#tag').on('select2:select', function(e) {
+            var data = e.params.data;
+            if (data.newTag) {
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('tags.store') }}",
+                    data: {
+                        name: data.text,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            console.log("New Tag Created: ", response.tag); // Debugging Log
+
+                            newTags[data.text] = response.tag.id; // เก็บ ID จริง
+
+                            // ดึงค่า tags ที่เลือกทั้งหมดปัจจุบัน
+                            let currentValues = $('#tag').val() || [];
+
+                            // แทนที่ค่า tag ที่เพิ่งสร้างด้วย ID จริง
+                            let updatedValues = currentValues.map(val =>
+                                val === data.text ? response.tag.id.toString() : val
+                            );
+
+                            // เพิ่มตัวเลือกใหม่ที่เป็น ID จริงเข้าไปใน dropdown
+                            let newOption = new Option(response.tag.name, response.tag.id, false, false);
+                            $('#tag').append(newOption);
+
+                            // อัปเดตค่าที่เลือก (โดยไม่รีเซ็ตตัวเลือกเดิม)
+                            $('#tag').val(updatedValues).trigger('change');
+                        }
+                    },
+                    error: function() {
+                        Swal.fire("Error", "Failed to create tag", "error");
+                    }
+                });
+            }
+        });
+
+        // ก่อนส่งฟอร์ม -> แทนที่ชื่อแท็กเป็น ID จริง
+        $('#updateForm').submit(function(event) {
+            let selectedTags = $('#tag').val() || [];
+            console.log("Before Conversion: ", selectedTags); // Debugging Log
+
+            let updatedTags = selectedTags.map(tag => newTags[tag] || tag); // ถ้ามี ID จริง ใช้ ID แทน
+
+            console.log("After Conversion: ", updatedTags); // Debugging Log
+
+            $('#tag').val(updatedTags).trigger('change'); // อัปเดตค่าใน <select>
+
+            return true; // อนุญาตให้ฟอร์มส่ง
+        });
     });
 
-    // ก่อนส่งฟอร์ม -> แทนที่ชื่อแท็กเป็น ID จริง
-    $('#updateForm').submit(function(event) {
-        let selectedTags = $('#tag').val() || [];
-        console.log("Before Conversion: ", selectedTags); // Debugging Log
-
-        let updatedTags = selectedTags.map(tag => newTags[tag] || tag); // ถ้ามี ID จริง ใช้ ID แทน
-
-        console.log("After Conversion: ", updatedTags); // Debugging Log
-
-        $('#tag').val(updatedTags).trigger('change'); // อัปเดตค่าใน <select>
-
-        return true; // อนุญาตให้ฟอร์มส่ง
-    });
-});
-
- // ✅ Confirm Update
- window.confirmUpdate = function() {
+    // ✅ Confirm Update
+    window.confirmUpdate = function() {
         Swal.fire({
             title: "ยืนยันการอัปเดต?",
             text: "คุณแน่ใจหรือไม่ว่าต้องการอัปเดตข้อมูลนี้",
@@ -282,16 +282,57 @@ $(document).ready(function() {
     let deletedImages = [];
     let selectedFiles = [];
 
+    // function previewCoverImage(event) {
+    //     const file = event.target.files[0];
+    //     if (file) {
+    //         const reader = new FileReader();
+    //         reader.onload = function(e) {
+    //             document.getElementById("coverPreviewImg").src = e.target.result;
+    //             document.getElementById("coverPlaceholder").style.display = "none"; // Hide placeholder
+    //             document.getElementById("coverPreview").style.display = "block"; // Show preview
+    //         };
+    //         reader.readAsDataURL(file);
+    //     }
+    // }
+
     function previewCoverImage(event) {
         const file = event.target.files[0];
-        if (file) {
+        if (!file) return;
+
+        const fileType = file.type.toLowerCase();
+        const validImageTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+
+        if (validImageTypes.includes(fileType)) {
+            // ✅ แสดงตัวอย่างรูปที่รองรับ
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById("coverPreviewImg").src = e.target.result;
-                document.getElementById("coverPlaceholder").style.display = "none"; // Hide placeholder
-                document.getElementById("coverPreview").style.display = "block"; // Show preview
+                document.getElementById("coverPlaceholder").classList.add("d-none");
+                document.getElementById("coverPreview").classList.remove("d-none");
             };
             reader.readAsDataURL(file);
+        } else if (fileType === "image/heic" || file.name.toLowerCase().endsWith(".heic")) {
+            // ❌ แจ้งเตือนห้ามอัปโหลด HEIC
+            Swal.fire({
+                icon: "error",
+                title: "ไม่สามารถอัปโหลดไฟล์ HEIC ได้!",
+                text: "กรุณาใช้ไฟล์ JPG, PNG, GIF หรือ WEBP เท่านั้น",
+                confirmButtonColor: "#d33",
+                confirmButtonText: "ตกลง",
+            });
+
+            event.target.value = ""; // ❌ เคลียร์ input file
+        } else {
+            // ❌ แจ้งเตือนรูปแบบไฟล์ไม่รองรับ
+            Swal.fire({
+                icon: "error",
+                title: "ประเภทไฟล์ไม่รองรับ!",
+                text: "กรุณาอัปโหลดไฟล์ JPG, PNG, GIF หรือ WEBP เท่านั้น",
+                confirmButtonColor: "#d33",
+                confirmButtonText: "ตกลง",
+            });
+
+            event.target.value = ""; // ❌ เคลียร์ input file
         }
     }
 
@@ -314,19 +355,39 @@ $(document).ready(function() {
         document.getElementById("cover_image").replaceWith(newInput);
     }
 
-
     // ลบรูปเก่า
     function markImageForDeletion(id, element) {
         deletedImages.push(id); // เก็บ id ของรูปเก่าที่จะลบ
         document.getElementById('deletedImagesInput').value = JSON.stringify(deletedImages);
         element.parentElement.remove(); // ลบออกจากหน้า
     }
+
+    // document.getElementById('image_album').addEventListener('change', function(event) {
+    //     const newFiles = Array.from(event.target.files);
+    //     selectedFiles = selectedFiles.concat(newFiles);
+    //     updateAlbumPreview();
+    // });
+
     document.getElementById('image_album').addEventListener('change', function(event) {
         const newFiles = Array.from(event.target.files);
-        selectedFiles = selectedFiles.concat(newFiles);
+
+        newFiles.forEach(file => {
+            const fileType = file.type.toLowerCase();
+            if (fileType === "image/heic" || file.name.toLowerCase().endsWith(".heic")) {
+                Swal.fire({
+                    icon: "error",
+                    title: "ไม่สามารถอัปโหลดไฟล์ HEIC ได้!",
+                    text: "กรุณาใช้ไฟล์ JPG, PNG, GIF หรือ WEBP เท่านั้น",
+                    confirmButtonColor: "#d33",
+                    confirmButtonText: "ตกลง",
+                });
+            } else {
+                selectedFiles.push(file);
+            }
+        });
+
         updateAlbumPreview();
     });
-
 
     function updateAlbumPreview() {
         const previewContainer = document.getElementById('albumPreview');
@@ -369,6 +430,12 @@ $(document).ready(function() {
     function removeNewImage(index) {
         selectedFiles.splice(index, 1); // เอารูปใหม่ออกจาก array
         updateAlbumPreview(); // รีเฟรชตัวอย่าง
+    }
+
+    function clearAllImages() {
+        selectedFiles = [];
+        document.getElementById("image_album").value = "";
+        updateAlbumPreview();
     }
 
     document.getElementById("updateForm").addEventListener("submit", function(event) {
