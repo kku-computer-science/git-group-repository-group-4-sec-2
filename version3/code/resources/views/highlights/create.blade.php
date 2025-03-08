@@ -369,7 +369,7 @@
         Swal.fire({
             position: "center",
             icon: "success",
-            title: "สร้างข่าวสำเร็จ",
+            title: "สร้าง Highlight สำเร็จ",
             showConfirmButton: false,
             timer: 1500
         }).then(() => {
