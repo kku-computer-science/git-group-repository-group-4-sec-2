@@ -311,39 +311,35 @@
                         timer: 1500
                     });
 
-                    // ✅ สร้าง HTML สำหรับแถวในตาราง news
+                    // ✅ สร้าง HTML ของแถวใหม่ใน Highlights
                     let newNewsRow = `
-                    <tr id="news-row-${highlightId}">
-                        <td>${row.find('td:nth-child(2)').html()}</td>
-                        <td>${row.find('td:nth-child(3)').html()}</td>
-                        <td>${row.find('td:nth-child(4)').html()}</td>
-                        <td>${row.find('td:nth-child(5)').html()}</td>
-                        <td>${row.find('td:nth-child(6)').html()}</td>
-                        <td>
-                            <button type="button" class="btn btn-success btn-add" data-id="${highlightId}">ADD</button>
-                        </td>
-                    </tr>`;
+            <tr id="news-row-${highlightId}">
+                <td>${row.find('td:nth-child(2)').html()}</td>
+                <td>${row.find('td:nth-child(3)').html()}</td>
+                <td>${row.find('td:nth-child(4)').html()}</td>
+                <td>${row.find('td:nth-child(5)').html()}</td>
+                <td>${row.find('td:nth-child(6)').html()}</td>
+                <td>
+                    <button type="button" class="btn btn-outline-primary btn-edit" data-id="${highlightId}">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button type="button" class="btn btn-danger btn-delete" data-id="${highlightId}">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-success btn-add" data-id="${highlightId}">ADD</button>
+                </td>
+            </tr>`;
 
-                    // ✅ ตรวจสอบว่ามี row นี้ในตาราง news อยู่แล้วหรือไม่
-                    if ($("#news-row-" + highlightId).length > 0) {
-                        // ถ้ามีอยู่แล้ว ก็ไม่ต้องเพิ่มใหม่
-                        console.log("Row already exists in news table - not adding again");
-                    } else {
-                        // ถ้ายังไม่มี ให้เพิ่มใหม่
-                        $("#news-table tbody").append(newNewsRow);
-                    }
+                    // ✅ เพิ่มแถวกลับไปที่ตาราง Highlights (ด้านล่าง)
+                    $("#news-table tbody").append(newNewsRow);
 
-                    let table = $('#news-table').DataTable();
-                    table.row(row).remove().draw();
-
-                    // ✅ ลบแถวออกจากตาราง highlights
+                    // ✅ ลบแถวออกจากตาราง Show Highlights (ด้านบน)
                     row.remove();
 
                     // ✅ อัปเดตจำนวน highlight
                     updateHighlightCount();
-
-                    // ✅ อัปเดต priority
-                    updatePriorityOrder();
                 },
                 error: function(xhr) {
                     console.error("Error response:", xhr);
@@ -579,7 +575,7 @@
                             location.reload();
                         });
                     } else {
-                
+
                         Swal.fire({
                             icon: 'error',
                             title: 'ไม่สามารถสร้าง Tag ได้',
@@ -590,7 +586,7 @@
                     }
                 },
                 error: function(xhr, status, error) {
-            
+
                     Swal.fire({
                         icon: 'error',
                         title: 'เกิดข้อผิดพลาด',
