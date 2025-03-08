@@ -1,6 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<style>
+    .lb-close {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        position: fixed !important;
+        top: 15px !important;
+        right: 15px !important;
+        z-index: 9999 !important;
+        background: rgba(0, 0, 0, 0.7) !important;
+        /* พื้นหลังดำโปร่งแสง */
+        color: white !important;
+        /* สีปุ่ม X เป็นขาว */
+        border-radius: 50% !important;
+        width: 45px !important;
+        height: 45px !important;
+        font-size: 24px !important;
+        font-weight: bold !important;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important;
+        transition: all 0.3s ease-in-out !important;
+        text-decoration: none !important;
+        /* ลบเส้นขีดออก */
+    }
+
+    /* กำจัดขีดด้านล่างของปุ่ม X */
+    .lb-close::before {
+        content: '✕' !important;
+        /* ใช้สัญลักษณ์ X */
+        font-size: 30px !important;
+        color: white !important;
+        font-weight: bold !important;
+        display: block !important;
+        text-align: center !important;
+        line-height: 45px !important;
+        text-decoration: none !important;
+        /* ลบขีดออก */
+    }
+
+    /* เอฟเฟกต์ hover */
+    .lb-close:hover {
+        background: rgba(255, 255, 255, 1) !important;
+        color: #ff3333 !important;
+        transform: scale(1.1) !important;
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3) !important;
+    }
+</style>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +63,13 @@
     <script src="{{ asset('js/app.js') }}"></script>
 
     <link rel="stylesheet" href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}">
+
     <script src="{{asset('js/jquery-3.6.0.min.js')}}"></script>
+
+    <!-- Lightbox2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+    <!-- Lightbox2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 
     <script src="{{asset('vendor/bootstrap/js/bootstrap.min.js')}}"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -137,7 +190,7 @@
                 <a href="{{ route('logout') }}" class="btn btn-danger"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <span><i class="fa fa-sign-out-alt fa-lg" style="padding: 0.625rem 0.25rem; font-size: 14px;">&nbsp;Logout</i></span>
-                    </a>
+                </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
@@ -145,7 +198,7 @@
                 @else
                 <!-- ปุ่ม Login -->
                 <a class="btn btn-primary" href="{{ route('login') }}">
-                <span><i class="fa fa-sign-in-alt fa-lg" style="padding: 0.625rem 0.2rem; font-size: 14px;">&nbsp;Login</i></span>
+                    <span><i class="fa fa-sign-in-alt fa-lg" style="padding: 0.625rem 0.2rem; font-size: 14px;">&nbsp;Login</i></span>
                 </a>
 
                 @endauth
