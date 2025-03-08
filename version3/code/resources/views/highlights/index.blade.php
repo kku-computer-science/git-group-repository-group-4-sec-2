@@ -149,57 +149,59 @@
             @endforeach
         </tbody>
     </table>
-</div>
 
-<!-- Popup สำหรับสร้าง Tag -->
-<div class="modal fade" id="createTagModal" tabindex="-1" aria-labelledby="createTagModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="createTagForm">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createTagModalLabel">Create Tag</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="tagName" class="form-label">Tag Name</label>
-                        <input type="text" class="form-control" id="tagName" name="name" required>
+    <!-- Popup สำหรับสร้าง Tag -->
+    <div class="modal fade" id="createTagModal" tabindex="-1" aria-labelledby="createTagModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="createTagForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createTagModalLabel">Create Tag</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </form>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="tagName" class="form-label">Tag Name</label>
+                            <input type="text" class="form-control" id="tagName" name="name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup สำหรับแก้ไข Tag -->
+
+    <div class="modal fade" id="editTagModal" tabindex="-1" aria-labelledby="editTagModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="editTagForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editTagModalLabel">Edit Tag</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="editTagId" name="id">
+                        <div class="mb-3">
+                            <label for="editTagName" class="form-label">Tag Name</label>
+                            <input type="text" class="form-control" id="editTagName" name="name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Popup สำหรับแก้ไข Tag -->
 
-<div class="modal fade" id="editTagModal" tabindex="-1" aria-labelledby="editTagModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="editTagForm">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editTagModalLabel">Edit Tag</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="editTagId" name="id">
-                    <div class="mb-3">
-                        <label for="editTagName" class="form-label">Tag Name</label>
-                        <input type="text" class="form-control" id="editTagName" name="name" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 
 
@@ -208,6 +210,11 @@
 <script src="https://cdn.datatables.net/1.12.0/js/dataTables.bootstrap4.min.js" defer></script>
 <script>
     $(document).ready(function() {
+        // Initialize DataTables
+        $('#highlight-table').DataTable();
+        $('#news-table').DataTable();
+        $('#tag-table').DataTable();
+
         function updateHighlightCount() {
             let count = $("#highlight-table tbody tr").length;
             $("#highlight-count").val(count);
@@ -457,17 +464,6 @@
         setTimeout(function() {
             $(".alert-danger").fadeOut("slow");
         }, 2000);
-
-        // Shorten long titles
-        $('.table tbody tr').each(function() {
-            var titleCell = $(this).find('td:nth-child(3)'); // Title column
-            var titleText = titleCell.text().trim();
-
-            if (titleText.length > 100) {
-                var shortenedTitle = titleText.substring(0, 100) + '...';
-                titleCell.text(shortenedTitle);
-            }
-        });
 
 
 
