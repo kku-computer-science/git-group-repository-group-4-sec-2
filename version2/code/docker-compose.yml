@@ -1,0 +1,61 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    ports:
+      - "80:80"
+    networks:
+      - app_network
+    depends_on:
+      - mysql
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - './:/var/www/html'
+    # volumes:
+    #   - ./InitialProject/src/storage:/var/www/html/InitialProject/src/storage
+    # environment:
+    #     TRUSTED_PROXIES: "*"
+      # APP_URL=http://localhost:8000
+    #   SESSION_DOMAIN=localhost
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always # Corrected the restart policy
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "8090:80"
+    depends_on:
+      - mysql
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  db_data:
+  # laravel_storage:
