@@ -1,8 +1,0 @@
-☐ create allHighlighed view
-☐ create allHighlighed controller
-
-☐ make highlight can set priority
-☐ fix seletebox in manage highlight page
-☐ create modal for create tag
-☐ fix acsses of staff ให้เข้าถึงได้เฉพาะหน้าที่เกี่ยวข้อง
-☐ ตอน create ไม่ได้เอา imagecollection ลง database

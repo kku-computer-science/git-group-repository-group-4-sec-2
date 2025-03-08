@@ -1603,16 +1603,16 @@
         },
         {
             "name": "laminas/laminas-escaper",
-            "version": "2.16.0",
+            "version": "2.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-escaper.git",
-                "reference": "9cf1f5317ca65b4fd5c6a3c2855e24a187b288c8"
+                "reference": "c612b0488ae486284c39885efca494c180f16351"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-escaper/zipball/9cf1f5317ca65b4fd5c6a3c2855e24a187b288c8",
-                "reference": "9cf1f5317ca65b4fd5c6a3c2855e24a187b288c8",
+                "url": "https://api.github.com/repos/laminas/laminas-escaper/zipball/c612b0488ae486284c39885efca494c180f16351",
+                "reference": "c612b0488ae486284c39885efca494c180f16351",
                 "shasum": ""
             },
             "require": {
@@ -1624,11 +1624,12 @@
                 "zendframework/zend-escaper": "*"
             },
             "require-dev": {
-                "infection/infection": "^0.29.8",
+                "infection/infection": "^0.27.11",
                 "laminas/laminas-coding-standard": "~3.0.1",
-                "phpunit/phpunit": "^10.5.45",
-                "psalm/plugin-phpunit": "^0.19.2",
-                "vimeo/psalm": "^6.6.2"
+                "maglnet/composer-require-checker": "^3.8.0",
+                "phpunit/phpunit": "^9.6.22",
+                "psalm/plugin-phpunit": "^0.19.0",
+                "vimeo/psalm": "^5.26.1"
             },
             "type": "library",
             "autoload": {
@@ -1660,7 +1661,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2025-02-17T12:40:19+00:00"
+            "time": "2024-12-17T19:39:54+00:00"
         },
         {
             "name": "laravel/framework",
@@ -2437,29 +2438,29 @@
         },
         {
             "name": "maatwebsite/excel",
-            "version": "3.1.64",
+            "version": "3.1.62",
             "source": {
                 "type": "git",
                 "url": "https://github.com/SpartnerNL/Laravel-Excel.git",
-                "reference": "e25d44a2d91da9179cd2d7fec952313548597a79"
+                "reference": "decfb9140161fcc117571e47e35ddf27983189ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SpartnerNL/Laravel-Excel/zipball/e25d44a2d91da9179cd2d7fec952313548597a79",
-                "reference": "e25d44a2d91da9179cd2d7fec952313548597a79",
+                "url": "https://api.github.com/repos/SpartnerNL/Laravel-Excel/zipball/decfb9140161fcc117571e47e35ddf27983189ce",
+                "reference": "decfb9140161fcc117571e47e35ddf27983189ce",
                 "shasum": ""
             },
             "require": {
                 "composer/semver": "^3.3",
                 "ext-json": "*",
-                "illuminate/support": "5.8.*||^6.0||^7.0||^8.0||^9.0||^10.0||^11.0||^12.0",
+                "illuminate/support": "5.8.*||^6.0||^7.0||^8.0||^9.0||^10.0||^11.0",
                 "php": "^7.0||^8.0",
-                "phpoffice/phpspreadsheet": "^1.29.9",
+                "phpoffice/phpspreadsheet": "^1.29.7",
                 "psr/simple-cache": "^1.0||^2.0||^3.0"
             },
             "require-dev": {
                 "laravel/scout": "^7.0||^8.0||^9.0||^10.0",
-                "orchestra/testbench": "^6.0||^7.0||^8.0||^9.0||^10.0",
+                "orchestra/testbench": "^6.0||^7.0||^8.0||^9.0",
                 "predis/predis": "^1.1"
             },
             "type": "library",
@@ -2502,7 +2503,7 @@
             ],
             "support": {
                 "issues": "https://github.com/SpartnerNL/Laravel-Excel/issues",
-                "source": "https://github.com/SpartnerNL/Laravel-Excel/tree/3.1.64"
+                "source": "https://github.com/SpartnerNL/Laravel-Excel/tree/3.1.62"
             },
             "funding": [
                 {
@@ -2514,7 +2515,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-02-24T11:12:50+00:00"
+            "time": "2025-01-04T12:14:36+00:00"
         },
         {
             "name": "maennchen/zipstream-php",
@@ -7589,16 +7590,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.13.0",
+            "version": "1.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "024473a478be9df5fdaca2c793f2232fe788e414"
+                "reference": "123267b2c49fbf30d78a7b2d333f6be754b94845"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/024473a478be9df5fdaca2c793f2232fe788e414",
-                "reference": "024473a478be9df5fdaca2c793f2232fe788e414",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/123267b2c49fbf30d78a7b2d333f6be754b94845",
+                "reference": "123267b2c49fbf30d78a7b2d333f6be754b94845",
                 "shasum": ""
             },
             "require": {
@@ -7637,7 +7638,7 @@
             ],
             "support": {
                 "issues": "https://github.com/myclabs/DeepCopy/issues",
-                "source": "https://github.com/myclabs/DeepCopy/tree/1.13.0"
+                "source": "https://github.com/myclabs/DeepCopy/tree/1.12.1"
             },
             "funding": [
                 {
@@ -7645,7 +7646,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-02-12T12:17:51+00:00"
+            "time": "2024-11-08T17:47:46+00:00"
         },
         {
             "name": "nunomaduro/collision",

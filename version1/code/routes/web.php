@@ -43,12 +43,6 @@ use App\Http\Controllers\TcicallController;
 use App\Http\Controllers\HighlightController;
 use App\Http\Controllers\HighlightdetailController;
 
-use App\Http\Controllers\AllHighlightsController;
-use App\Http\Controllers\TagController;
-
-Route::get('/allhighlights', [AllHighlightsController::class, 'index'])->name('allhighlights.index');
-Route::get('/allhighlights/{id}', [AllHighlightsController::class, 'show'])->name('allhighlights.show');
-
 
 
 Route::prefix('highlights')->group(function () {
@@ -68,25 +62,12 @@ Route::prefix('highlights')->group(function () {
     // DELETE route สำหรับลบ Highlight
     Route::delete('/{id}', [HighlightController::class, 'destroy'])->name('highlights.destroy');
     Route::get('/data', [HighlightController::class, 'dataTable'])->name('highlights.data');
-
-    Route::post('/reorder', [HighlightController::class, 'reorder'])->name('highlights.reorder');
 });
 
 
 
 Route::get('highlightdetail', [HighlightdetailController::class, 'index'])->name('highlightdetail');
 Route::get('/highlight/{id}', [HighlightdetailController::class, 'show'])->name('highlight.show');
-
-
-Route::prefix('tags')->group(function () {
-    Route::post('/store', [TagController::class, 'store'])->name('tags.store');
-    Route::delete('/{id}', [TagController::class, 'destroy'])->name('tags.destroy');
-    Route::get('/{id}/edit', [TagController::class, 'edit'])->name('tags.edit'); // format ควรมี / ก่อน {id}
-    Route::put('/{id}', [TagController::class, 'update'])->name('tags.update');
-});
-
-
-
 
 // Route::get('/news/{id}', [HighlightdetailController::class, 'show'])->name('news.show');
 

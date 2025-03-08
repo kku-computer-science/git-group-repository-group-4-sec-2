@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Highlight;
-use App\Models\Tag;
+use App\Models\Category;
 use App\Models\ImageCollection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -13,33 +13,36 @@ class HighlightdetailController extends Controller
 {
     public function index()
     {
-        $highlights = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) // 🔹 เปลี่ยน tag เป็น tags
+        $highlights = Highlight::with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
             ->where('status', 1)
-            ->get(['id', 'image', 'title', 'user_id', 'created_at', 'updated_at']); // 🔹 ลบ 'tag_id'
+            ->get(['id', 'image', 'title', 'category_id', 'user_id', 'created_at', 'updated_at']);
 
         $news = Highlight::whereNull('status')
-            ->with(['tags:id,name', 'user:id,fname_th,lname_th', 'images'])
-            ->get(['id', 'image', 'title', 'user_id', 'created_at']);
+            ->with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
+            ->get(['id', 'image', 'title', 'category_id', 'user_id', 'created_at']);
 
         return view('highlightdetail.index', compact('highlights', 'news'));
     }
 
     public function show($id)
     {
-        $highlight = Highlight::with(['tags', 'user', 'images']) // 🔹 ใช้ tags แทน tag
+        $highlights = Highlight::with(['category:id,name', 'user:id,fname_th,lname_th', 'images'])
+            ->select(['id', 'image', 'title', 'description', 'category_id', 'user_id', 'created_at', 'updated_at'])
+            ->where('id', $id)
+            ->get();
+
+        Log::info('1234');
+
+        $highlight = Highlight::with(['category', 'user', 'images'])
             ->where('id', $id)
             ->firstOrFail();
 
-        $news = Highlight::whereHas('tags', function ($q) use ($highlight) {
-            $tagIds = $highlight->tags()->pluck('id')->toArray();
-            if (!empty($tagIds)) {
-                $q->whereIn('id', $tagIds);
-            }
-        })
+        $news = Highlight::where('category_id', $highlight->category_id) // ✅ ใช้ $highlight แทน $highlights
             ->where('id', '!=', $id)
-            ->select(['id', 'image', 'title', 'description', 'user_id', 'created_at'])
+            ->select(['id', 'image', 'title', 'description', 'category_id', 'user_id', 'created_at'])
             ->get();
 
-        return view('highlightdetail.index', compact('highlight', 'news')); // 🔹 เปลี่ยน highlights เป็น highlight
+
+        return view('highlightdetail.index', compact('highlights', 'news'));
     }
 }
