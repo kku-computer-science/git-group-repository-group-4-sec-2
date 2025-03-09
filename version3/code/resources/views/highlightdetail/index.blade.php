@@ -68,7 +68,7 @@
                     </div>
                 </div> -->
 
-                <div class="d-flex justify-content-start align-items-start col-lg-7">
+                <!-- <div class="d-flex justify-content-start align-items-start col-lg-7">
                     <span class="px-1"><b>แท็ก:&nbsp;</b></span>
                     <div class="d-flex flex-wrap">
                         @if($highlight->tags->isNotEmpty())
@@ -82,7 +82,25 @@
                         <span class="text-muted">แท็ก: -</span>
                         @endif
                     </div>
+                </div> -->
+                <div class="d-flex justify-content-start align-items-start col-lg-7">
+                    <span class="px-1"><b>แท็ก:&nbsp;</b></span>
+                    <div class="d-flex flex-wrap">
+                        @if($highlight->tags->isNotEmpty())
+                            @foreach($highlight->tags as $tag)
+                                <span>
+                                    <a href="{{ route('allhighlights.index', ['tag' => strtolower(trim($tag->name))]) }}"
+                                        class="text-decoration-none">
+                                        <i class="fas fa-tag" aria-hidden="true"></i> {{ $tag->name }}
+                                    </a>&nbsp;
+                                </span>
+                            @endforeach
+                        @else
+                            <span class="text-muted">แท็ก: -</span>
+                        @endif
+                    </div>
                 </div>
+
 
                 <div class="d-flex justify-content-end align-items-start col-lg-2">
                     <b>แชร์:</b>&nbsp;

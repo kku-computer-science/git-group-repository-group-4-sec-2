@@ -387,7 +387,7 @@
     @endforeach
 </div> -->
 <!-- Dynamic Item Highlights -->
-<div class="container">
+<!-- <div class="container">
     <div class="container-card">
         @foreach ($highlights as $highlight)
         <a href="{{ route('highlight.show', $highlight->id) }}" class="card" data-tag="{{ $highlight->tags->isNotEmpty() ? $highlight->tags->pluck('name')->map(function($name) { return strtolower(trim($name)); })->implode('|') : '' }}">
@@ -408,7 +408,39 @@
         </a>
         @endforeach
     </div>
+</div> -->
+<div class="container">
+    <div class="container-card">
+        @if ($highlights->isEmpty())
+            <div class="text-center w-100 my-5">
+                <!-- <h5 class="text-muted">ไม่มี Highlight ใน tag นี้</h5> -->
+                <h5 class="text-muted">ไม่พบ Highlight ที่เกี่ยวข้องกับแท็กนี้</h5>
+            </div>
+        @else
+            @foreach ($highlights as $highlight)
+                <a href="{{ route('highlight.show', $highlight->id) }}" 
+                   class="card" 
+                   data-tag="{{ $highlight->tags->isNotEmpty() ? $highlight->tags->pluck('name')->map(function($name) { return strtolower(trim($name)); })->implode('|') : '' }}">
+                    <div class="card_header">
+                        <img src="{{ asset('storage/' . $highlight->image) }}" alt="{{ $highlight->title }}" class="card_image">
+                    </div>
+                    <div class="card_body">
+                        @if($highlight->tags->isNotEmpty())
+                            <div class="tag-container">
+                                @foreach ($highlight->tags as $tag)
+                                    <span class="tag-item">{{ $tag->name }}</span>
+                                @endforeach
+                            </div>
+                        @endif
+                        <h4>{{ $highlight->title }}</h4>
+                        <p>{{ Str::limit($highlight->description, 100) }}</p>
+                    </div>
+                </a>
+            @endforeach
+        @endif
+    </div>
 </div>
+
 
 
 

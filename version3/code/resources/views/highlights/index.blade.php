@@ -205,15 +205,18 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="http://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
+<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js" defer></script>
 <script src="https://cdn.datatables.net/1.12.0/js/dataTables.bootstrap4.min.js" defer></script>
 <script>
     $(document).ready(function() {
         // Initialize DataTables
-        $('#highlight-table').DataTable();
-        $('#news-table').DataTable();
-        $('#tag-table').DataTable();
+        if ($.fn.DataTable) {
+            $('#highlight-table').DataTable();
+            $('#news-table').DataTable();
+            $('#tag-table').DataTable();
+        } else {
+            console.error("DataTables ไม่สามารถโหลดได้ 1");
+        }
 
         function updateHighlightCount() {
             let count = $("#highlight-table tbody tr").length;
@@ -453,9 +456,13 @@
 
 
         // Initialize DataTables
-        $('#highlight-table').DataTable();
-        $('#news-table').DataTable();
-        $('#tag-table').DataTable();
+        if ($.fn.DataTable) {
+            $('#highlight-table').DataTable();
+            $('#news-table').DataTable();
+            $('#tag-table').DataTable();
+        } else {
+            console.error("DataTables ไม่สามารถโหลดได้ 2");
+        }
 
         // Auto-fade alerts
         setTimeout(function() {
@@ -668,10 +675,11 @@
     #highlight-table tbody tr:hover {
         background-color: #f1f1f1;
     }
+
     #highlight-table td:nth-child(7) {
-    white-space: nowrap;
-    width: 300px;
-}
+        white-space: nowrap;
+        width: 300px;
+    }
 
     .table {
         table-layout: fixed;
@@ -745,7 +753,6 @@
         padding: 6px;
         margin: 0;
     }
-    
 </style>
 
 @endsection
