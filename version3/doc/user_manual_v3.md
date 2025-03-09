@@ -172,3 +172,28 @@
 3. คลิกปุ่ม **Save** เพื่อสร้างแท็ก จากนั้น Tag ที่สร้างเสร็จแล้วจะแสดงที่ตาราง Tags  
 
    ![](../img/user-manual/create_tag.png)
+
+---
+
+### **8. การแก้ไข Tag**
+
+1. คลิกปุ่ม **Edit** (ดินสอ) ที่ช่อง Actions ของแท็กที่ต้องการแก้ไข  
+
+   ![](../img/user-manual/edit_tag_btn.png)
+
+2. เมื่ออยู่ที่ป็อบอัพ "Edit Tag" จะสามารถแก้ไข **Tag Name** ได้  
+3. คลิกปุ่ม **Update** เพื่อเสร็จสิ้นการแก้ไขแท็ก  
+
+   ![](../img/user-manual/edit_tag.png)
+
+---
+
+### **9. การลบ Tag**
+
+1. คลิกปุ่ม **Delete** (ถังขยะ) ที่ช่อง Actions ของแท็กที่ต้องการลบ  
+
+   ![](../img/user-manual/delete_tag_btn.png)
+
+2. คลิก "ยืนยันการลบ" เพื่อเสร็จสิ้นการลบแท็ก  
+
+   ![](../img/user-manual/after_delete_tag.png)
