@@ -1,5 +1,5 @@
 *** Settings ***
-Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/UAT/resource_v1.robot
+Resource            /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/UAT/resource_v3.robot
 # Library           SeleniumLibrary
 
 *** Variables ***

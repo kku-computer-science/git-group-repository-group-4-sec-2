@@ -1,12 +1,12 @@
 *** Settings ***
-Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/UAT/resource_v1.robot
+Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/UAT/resource_v3.robot
 # Library           SeleniumLibrary
 
 *** Variables ***
 ${LAST_ROW}    xpath=//table[@id='news-table']//tbody/tr[last()]
 ${LAST_DELETE_BUTTON}    xpath=//table[@id='news-table']//tbody/tr[last()]//button[contains(@class,'btn-delete')]
-${one_picture}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg
-${two_pictures}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_2.jpeg\n/Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_3.jpeg
+${one_picture}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_1.jpeg
+${two_pictures}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg\n/Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg
 
 *** Keywords ***
 
@@ -64,87 +64,87 @@ Create Highlight
 
 *** Test Cases ***
 
-Test Go To Manage Highlights Page
-    Go To Manage Highlights Page
-    Close Browser
+# Test Go To Manage Highlights Page
+#     Go To Manage Highlights Page
+#     Close Browser
 
-Test Create Highlight Success
-    # ✅ Passed
-    [Tags]    UAT-V2-03
-    [Documentation]    ทดสอบการสร้างข่าวใหม่สำเร็จ
-    Go To Manage Highlights Page
-    Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
+# Test Create Highlight Success
+#     # ✅ Passed
+#     [Tags]    UAT-V2-03
+#     [Documentation]    ทดสอบการสร้างข่าวใหม่สำเร็จ
+#     Go To Manage Highlights Page
+#     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
 
-    Scroll Element Into View    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
-    Click Link    xpath=//a[contains(text(), '+ Create')]
-    Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
-    Location Should Be    ${CREATE_NEWS_URL}
+#     Scroll Element Into View    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
+#     Click Link    xpath=//a[contains(text(), '+ Create')]
+#     Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
+#     Location Should Be    ${CREATE_NEWS_URL}
 
-    Click Element    id=coverImageBox
-    Choose File    xpath=//input[@type='file']    ${one_picture}
-    Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
+#     Click Element    id=coverImageBox
+#     Choose File    xpath=//input[@type='file']    ${one_picture}
+#     Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
 
-    Click Element   xpath=//span[contains(@class, 'select2-selection')]
-    Sleep    1s
-    Click Element    xpath=//li[contains(text(), 'ทุนวิจัยและโอกาสสนับสนุน')]
-    Sleep    1s
+#     Click Element   xpath=//span[contains(@class, 'select2-selection')]
+#     Sleep    1s
+#     Click Element    xpath=//li[contains(text(), 'ทุนวิจัยและโอกาสสนับสนุน')]
+#     Sleep    1s
 
-    Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
-    Input Text    id=link   https://www.google.com
-    Scroll Element Into View    id=imageAlbumBox
-    Click Element    id=imageAlbumBox
-    Choose File    id=image_album    ${two_pictures}
-    Scroll Element Into View    xpath=//button[@type='submit' and contains(text(),'Save')]
+#     Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
+#     Input Text    id=link   https://www.google.com
+#     Scroll Element Into View    id=imageAlbumBox
+#     Click Element    id=imageAlbumBox
+#     Choose File    id=image_album    ${two_pictures}
+#     Scroll Element Into View    xpath=//button[@type='submit' and contains(text(),'Save')]
 
-    # หรือใช้ Wait Until Element Is Visible ก่อนคลิก
-    Wait Until Element Is Visible    xpath=//button[@type='submit' and contains(text(),'Save')]
-    Execute JavaScript    document.querySelector("button.btn.btn-dark").click();
-    Wait Until Page Contains    สร้างข่าวสำเร็จ
-    Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}
-    Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
+#     # หรือใช้ Wait Until Element Is Visible ก่อนคลิก
+#     Wait Until Element Is Visible    xpath=//button[@type='submit' and contains(text(),'Save')]
+#     Execute JavaScript    document.querySelector("button.btn.btn-dark").click();
+#     Wait Until Page Contains    สร้างข่าวสำเร็จ
+#     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}
+#     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
 
-    Delete Highlight
+#     Delete Highlight
 
-    Close Browser
+#     Close Browser
 
-Test Delete Highlights
-    # ✅ Passed
-    [Tags]    UAT-V2-03
-    [Documentation]    ทดสอบการลบ highlight สำเร็จ
-    Go To Manage Highlights Page
-    Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
+# Test Delete Highlights
+#     # ✅ Passed
+#     [Tags]    UAT-V2-03
+#     [Documentation]    ทดสอบการลบ highlight สำเร็จ
+#     Go To Manage Highlights Page
+#     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
 
-    Scroll Element Into View    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
-    Click Link    xpath=//a[contains(text(), '+ Create')]
-    Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
-    Location Should Be    ${CREATE_NEWS_URL}
+#     Scroll Element Into View    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
+#     Click Link    xpath=//a[contains(text(), '+ Create')]
+#     Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
+#     Location Should Be    ${CREATE_NEWS_URL}
 
-    Click Element    id=coverImageBox
-    Choose File    xpath=//input[@type='file']    ${one_picture}
-    Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
+#     Click Element    id=coverImageBox
+#     Choose File    xpath=//input[@type='file']    ${one_picture}
+#     Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
 
-    Click Element   xpath=//span[contains(@class, 'select2-selection')]
-    Sleep    1s
-    Click Element    xpath=//li[contains(text(), 'ทุนวิจัยและโอกาสสนับสนุน')]
-    Sleep    1s
+#     Click Element   xpath=//span[contains(@class, 'select2-selection')]
+#     Sleep    1s
+#     Click Element    xpath=//li[contains(text(), 'ทุนวิจัยและโอกาสสนับสนุน')]
+#     Sleep    1s
 
-    Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
-    Input Text    id=link   https://www.google.com
-    Scroll Element Into View    id=imageAlbumBox
-    Click Element    id=imageAlbumBox
-    Choose File    id=image_album    ${two_pictures}
-    Scroll Element Into View    xpath=//button[@type='submit' and contains(text(),'Save')]
+#     Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
+#     Input Text    id=link   https://www.google.com
+#     Scroll Element Into View    id=imageAlbumBox
+#     Click Element    id=imageAlbumBox
+#     Choose File    id=image_album    ${two_pictures}
+#     Scroll Element Into View    xpath=//button[@type='submit' and contains(text(),'Save')]
 
-    # หรือใช้ Wait Until Element Is Visible ก่อนคลิก
-    Wait Until Element Is Visible    xpath=//button[@type='submit' and contains(text(),'Save')]
-    Execute JavaScript    document.querySelector("button.btn.btn-dark").click();
-    Wait Until Page Contains    สร้างข่าวสำเร็จ
-    Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}
-    Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
+#     # หรือใช้ Wait Until Element Is Visible ก่อนคลิก
+#     Wait Until Element Is Visible    xpath=//button[@type='submit' and contains(text(),'Save')]
+#     Execute JavaScript    document.querySelector("button.btn.btn-dark").click();
+#     Wait Until Page Contains    สร้างข่าวสำเร็จ
+#     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}
+#     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
 
-    Delete Highlight
+#     Delete Highlight
 
-    Close Browser
+#     Close Browser
 
 Test Add Highlights
     # ✅ Passed
