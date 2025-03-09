@@ -65,7 +65,7 @@
 
                 <!-- ✅ Image Album -->
                 <div class="form-group">
-                    <label for="image_album">Image Album</label>
+                    <label for="image_album">Related Images</label>
                     <div class="image-upload-box small" id="imageAlbumBox" onclick="document.getElementById('image_album').click();">
                         <input type="file" name="images[]" id="image_album" class="d-none" multiple accept="image/*">
                         <div class="upload-placeholder">
