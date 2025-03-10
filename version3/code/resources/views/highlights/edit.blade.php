@@ -10,7 +10,7 @@
 <div class="container">
     <div class="card p-4">
         <div class="card-body">
-            <h4 class="card-title">Edit Highlight</h4>
+            <h4 class="card-title">Edit News</h4>
             <form id="updateForm" action="{{ route('highlights.update', $highlight->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf @method('PUT')
 
@@ -58,8 +58,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="research_link">Additional Link</label>
-                    <input type="url" class="form-control" name="link" value="{{ $highlight->link ?? '' }}" placeholder="Enter your link">
+                    <label for="research_link">Link Research</label>
+                    <input type="url" id="link" class="form-control" name="link" value="{{ $highlight->link ?? '' }}" placeholder="Enter your link">
                 </div>
 
 
