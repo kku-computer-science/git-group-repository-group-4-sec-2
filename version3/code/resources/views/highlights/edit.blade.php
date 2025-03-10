@@ -59,7 +59,7 @@
 
                 <div class="form-group">
                     <label for="research_link">Link Research</label>
-                    <input type="url" class="form-control" name="link" value="{{ $highlight->link ?? '' }}" placeholder="Enter your link">
+                    <input type="url" id="link" class="form-control" name="link" value="{{ $highlight->link ?? '' }}" placeholder="Enter your link">
                 </div>
 
 

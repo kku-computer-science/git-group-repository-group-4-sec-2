@@ -1,13 +1,14 @@
 *** Settings ***
-Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/UAT/resource_v3.robot
+Resource          ../../resource_v3.robot
+
 # Library           SeleniumLibrary
 Library    Collections
 
 *** Variables ***
 ${LAST_ROW}    xpath=//table[@id='news-table']//tbody/tr[last()]
 ${LAST_DELETE_BUTTON}    xpath=//table[@id='news-table']//tbody/tr[last()]//button[contains(@class,'btn-delete')]
-${one_picture}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_1.jpeg
-${two_pictures}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg\n/Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg
+${one_picture}    D:/projectSoftEn/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_1.jpeg
+${two_pictures}    D:/projectSoftEn/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg
 ${NEWS_ID}
 ${ADD_HIGHLIGHT_BTN}
 ${HOME_HIGHLIGHT_IMAGE_XPATH}    xpath=//div[@id='highlightNews']//img
