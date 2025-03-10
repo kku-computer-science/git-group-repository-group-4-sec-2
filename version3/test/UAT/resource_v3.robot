@@ -9,20 +9,20 @@ Library           SeleniumLibrary
 *** Variables ***
 ${BROWSER}       chrome
 # สำหรับทดสอบ localhost
-${LOCALHOST}     127.0.0.1:8000
-${LOCALHOST}     localhost
-${URL}           http://localhost/
-${LOGIN_URL}     http://localhost/login
-${DASHBOARD_URL}  http://localhost/dashboard
-${MANAGE_HIGHLIGHTS_URL}    http://localhost/highlights
-${CREATE_NEWS_URL}    http://localhost/highlights/create
+# ${LOCALHOST}     127.0.0.1:8000
+# ${LOCALHOST}     localhost
+# ${URL}           http://localhost/
+# ${LOGIN_URL}     http://localhost/login
+# ${DASHBOARD_URL}  http://localhost/dashboard
+# ${MANAGE_HIGHLIGHTS_URL}    http://localhost/highlights
+# ${CREATE_NEWS_URL}    http://localhost/highlights/create
 # สำหรับทดสอบ host จริง
-# ${HOST}          cs04sec267.cpkkuhost.com
-# ${URL}           https://${HOST}/
-# ${LOGIN_URL}     https://${HOST}/login
-# ${DASHBOARD_URL}  https://${HOST}/dashboard
-# ${MANAGE_HIGHLIGHTS_URL}    https://${HOST}/highlights
-# ${CREATE_NEWS_URL}    https://${HOST}/highlights/create
+${HOST}          cs04sec267.cpkkuhost.com
+${URL}           https://${HOST}/
+${LOGIN_URL}     https://${HOST}/login
+${DASHBOARD_URL}  https://${HOST}/dashboard
+${MANAGE_HIGHLIGHTS_URL}    https://${HOST}/highlights
+${CREATE_NEWS_URL}    https://${HOST}/highlights/create
 
 ${ADMIN_USERNAME}      admin@gmail.com
 ${ADMIN_PASSWORD}      12345678
@@ -38,8 +38,8 @@ ${DELAY}    2
 ${TITLE}          โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
 ${DESCRIPTION}    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
 
-${CHROME_BROWSER_PATH}    C:/Program Files/Google/Chrome/Application/chrome.exe
-${CHROME_DRIVER_PATH}     D:/ChromeForTesting/chromedriver-win64/chromedriver.exe
+# ${CHROME_BROWSER_PATH}    C:/Program Files/Google/Chrome/Application/chrome.exe
+# ${CHROME_DRIVER_PATH}     D:/ChromeForTesting/chromedriver-win64/chromedriver.exe
 
 *** Keywords ***
 Verify Admin Dashboard
