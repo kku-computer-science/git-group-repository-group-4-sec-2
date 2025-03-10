@@ -38,8 +38,8 @@ ${DELAY}    2
 ${TITLE}          โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
 ${DESCRIPTION}    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
 
-# ${CHROME_BROWSER_PATH}    C:/Program Files/Google/Chrome/Application/chrome.exe
-# ${CHROME_DRIVER_PATH}     D:/ChromeForTesting/chromedriver-win64/chromedriver.exe
+${CHROME_BROWSER_PATH}    ${EXECDIR}${/}..${/}ChromeForTesting${/}chrome.exe
+${CHROME_DRIVER_PATH}     ${EXECDIR}${/}..${/}ChromeForTesting${/}chromedriver.exe
 
 *** Keywords ***
 Verify Admin Dashboard

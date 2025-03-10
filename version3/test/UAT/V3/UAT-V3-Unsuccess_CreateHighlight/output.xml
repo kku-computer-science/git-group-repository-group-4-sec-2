@@ -1,314 +1,315 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 7.2.2 (Python 3.13.1 on win32)" generated="2025-03-10T23:16:02.395243" rpa="false" schemaversion="5">
+<robot generator="Robot 7.2.2 (Python 3.13.1 on win32)" generated="2025-03-10T23:59:55.126310" rpa="false" schemaversion="5">
 <suite id="s1" name="Unsuccess CreateHighlight" source="C:\work_2025\git-group-repository-group-4-sec-2\version3\test\UAT\V3\UAT-V3-Unsuccess_CreateHighlight\Unsuccess_CreateHighlight.robot">
 <test id="s1-t1" name="Test Create News With All Error Cases" line="15">
 <kw name="Go To Manage Highlights Page" owner="resource_v3">
 <kw name="Go To Login Page" owner="resource_v3">
 <kw name="Open Chrome Browser" owner="resource_v3">
 <kw name="Evaluate" owner="BuiltIn">
-<msg time="2025-03-10T23:16:02.652710" level="INFO">${chrome_options} = &lt;selenium.webdriver.chrome.options.Options object at 0x000001B1B24A3CB0&gt;</msg>
+<msg time="2025-03-10T23:59:55.408206" level="INFO">${chrome_options} = &lt;selenium.webdriver.chrome.options.Options object at 0x000002331400BCB0&gt;</msg>
 <var>${chrome_options}</var>
 <arg>sys.modules['selenium.webdriver'].ChromeOptions()</arg>
 <doc>Evaluates the given expression in Python and returns the result.</doc>
-<status status="PASS" start="2025-03-10T23:16:02.652411" elapsed="0.000333"/>
+<status status="PASS" start="2025-03-10T23:59:55.407962" elapsed="0.000288"/>
 </kw>
 <kw name="Set Variable" owner="BuiltIn">
-<msg time="2025-03-10T23:16:02.653492" level="FAIL">Variable '${CHROME_BROWSER_PATH}' not found.</msg>
+<msg time="2025-03-10T23:59:55.408681" level="INFO">${chrome_options.binary_location} = C:\work_2025\git-group-repository-group-4-sec-2\version3\test\UAT\V3\UAT-V3-Unsuccess_CreateHighlight\..\ChromeForTesting\chrome.exe</msg>
 <var>${chrome_options.binary_location}</var>
 <arg>${CHROME_BROWSER_PATH}</arg>
 <doc>Returns the given values which can then be assigned to a variables.</doc>
-<status status="FAIL" start="2025-03-10T23:16:02.652870" elapsed="0.000659">Variable '${CHROME_BROWSER_PATH}' not found.</status>
+<status status="PASS" start="2025-03-10T23:59:55.408466" elapsed="0.000243"/>
 </kw>
 <kw name="Evaluate" owner="BuiltIn">
+<msg time="2025-03-10T23:59:55.410853" level="FAIL">Evaluating expression 'sys.modules[\'selenium.webdriver.chrome.service\'].Service(executable_path="C:\\work_2025\\git-group-repository-group-4-sec-2\\version3\\test\\UAT\\V3\\UAT-V3-Unsuccess_CreateHighlight\\..\\ChromeForTesting\\chromedriver.exe")' failed: SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 61-63: truncated \UXXXXXXXX escape (&lt;string&gt;, line 1)</msg>
 <var>${service}</var>
 <arg>sys.modules['selenium.webdriver.chrome.service'].Service(executable_path="${CHROME_DRIVER_PATH}")</arg>
 <doc>Evaluates the given expression in Python and returns the result.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.653631" elapsed="0.000020"/>
+<status status="FAIL" start="2025-03-10T23:59:55.408809" elapsed="0.002384">Evaluating expression 'sys.modules[\'selenium.webdriver.chrome.service\'].Service(executable_path="C:\\work_2025\\git-group-repository-group-4-sec-2\\version3\\test\\UAT\\V3\\UAT-V3-Unsuccess_CreateHighlight\\..\\ChromeForTesting\\chromedriver.exe")' failed: SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 61-63: truncated \UXXXXXXXX escape (&lt;string&gt;, line 1)</status>
 </kw>
 <kw name="Create Webdriver" owner="SeleniumLibrary">
 <arg>Chrome</arg>
 <arg>options=${chrome_options}</arg>
 <arg>service=${service}</arg>
 <doc>Creates an instance of Selenium WebDriver.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.653724" elapsed="0.000016"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.411351" elapsed="0.000027"/>
 </kw>
 <kw name="Maximize Browser Window" owner="SeleniumLibrary">
 <doc>Maximizes current browser window.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.653803" elapsed="0.000015"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.411450" elapsed="0.000018"/>
 </kw>
 <kw name="Go To" owner="SeleniumLibrary">
 <arg>${URL}</arg>
 <doc>Navigates the current browser window to the provided ``url``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.653868" elapsed="0.000014"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.411531" elapsed="0.000016"/>
 </kw>
-<status status="FAIL" start="2025-03-10T23:16:02.651811" elapsed="0.002150">Variable '${CHROME_BROWSER_PATH}' not found.</status>
+<status status="FAIL" start="2025-03-10T23:59:55.407475" elapsed="0.004162">Evaluating expression 'sys.modules[\'selenium.webdriver.chrome.service\'].Service(executable_path="C:\\work_2025\\git-group-repository-group-4-sec-2\\version3\\test\\UAT\\V3\\UAT-V3-Unsuccess_CreateHighlight\\..\\ChromeForTesting\\chromedriver.exe")' failed: SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 61-63: truncated \UXXXXXXXX escape (&lt;string&gt;, line 1)</status>
 </kw>
 <kw name="Maximize Browser Window" owner="SeleniumLibrary">
 <doc>Maximizes current browser window.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.654028" elapsed="0.000016"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.411709" elapsed="0.000016"/>
 </kw>
 <kw name="Location Should Be" owner="SeleniumLibrary">
 <arg>${URL}</arg>
 <doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.654092" elapsed="0.000014"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.411775" elapsed="0.000013"/>
 </kw>
 <kw name="Sleep" owner="BuiltIn">
 <arg>1s</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.654155" elapsed="0.000015"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.411839" elapsed="0.000015"/>
 </kw>
 <kw name="Click Link" owner="SeleniumLibrary">
 <arg>xpath=//a[contains(@class, 'btn-primary') and contains(., 'Login')]</arg>
 <doc>Clicks a link identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.654234" elapsed="0.000015"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.411907" elapsed="0.000015"/>
 </kw>
 <kw name="Location Should Be" owner="SeleniumLibrary">
 <arg>${LOGIN_URL}</arg>
 <doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.654298" elapsed="0.000013"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.411972" elapsed="0.000022"/>
 </kw>
 <kw name="Wait Until Page Contains" owner="SeleniumLibrary">
 <arg>Account Login</arg>
 <arg>${DELAY}</arg>
 <doc>Waits until ``text`` appears on the current page.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.654359" elapsed="0.000014"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.412048" elapsed="0.000015"/>
 </kw>
-<status status="FAIL" start="2025-03-10T23:16:02.651498" elapsed="0.002935">Variable '${CHROME_BROWSER_PATH}' not found.</status>
+<status status="FAIL" start="2025-03-10T23:59:55.406932" elapsed="0.005196">Evaluating expression 'sys.modules[\'selenium.webdriver.chrome.service\'].Service(executable_path="C:\\work_2025\\git-group-repository-group-4-sec-2\\version3\\test\\UAT\\V3\\UAT-V3-Unsuccess_CreateHighlight\\..\\ChromeForTesting\\chromedriver.exe")' failed: SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 61-63: truncated \UXXXXXXXX escape (&lt;string&gt;, line 1)</status>
 </kw>
 <kw name="Login Staff" owner="resource_v3">
-<status status="NOT RUN" start="2025-03-10T23:16:02.654522" elapsed="0.000018"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.412235" elapsed="0.000019"/>
 </kw>
 <kw name="Verify Staff Dashboard" owner="resource_v3">
-<status status="NOT RUN" start="2025-03-10T23:16:02.654596" elapsed="0.000015"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.412314" elapsed="0.000017"/>
 </kw>
 <kw name="Click Link" owner="SeleniumLibrary">
 <arg>xpath=//a[@class='nav-link' and contains(span, 'Manage Highlights')]</arg>
 <doc>Clicks a link identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.654667" elapsed="0.000016"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.412385" elapsed="0.000014"/>
 </kw>
 <kw name="Wait Until Location Is" owner="SeleniumLibrary">
 <arg>${MANAGE_HIGHLIGHTS_URL}</arg>
 <arg>${DELAY}</arg>
 <doc>Waits until the current URL is ``expected``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.654735" elapsed="0.000014"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.412459" elapsed="0.000015"/>
 </kw>
 <kw name="Page Should Contain" owner="SeleniumLibrary">
 <arg>Manage Highlights</arg>
 <doc>Verifies that current page contains ``text``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.654799" elapsed="0.000013"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.412528" elapsed="0.000017"/>
 </kw>
-<status status="FAIL" start="2025-03-10T23:16:02.650924" elapsed="0.003941">Variable '${CHROME_BROWSER_PATH}' not found.</status>
+<status status="FAIL" start="2025-03-10T23:59:55.406644" elapsed="0.005959">Evaluating expression 'sys.modules[\'selenium.webdriver.chrome.service\'].Service(executable_path="C:\\work_2025\\git-group-repository-group-4-sec-2\\version3\\test\\UAT\\V3\\UAT-V3-Unsuccess_CreateHighlight\\..\\ChromeForTesting\\chromedriver.exe")' failed: SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 61-63: truncated \UXXXXXXXX escape (&lt;string&gt;, line 1)</status>
 </kw>
 <kw name="Location Should Be" owner="SeleniumLibrary">
 <arg>${MANAGE_HIGHLIGHTS_URL}</arg>
 <doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.655165" elapsed="0.000026"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.412843" elapsed="0.000063"/>
 </kw>
 <kw name="Sleep" owner="BuiltIn">
 <arg>3s</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.655320" elapsed="0.000020"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.413076" elapsed="0.000021"/>
 </kw>
 <kw name="Scroll Element Into View" owner="SeleniumLibrary">
 <arg>xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]</arg>
 <doc>Scrolls the element identified by ``locator`` into view.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.655441" elapsed="0.000017"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.413227" elapsed="0.000021"/>
 </kw>
 <kw name="Click Link" owner="SeleniumLibrary">
 <arg>xpath=//a[contains(text(), '+ Create')]</arg>
 <doc>Clicks a link identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.655570" elapsed="0.000017"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.413344" elapsed="0.000016"/>
 </kw>
 <kw name="Wait Until Location Is" owner="SeleniumLibrary">
 <arg>${CREATE_NEWS_URL}</arg>
 <arg>${DELAY}</arg>
 <doc>Waits until the current URL is ``expected``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.655690" elapsed="0.000017"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.413607" elapsed="0.000022"/>
 </kw>
 <kw name="Location Should Be" owner="SeleniumLibrary">
 <arg>${CREATE_NEWS_URL}</arg>
 <doc>Verifies that the current URL is exactly ``url``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.655810" elapsed="0.000017"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.413792" elapsed="0.000017"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
 <arg>id=title</arg>
 <arg>โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.655935" elapsed="0.000017"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.413940" elapsed="0.000020"/>
 </kw>
 <kw name="Click Element" owner="SeleniumLibrary">
 <arg>xpath=//span[contains(@class, 'select2-selection')]</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.656059" elapsed="0.000016"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.414109" elapsed="0.000021"/>
 </kw>
 <kw name="Sleep" owner="BuiltIn">
 <arg>1s</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.656364" elapsed="0.000027"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.414369" elapsed="0.000023"/>
 </kw>
 <kw name="Click Element" owner="SeleniumLibrary">
 <arg>xpath=//li[contains(text(), 'ทุนวิจัยและโอกาสสนับสนุน')]</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.656500" elapsed="0.000019"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.414547" elapsed="0.000022"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
 <arg>id=description</arg>
 <arg>${DESCRIPTION_TEXT}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.656624" elapsed="0.000017"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.414679" elapsed="0.000017"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
 <arg>id=link</arg>
 <arg>${LINK_TEXT}</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.656835" elapsed="0.000018"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.414782" elapsed="0.000015"/>
 </kw>
 <kw name="Choose File" owner="SeleniumLibrary">
 <arg>id=image_album</arg>
 <arg>${ALBUM_IMAGES}</arg>
 <doc>Inputs the ``file_path`` into the file input field ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.656945" elapsed="0.000016"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.415032" elapsed="0.000063"/>
 </kw>
 <kw name="Scroll Element Into View" owner="SeleniumLibrary">
 <arg>xpath=//button[@type='submit' and contains(text(),'Save')]</arg>
 <doc>Scrolls the element identified by ``locator`` into view.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.657046" elapsed="0.000016"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.415538" elapsed="0.000081"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
 <arg>xpath=//button[@type='submit' and contains(text(),'Save')]</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.657156" elapsed="0.000016"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.415905" elapsed="0.000026"/>
 </kw>
 <kw name="Execute Javascript" owner="SeleniumLibrary">
 <arg>document.querySelector("button.btn.btn-dark").click()</arg>
 <doc>Executes the given JavaScript code with possible arguments.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.657257" elapsed="0.000015"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.416186" elapsed="0.000055"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
 <arg>xpath=//h2[@id='swal2-title']</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.657415" elapsed="0.000015"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.416504" elapsed="0.000024"/>
 </kw>
 <kw name="Element Should Contain" owner="SeleniumLibrary">
 <arg>xpath=//h2[@id='swal2-title']</arg>
 <arg>กรุณาอัปโหลดรูปภาพ!</arg>
 <doc>Verifies that element ``locator`` contains text ``expected``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.657513" elapsed="0.000015"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.416637" elapsed="0.000017"/>
 </kw>
 <kw name="Click Element" owner="SeleniumLibrary">
 <arg>xpath=//button[contains(@class, 'swal2-confirm') and contains(text(),'ตกลง')]</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.657614" elapsed="0.000015"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.416753" elapsed="0.000015"/>
 </kw>
 <kw name="Choose File" owner="SeleniumLibrary">
 <arg>xpath=//input[@type='file']</arg>
 <arg>${COVER_IMAGE}</arg>
 <doc>Inputs the ``file_path`` into the file input field ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.657710" elapsed="0.000022"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.416856" elapsed="0.000015"/>
 </kw>
 <kw name="Clear Element Text" owner="SeleniumLibrary">
 <arg>id=title</arg>
 <doc>Clears the value of the text-input-element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.657814" elapsed="0.000016"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.416956" elapsed="0.000015"/>
 </kw>
 <kw name="Execute Javascript" owner="SeleniumLibrary">
 <arg>document.querySelector("button.btn.btn-dark").click()</arg>
 <doc>Executes the given JavaScript code with possible arguments.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.657913" elapsed="0.000015"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.417055" elapsed="0.000015"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
 <arg>xpath=//h2[@id='swal2-title']</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.658009" elapsed="0.000016"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.417151" elapsed="0.000016"/>
 </kw>
 <kw name="Element Should Contain" owner="SeleniumLibrary">
 <arg>xpath=//h2[@id='swal2-title']</arg>
 <arg>กรุณากรอกชื่อไฮไลท์!</arg>
 <doc>Verifies that element ``locator`` contains text ``expected``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.658107" elapsed="0.000014"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.417247" elapsed="0.000015"/>
 </kw>
 <kw name="Click Element" owner="SeleniumLibrary">
 <arg>xpath=//button[contains(@class, 'swal2-confirm') and contains(text(),'ตกลง')]</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.658258" elapsed="0.000016"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.417409" elapsed="0.000015"/>
 </kw>
 <kw name="Input Text" owner="SeleniumLibrary">
 <arg>id=title</arg>
 <arg>โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่</arg>
 <doc>Types the given ``text`` into the text field identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.658364" elapsed="0.000015"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.417507" elapsed="0.000015"/>
 </kw>
 <kw name="Execute Javascript" owner="SeleniumLibrary">
 <arg>document.querySelector("button.btn.btn-dark").click()</arg>
 <doc>Executes the given JavaScript code with possible arguments.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.658493" elapsed="0.000016"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.417609" elapsed="0.000015"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
 <arg>xpath=//h2[@id='swal2-title']</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.658692" elapsed="0.000035"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.417707" elapsed="0.000015"/>
 </kw>
 <kw name="Element Should Contain" owner="SeleniumLibrary">
 <arg>xpath=//h2[@id='swal2-title']</arg>
 <arg>กรุณาเลือก tag!</arg>
 <doc>Verifies that element ``locator`` contains text ``expected``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.658977" elapsed="0.000043"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.417805" elapsed="0.000014"/>
 </kw>
 <kw name="Click Element" owner="SeleniumLibrary">
 <arg>xpath=//button[contains(@class, 'swal2-confirm') and contains(text(),'ตกลง')]</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.659282" elapsed="0.000039"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.417902" elapsed="0.000018"/>
 </kw>
 <kw name="Click Element" owner="SeleniumLibrary">
 <arg>xpath=//span[contains(@class, 'select2-selection')]</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.659772" elapsed="0.000165"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.418001" elapsed="0.000015"/>
 </kw>
 <kw name="Sleep" owner="BuiltIn">
 <arg>1s</arg>
 <doc>Pauses the test executed for the given time.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.660151" elapsed="0.000027"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.418097" elapsed="0.000016"/>
 </kw>
 <kw name="Click Element" owner="SeleniumLibrary">
 <arg>xpath=//li[contains(text(), 'ทุนวิจัยและโอกาสสนับสนุน')]</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.660381" elapsed="0.000025"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.418252" elapsed="0.000015"/>
 </kw>
 <kw name="Clear Element Text" owner="SeleniumLibrary">
 <arg>id=description</arg>
 <doc>Clears the value of the text-input-element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.660732" elapsed="0.000029"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.418432" elapsed="0.000021"/>
 </kw>
 <kw name="Execute Javascript" owner="SeleniumLibrary">
 <arg>document.querySelector("button.btn.btn-dark").click()</arg>
 <doc>Executes the given JavaScript code with possible arguments.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.660895" elapsed="0.000019"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.418549" elapsed="0.000016"/>
 </kw>
 <kw name="Wait Until Element Is Visible" owner="SeleniumLibrary">
 <arg>xpath=//h2[@id='swal2-title']</arg>
 <doc>Waits until the element ``locator`` is visible.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.661018" elapsed="0.000017"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.418650" elapsed="0.000015"/>
 </kw>
 <kw name="Element Should Contain" owner="SeleniumLibrary">
 <arg>xpath=//h2[@id='swal2-title']</arg>
 <arg>กรุณากรอกคำอธิบาย!</arg>
 <doc>Verifies that element ``locator`` contains text ``expected``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.661137" elapsed="0.000016"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.418747" elapsed="0.000016"/>
 </kw>
 <kw name="Click Element" owner="SeleniumLibrary">
 <arg>xpath=//button[contains(@class, 'swal2-confirm') and contains(text(),'ตกลง')]</arg>
 <doc>Click the element identified by ``locator``.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.661267" elapsed="0.000018"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.418850" elapsed="0.000014"/>
 </kw>
 <kw name="Close Browser" owner="SeleniumLibrary">
 <doc>Closes the current browser.</doc>
-<status status="NOT RUN" start="2025-03-10T23:16:02.661384" elapsed="0.000019"/>
+<status status="NOT RUN" start="2025-03-10T23:59:55.418947" elapsed="0.000014"/>
 </kw>
 <doc>ทดสอบการสร้างข่าวโดยไล่ตรวจสอบแต่ละข้อผิดพลาดแบบต่อเนื่อง ไม่ปิด Browser</doc>
 <tag>UAT-V1-03</tag>
-<status status="FAIL" start="2025-03-10T23:16:02.649246" elapsed="0.012331">Variable '${CHROME_BROWSER_PATH}' not found.</status>
+<status status="FAIL" start="2025-03-10T23:59:55.405225" elapsed="0.013884">Evaluating expression 'sys.modules[\'selenium.webdriver.chrome.service\'].Service(executable_path="C:\\work_2025\\git-group-repository-group-4-sec-2\\version3\\test\\UAT\\V3\\UAT-V3-Unsuccess_CreateHighlight\\..\\ChromeForTesting\\chromedriver.exe")' failed: SyntaxError: (unicode error) 'unicodeescape' codec can't decode bytes in position 61-63: truncated \UXXXXXXXX escape (&lt;string&gt;, line 1)</status>
 </test>
-<status status="FAIL" start="2025-03-10T23:16:02.396295" elapsed="0.266488"/>
+<status status="FAIL" start="2025-03-10T23:59:55.127606" elapsed="0.292328"/>
 </suite>
 <statistics>
 <total>
