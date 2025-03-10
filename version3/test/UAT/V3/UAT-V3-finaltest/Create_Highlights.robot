@@ -76,7 +76,7 @@ Create Highlight
     Wait Until Element Is Visible    xpath=//button[@type='submit' and contains(text(),'Save')]    timeout=5s
     Execute JavaScript    document.querySelector("button.btn.btn-dark").click();
 
-    # Wait Until Page Contains    สร้างข่าวสำเร็จ
+    Wait Until Page Contains    สร้าง Highlight สำเร็จ
     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
 
