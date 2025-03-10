@@ -26,11 +26,11 @@ ${CREATE_NEWS_URL}    https://${HOST}/highlights/create
 
 ${ADMIN_USERNAME}      admin@gmail.com
 ${ADMIN_PASSWORD}      12345678
-${STAFF_USERNAME}      Natech@kku.ac.th
+${STAFF_USERNAME}      thanlao@kku.ac.th
 ${STAFF_PASSWORD}      123456789
 ${RESEARCHER_USERNAME}      thanaphon@kku.ac.th
 ${RESEARCHER_PASSWORD}      123456789
-${INVALID_ADMIN_USERNAME}   Natech@kku
+${INVALID_ADMIN_USERNAME}   thanlao@kku
 ${INVALID_PASSWORD}      111111111
 ${error_message}    Login Failed: Your user ID or password is incorrect
 ${DELAY}    2
@@ -38,8 +38,8 @@ ${DELAY}    2
 ${TITLE}          โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
 ${DESCRIPTION}    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
 
-${CHROME_BROWSER_PATH}    ${EXECDIR}${/}..${/}ChromeForTesting${/}chrome.exe
-${CHROME_DRIVER_PATH}     ${EXECDIR}${/}..${/}ChromeForTesting${/}chromedriver.exe
+${CHROME_BROWSER_PATH}    C:/work_2025/ChromeForTesting/chrome-win64/chrome-win64/chrome.exe
+${CHROME_DRIVER_PATH}     C:/work_2025/ChromeForTesting/chromedriver-win64/chromedriver.exe
 
 *** Keywords ***
 Verify Admin Dashboard

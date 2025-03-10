@@ -1,0 +1,168 @@
+*** Settings ***
+Resource          ../../resource_v3.robot
+Library          Collections
+
+*** Variables ***
+${NEWS_ID}
+${ADD_HIGHLIGHT_BTN}
+${HOME_HIGHLIGHT_IMAGE_XPATH}    xpath=//div[@id='highlightNews']//img
+${COVER_IMAGE}    C:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg
+${ALBUM_IMAGES}    C:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg\nC:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_2.jpeg
+${DESCRIPTION_TEXT}    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
+${LINK_TEXT}    https://www.google.com
+
+*** Test Cases ***
+# Test Go To Manage Highlights Page
+#     Go To Manage Highlights Page
+    
+
+Test Create Unsuccess Empty Cover Image
+    # ✅ Passed
+    # ✅ Passed
+    [Tags]    UAT-V1-03
+    [Documentation]    ทดสอบการสร้างข่าวใหม่ไม่สำเร็จ เนื่องจากไม่ใส่รูปภาพ Cover Image
+    Go To Manage Highlights Page
+    Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
+    Log To Console    ✅ เข้าสู่หน้าจัดการ HIGHLIGHTS สำเร็จ
+    Sleep    3s
+
+    Scroll Element Into View    xpath=//a[contains(@class, 'btn btn-primary mb-3') and contains(text(), '+ Create')]
+    Click Link    xpath=//a[contains(text(), '+ Create')]
+    Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
+    Location Should Be    ${CREATE_NEWS_URL}
+    Log To Console    ✅ เข้าสู่หน้า Create สำเร็จ
+
+    Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
+    Log To Console    ✅ กรอก Title สำเร็จ
+
+    Click Element   xpath=//span[contains(@class, 'select2-selection')]
+    Sleep    1s
+    Click Element    xpath=//li[contains(text(), 'ทุนวิจัยและโอกาสสนับสนุน')]
+    Sleep    1s
+    Log To Console    ✅ เลือก Tag สำเร็จ
+
+    Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
+    Input Text    id=link   https://www.google.com
+    Log To Console    ✅ กรอก Description และ Link สำเร็จ
+    
+    Scroll Element Into View    id=imageAlbumBox
+    Click Element    id=imageAlbumBox
+    Choose File    id=image_album    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg\nC:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg
+    Log To Console    ✅ อัปโหลดไฟล์รูปภาพสำเร็จ
+    
+    Scroll Element Into View    xpath=//button[@type='submit' and contains(text(),'Save')]
+    Wait Until Element Is Visible    xpath=//button[@type='submit' and contains(text(),'Save')]
+    Execute JavaScript    document.querySelector("button.btn.btn-dark").click();
+    Log To Console    ✅ กดปุ่ม Save สำเร็จ
+    
+    Wait Until Element Is Visible    xpath=//h2[@id='swal2-title']
+    Element Should Contain    xpath=//h2[@id='swal2-title']    กรุณาอัปโหลดรูปภาพ!
+    Log To Console    ✅ ตรวจสอบข้อความแจ้งเตือน "กรุณาอัปโหลดรูปภาพ!" สำเร็จ
+    
+    Click Element    xpath=//button[contains(@class, 'swal2-confirm') and contains(text(),'ตกลง')]
+    Wait Until Location Is    ${CREATE_NEWS_URL}
+    Location Should Be    ${CREATE_NEWS_URL}
+    Log To Console    ✅ กลับมาที่หน้า Create News สำเร็จ
+
+Test Create Unsuccess Empty Title:
+    # ✅ Passed
+    [Tags]    UAT-V1-03
+    [Documentation]    ทดสอบการสร้างข่าวใหม่ไม่สำเร็จ เนื่องจากไม่ใส่ Title
+    Click Element    id=coverImageBox
+    Choose File    xpath=//input[@type='file']    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg
+    Log To Console    ✅ ใส่รูปปก สำเร็จ
+    Clear Element Text    id=title
+    Log To Console    ✅ เคลียร์ค่า Title สำเร็จ
+
+    Scroll Element Into View    xpath=//button[@type='submit' and contains(text(),'Save')]
+    Log To Console    ✅ เลื่อนหน้าจอไปที่ปุ่ม Save
+
+    # หรือใช้ Wait Until Element Is Visible ก่อนคลิก
+    Wait Until Element Is Visible    xpath=//button[@type='submit' and contains(text(),'Save')]
+    Log To Console    ✅ ปุ่ม Save ปรากฏแล้ว
+
+    Execute JavaScript    document.querySelector("button.btn.btn-dark").click();
+    Log To Console    ✅ กดปุ่ม Save
+
+    Wait Until Element Is Visible    xpath=//h2[@id='swal2-title']
+    Log To Console    ✅ ตรวจสอบกล่องแจ้งเตือน
+
+    Element Should Contain    xpath=//h2[@id='swal2-title']    กรุณากรอกชื่อไฮไลท์!
+    Log To Console    ✅ พบข้อความแจ้งเตือน: กรุณากรอกชื่อไฮไลท์!
+
+    Click Element    xpath=//button[contains(@class, 'swal2-confirm') and contains(text(),'ตกลง')]
+    Log To Console    ✅ กดปุ่มตกลงในกล่องแจ้งเตือน
+
+    Location Should Be    ${CREATE_NEWS_URL}
+
+# Test Create Unsuccess Empty Tag:
+#     # ✅ Passed
+#     [Tags]    UAT-V1-03
+#     [Documentation]    ทดสอบการสร้างข่าวใหม่ไม่สำเร็จ เนื่องจากไม่เลือก Tag
+#     Go To Manage Highlights Page
+#     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
+#     Sleep    3s
+#     Scroll Element Into View    xpath=//a[contains(@class, 'btn btn-primary mb-3') and contains(text(), '+ Create')]
+#     Click Link    xpath=//a[contains(text(), '+ Create')]
+#     Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
+#     Location Should Be    ${CREATE_NEWS_URL}
+
+#     Click Element    id=coverImageBox
+#     Choose File    xpath=//input[@type='file']    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg
+#     Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
+
+#     Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
+#     Input Text    id=link   https://www.google.com
+    
+#     Scroll Element Into View    id=imageAlbumBox
+#     Click Element    id=imageAlbumBox
+#     Choose File    id=image_album    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg\nC:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg
+#     Scroll Element Into View    xpath=//button[@type='submit' and contains(text(),'Save')]
+
+#     # หรือใช้ Wait Until Element Is Visible ก่อนคลิก
+#     Wait Until Element Is Visible    xpath=//button[@type='submit' and contains(text(),'Save')]
+#     Execute JavaScript    document.querySelector("button.btn.btn-dark").click();
+#     Sleep    3s
+#     Element Should Contain    xpath=//h2[@id='swal2-title']    กรุณาเลือก tag!
+#     Click Element    xpath=//button[contains(@class, 'swal2-confirm') and contains(text(),'ตกลง')]
+
+#     # เช็คว่าเราอยู่ในหน้า Create News หลังจากแสดงป๊อปอัพ
+#     Location Should Be    ${CREATE_NEWS_URL}
+#     Close Browser
+
+# Test Create News Unsuccess Empty Description:
+#     # ✅ Passed
+#     [Tags]    UAT-V1-03
+#     [Documentation]    ทดสอบการสร้างข่าวใหม่ไม่สำเร็จ เนื่องจากไม่ใส่ Description
+#     Go To Manage Highlights Page
+#     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
+#     Sleep    3s
+#     Scroll Element Into View    xpath=//a[contains(@class, 'btn btn-primary mb-3') and contains(text(), '+ Create')]
+#     Click Link    xpath=//a[contains(text(), '+ Create')]
+#     Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
+#     Location Should Be    ${CREATE_NEWS_URL}
+
+#     Click Element    id=coverImageBox
+#     Choose File    xpath=//input[@type='file']    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg
+#     Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
+
+#     Click Element   xpath=//span[contains(@class, 'select2-selection')]
+#     Sleep    1s
+#     Click Element    xpath=//li[contains(text(), 'ทุนวิจัยและโอกาสสนับสนุน')]
+#     Sleep    1s
+
+#     Input Text    id=link   https://www.google.com
+    
+#     Scroll Element Into View    id=imageAlbumBox
+#     Click Element    id=imageAlbumBox
+#     Choose File    id=image_album    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg\nC:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg
+#     Scroll Element Into View    xpath=//button[@type='submit' and contains(text(),'Save')]
+
+#     # หรือใช้ Wait Until Element Is Visible ก่อนคลิก
+#     Wait Until Element Is Visible    xpath=//button[@type='submit' and contains(text(),'Save')]
+#     Execute JavaScript    document.querySelector("button.btn.btn-dark").click();
+#     Element Should Contain    xpath=//h2[@id='swal2-title']    กรุณากรอกคำอธิบาย!
+#     Click Element    xpath=//button[contains(@class, 'swal2-confirm') and contains(text(),'ตกลง')]
+
+#     Location Should Be    ${CREATE_NEWS_URL}
+#     Close Browser
