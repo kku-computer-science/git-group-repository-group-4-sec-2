@@ -1,5 +1,5 @@
 *** Settings ***
-Resource          ./resource_v1.robot
+Resource          C:\work_2025\git-group-repository-group-4-sec-2\version3\test\UAT\resource_v3.robot
 Library           SeleniumLibrary
 
     
