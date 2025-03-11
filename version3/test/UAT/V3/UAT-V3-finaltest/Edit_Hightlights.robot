@@ -7,8 +7,8 @@ Library    Collections
 *** Variables ***
 ${LAST_ROW}    xpath=//table[@id='news-table']//tbody/tr[last()]
 ${LAST_DELETE_BUTTON}    xpath=//table[@id='news-table']//tbody/tr[last()]//button[contains(@class,'btn-delete')]
-${one_picture}    D:/projectSoftEn/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_1.jpeg
-${two_pictures}    D:/projectSoftEn/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg
+${one_picture}    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg
+${two_pictures}    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg\nC:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_1.jpeg
 ${TITLE_INPUT}    id=title
 ${DESCRIPTION_INPUT}    id=description
 ${LINK_INPUT}    id=link
@@ -68,7 +68,7 @@ Edit Highlight
     Wait Until Element Is Visible    id=coverImageBox    timeout=10s
     Scroll Element Into View    id=coverImageBox
     Click Element    id=coverImageBox
-    Choose File    xpath=//input[@type='file']    D:/projectSoftEn/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg
+    Choose File    xpath=//input[@type='file']    ${one_picture} 
 
     # แก้ไขข้อมูล Title
     Wait Until Element Is Visible    ${TITLE_INPUT}    timeout=5s
@@ -95,7 +95,7 @@ Edit Highlight
     Wait Until Element Is Visible    id=imageAlbumBox    timeout=10s
     Scroll Element Into View    id=imageAlbumBox
     Execute JavaScript    document.getElementById('image_album').classList.remove('d-none');
-    Choose File    id=image_album    D:/projectSoftEn/git-group-repository-group-4-sec-2/version3/test/Test-Data/1.png
+    Choose File    id=image_album    ${two_pictures}
 
     # คลิกปุ่ม Update
     Wait Until Element Is Visible    ${SAVE_BUTTON}    timeout=10s

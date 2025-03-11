@@ -241,18 +241,21 @@ Click MANAGE HIGHLIGHTS
     Sleep    1s
 
 Remove Highlight
+    Refresh Page Once
     # ตรวจสอบว่า ID ถูกเพิ่มลงในตาราง highlight-table
-    ${highlight_table_row_xpath}=    Set Variable    xpath=//table[@id='highlight-table']//tr[td/img[@src='${home_highlight_image}']]
+    ${highlight_table_row_xpath}=    Set Variable    xpath=//table[@id='highlight-table']//tr[td/img[contains(@src,'${home_highlight_image}')]]
+    # ${highlight_table_row_xpath}=    Set Variable    xpath=//table[@id='highlight-table']//tr[1]
+
     Wait Until Keyword Succeeds    15s    2s    Element Should Be Visible    ${highlight_table_row_xpath}
 
     # ตรวจสอบว่า ID ถูกเพิ่มลงในตาราง highlight-table
-    ${highlight_table_row}=    Set Variable    ${highlight_table_row_xpath}//td[2]//img//@src
+    ${highlight_table_row}=    Get Element Attribute    ${highlight_table_row_xpath}//td[2]//img    src
     Log    "highlight_table_row: ${highlight_table_row}"
     Log    "home_highlight_image: ${home_highlight_image}"
     Should Contain    ${highlight_table_row}    ${home_highlight_image}
     
     # รอให้ REMOVE ปรากฏในแถวนั้นๆ
-    ${remove_button_xpath}=    Set Variable    xpath=//table[@id='highlight-table']//tr[td/img[@src='${home_highlight_image}']]//button[contains(@class,'btn-remove')]
+    ${remove_button_xpath}=    Set Variable    xpath=//table[@id='highlight-table']//tr[td/img[contains(@src,'${home_highlight_image}')]]//button[contains(@class,'btn-remove')]
     Wait Until Keyword Succeeds    30s    2s    Element Should Be Visible    ${remove_button_xpath}
     Log    "REMOVE พร้อมให้คลิกแล้ว"
 
