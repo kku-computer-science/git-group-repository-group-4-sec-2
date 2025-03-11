@@ -23,8 +23,9 @@ class HomeController extends Controller
 
     public function index()
     {
-        $highlights = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) // ✅ เปลี่ยน 'tag' เป็น 'tags'
-            ->get(['id', 'image', 'title', 'description', 'user_id', 'created_at', 'updated_at']); // ❌ ลบ 'tag_id'
+        $highlights = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) 
+    ->orderBy('priority') // ✅ เรียงจาก 1 → 2 → 3 → 4
+    ->get(['id', 'image', 'title', 'description', 'user_id', 'priority', 'created_at', 'updated_at']); // ✅ รวม 'priority'
 
         $heads = Highlight::with(['tags:id,name', 'user:id,fname_th,lname_th', 'images']) // ✅ เปลี่ยน 'tag' เป็น 'tags'
             ->where('status', 1)

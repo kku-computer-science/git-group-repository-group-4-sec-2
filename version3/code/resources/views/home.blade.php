@@ -172,39 +172,39 @@
 </style>
 @section('content')
 <div class="container home">
-    <div class="container d-sm-flex justify-content-center mt-5">
+<div class="container d-sm-flex justify-content-center mt-5">
 
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-            <!-- Carousel Indicators -->
-            <ol class="carousel-indicators">
-                @foreach($heads as $index => $head)
-                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $index }}" class="{{ $loop->first ? 'active' : '' }}"></li>
-                @endforeach
-            </ol>
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <!-- Carousel Indicators -->
+        <ol class="carousel-indicators">
+            @foreach($highlights as $index => $highlight)
+            <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="{{ $index }}" class="{{ $loop->first ? 'active' : '' }}"></li>
+            @endforeach
+        </ol>
 
-            <!-- Carousel Items -->
-            <div class="carousel-inner">
-                @foreach($heads as $index => $head)
-                <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                    <a href="{{ route('highlight.show', $head->id) }}">
-                        <img src="{{ asset('storage/' . $head->image) }}" class="d-block w-100" alt="...">
-                    </a>
-                </div>
-                @endforeach
+        <!-- Carousel Items -->
+        <div class="carousel-inner">
+            @foreach($highlights as $index => $highlight)
+            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                <a href="{{ route('highlight.show', $highlight->id) }}">
+                    <img src="{{ asset('storage/' . $highlight->image) }}" class="d-block w-100" alt="{{ $highlight->title }}">
+                </a>
             </div>
-
-            <!-- Navigation Buttons -->
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </a>
+            @endforeach
         </div>
 
+        <!-- Navigation Buttons -->
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </a>
     </div>
+
+</div>
 
 
     <!-- News -->
