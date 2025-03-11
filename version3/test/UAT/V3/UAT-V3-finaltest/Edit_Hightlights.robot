@@ -27,11 +27,15 @@ ${IMAGE_ALBUM}    xpath=//div[contains(text(),'อัลบั้ม รูป�
 ${AUTHOR}    xpath=//div[contains(@class,'justify-content-end')]//h6
 
 ${PROFILE_ICON}    xpath=//a[contains(@href,'/profile')]
-# ${PROFILEL_URL}    http://localhost/profile
+# ${PROFILE_URL}    http://localhost/profile
 ${PROFILE_URL}    https://${HOST}/profile
 
 ${SUCCESS_MESSAGE}    xpath=//div[contains(@class,'alert-success') and contains(text(),'Highlight updated successfully!')]
 
+${TITLE_BEFORE_EDIT}   
+${TAGS_BEFORE_EDIT}   
+${DESCRIPTION_BEFORE_EDIT}    
+${SOURCE_LINK_BEFORE_EDIT}   
 
 *** Keywords ***
 
@@ -80,7 +84,7 @@ Edit Highlight
     # แก้ไขข้อมูล Description
     Wait Until Element Is Visible    ${DESCRIPTION_INPUT}    timeout=10s
     Clear Element Text    ${DESCRIPTION_INPUT}
-    Input Text    ${DESCRIPTION_INPUT}    ง่วงโว้ยยยยยยยยยยยยยยยยยยยยย
+    Input Text    ${DESCRIPTION_INPUT}    ง่วงงงงงงงงงงงงงงงงงงงงงงงงงงง
 
     # แก้ไขข้อมูล Link
     Wait Until Element Is Visible    ${LINK_INPUT}    timeout=10s
@@ -106,94 +110,15 @@ Edit Highlight
     Click Button    xpath=//button[contains(text(),'ใช่, อัปเดตเลย!')]
 
     # รอให้กลับไปยังหน้า Manage Highlights
-    Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    timeout=10s
+    Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    timeout=15s
 
     # ตรวจสอบว่ามีข้อความแจ้งเตือน "Highlight updated successfully!"
     Wait Until Element Is Visible    xpath=//div[contains(@class,'alert-success') and contains(text(),'Highlight updated successfully!')]    timeout=5s
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
 
-Edit Tag Highlight
+    Refresh Page Once
 
-    # ไปยังหน้าจัดการ Highlights
-    Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
-
-    # ค้นหาและกดปุ่ม Edit ของ News อันแรก
-    ${HIGHLIGHTS_ID}    Get Text    xpath=(//table[@id='highlight-table']//tr/td[1])[1]
-    Scroll Element Into View    xpath=(//table[@id='highlight-table']//tr[td[contains(text(),'${HIGHLIGHTS_ID}')]]//a[contains(@class,'btn-outline-primary')])[1]
-    Wait Until Element Is Visible    xpath=(//table[@id='highlight-table']//tr[td[contains(text(),'${HIGHLIGHTS_ID}')]]//a[contains(@class,'btn-outline-primary')])[1]    timeout=5s
-    Click Element    xpath=//table[@id='highlight-table']//tr[td[contains(text(),'${HIGHLIGHTS_ID}')]]//a[contains(@class, 'btn-outline-primary')][i[contains(@class, 'fa-edit')]]
-
-    # แก้ไขข้อมูล Tag
-    # Wait Until Element Is Visible    xpath=//span[contains(@class, 'select2-selection')]    timeout=5s
-    # Click Element    xpath=//span[contains(@class, 'select2-selection')]
-    # Wait Until Element Is Visible    xpath=//li[contains(text(), 'ผลงานวิจัยเด่นและรางวัล')]    timeout=5s
-    # Click Element    xpath=//li[contains(text(), 'ผลงานวิจัยเด่นและรางวัล')]
-
-
-    Wait Until Element Is Visible    xpath=//span[contains(@class, 'select2-selection')]    timeout=5s
-    Click Element    xpath=//span[contains(@class, 'select2-selection')]
-
-    # ✅ รอให้ตัวเลือกปรากฏใน Select2
-    Wait Until Element Is Visible    xpath=//ul[contains(@class, 'select2-results__options')]    timeout=5s
-    Click Element    xpath=//ul[contains(@class, 'select2-results__options')]//li[contains(text(), 'ผลงานวิจัยเด่นและรางวัล')]
-
-
-    # คลิกปุ่ม Update
-    Wait Until Element Is Visible    ${SAVE_BUTTON}    timeout=10s
-    Wait Until Element Is Enabled    ${SAVE_BUTTON}    timeout=10s
-    ${save_button_element}=    Get WebElement    ${SAVE_BUTTON}
-    Execute JavaScript    arguments[0].scrollIntoView({ behavior: "smooth", block: "center" });    ARGUMENTS    ${save_button_element}
-    Sleep    1s
-    Click Button    ${SAVE_BUTTON}
-
-    # รอให้ระบบอัปเดตเสร็จและเช็คข้อความแจ้งเตือน
-    Wait Until Page Contains    ยืนยันการอัปเดต    timeout=5s
-    Click Button    xpath=//button[contains(text(),'ใช่, อัปเดตเลย!')]
-
-    # รอให้กลับไปยังหน้า Manage Highlights
-    Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    timeout=10s
-
-    # ตรวจสอบว่ามีข้อความแจ้งเตือน "Highlight updated successfully!"
-    Wait Until Element Is Visible    xpath=//div[contains(@class,'alert-success') and contains(text(),'Highlight updated successfully!')]    timeout=5s
-    Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
     
-
-Edit ImageAlbum Highlight
-
-    # ไปยังหน้าจัดการ Highlights
-    Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
-
-    # ค้นหาและกดปุ่ม Edit ของ News อันแรก
-    ${HIGHLIGHTS_ID}    Get Text    xpath=(//table[@id='highlight-table']//tr/td[1])[1]
-    Scroll Element Into View    xpath=(//table[@id='highlight-table']//tr[td[contains(text(),'${HIGHLIGHTS_ID}')]]//a[contains(@class,'btn-outline-primary')])[1]
-    Wait Until Element Is Visible    xpath=(//table[@id='highlight-table']//tr[td[contains(text(),'${HIGHLIGHTS_ID}')]]//a[contains(@class,'btn-outline-primary')])[1]    timeout=5s
-    Click Element    xpath=//table[@id='highlight-table']//tr[td[contains(text(),'${HIGHLIGHTS_ID}')]]//a[contains(@class, 'btn-outline-primary')][i[contains(@class, 'fa-edit')]]   
-
-    # แก้ไขข้อมูล ImageAlbum
-    Wait Until Element Is Visible    id=imageAlbumBox    timeout=10s
-    Scroll Element Into View    id=imageAlbumBox
-    Execute JavaScript    document.getElementById('image_album').classList.remove('d-none');
-    Choose File    id=image_album    D:/projectSoftEn/git-group-repository-group-4-sec-2/version3/test/Test-Data/1.png
-
-    # คลิกปุ่ม Update
-    Wait Until Element Is Visible    ${SAVE_BUTTON}    timeout=10s
-    Wait Until Element Is Enabled    ${SAVE_BUTTON}    timeout=10s
-    ${save_button_element}=    Get WebElement    ${SAVE_BUTTON}
-    Execute JavaScript    arguments[0].scrollIntoView({ behavior: "smooth", block: "center" });    ARGUMENTS    ${save_button_element}
-    Sleep    1s
-    Click Button    ${SAVE_BUTTON}
-
-    # รอให้ระบบอัปเดตเสร็จและเช็คข้อความแจ้งเตือน
-    Wait Until Page Contains    ยืนยันการอัปเดต    timeout=15s
-    Click Button    xpath=//button[contains(text(),'ใช่, อัปเดตเลย!')]
-
-    # รอให้กลับไปยังหน้า Manage Highlights
-    Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}    timeout=10s
-
-    # ตรวจสอบว่ามีข้อความแจ้งเตือน "Highlight updated successfully!"
-    Wait Until Element Is Visible    xpath=//div[contains(@class,'alert-success') and contains(text(),'Highlight updated successfully!')]    timeout=5s
-    Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
-
 Click Profile Icon to Manage Highlight
     Sleep    1s
     Wait Until Element Is Visible    ${PROFILE_ICON}    timeout=5s
@@ -251,7 +176,53 @@ Scroll Highlight Detail Page
     Execute JavaScript    window.scrollTo(0, 0)
     Sleep    2s
 
+Collect Detail Before Edit
+    [Documentation]    เก็บรายละเอียดของข่าวก่อนแก้ไข และแสดง log ข้อมูลที่เก็บมา
+    ${cover_image_src}    Get Element Attribute    xpath=//div[@class='head-img']/img    src
+    ${title}    Get Text    xpath=//h2
+    ${tags}    Get Text    xpath=//div[@class='d-flex flex-wrap']
+    ${description}    Get Text    xpath=//pre
+    ${source_link}    Get Element Attribute    xpath=//div[contains(@class, 'd-flex align-items-center')]/a    href
 
+    Log    *** ข้อมูลก่อนแก้ไข ***
+    Log    รูปภาพปก: ${cover_image_src}
+    Log    หัวข้อข่าว: ${title}
+    Log    แท็ก: ${tags}
+    Log    รายละเอียดข่าว: ${description}
+    Log    แหล่งข้อมูลเพิ่มเติม: ${source_link}
+    # Run Keyword If    '${source_link}' != 'None'    Log    แหล่งข้อมูลเพิ่มเติม: ${source_link}
+    Log    **************************
+
+    Set Test Variable    ${COVER_IMAGE_BEFORE_EDIT}    ${cover_image_src}
+    Set Test Variable    ${TITLE_BEFORE_EDIT}    ${title}
+    Set Test Variable    ${TAGS_BEFORE_EDIT}    ${tags}
+    Set Test Variable    ${DESCRIPTION_BEFORE_EDIT}    ${description}
+    Set Test Variable    ${SOURCE_LINK_BEFORE_EDIT}    ${source_link}
+
+
+Check Detail After Edit
+    [Documentation]    ตรวจสอบว่ารายละเอียดของข่าวหลังแก้ไขถูกต้อง และแสดง log ข้อมูลที่เปลี่ยนแปลง
+    ${cover_image_src_after}    Get Element Attribute    xpath=//div[@class='head-img']/img    src
+    ${title_after}    Get Text    xpath=//h2
+    ${tags_after}    Get Text    xpath=//div[@class='d-flex flex-wrap']
+    ${description_after}    Get Text    xpath=//pre
+    ${source_link_after}    Get Element Attribute    xpath=//div[contains(@class, 'd-flex align-items-center')]/a    href
+
+    Log    *** ข้อมูลหลังแก้ไข ***
+    Log    รูปภาพปก: ${cover_image_src_after}
+    Log    หัวข้อข่าว: ${title_after}
+    Log    แท็ก: ${tags_after}
+    Log    รายละเอียดข่าว: ${description_after}
+    Log    แหล่งข้อมูลเพิ่มเติม: ${source_link_after}
+    Log    **************************
+
+    Should Not Be Equal    ${COVER_IMAGE_BEFORE_EDIT}    ${cover_image_src_after}    รูปภาพปกไม่เปลี่ยนแปลงหลังแก้ไข
+    Should Not Be Equal    ${TITLE_BEFORE_EDIT}    ${title_after}    หัวข้อข่าวไม่เปลี่ยนแปลงหลังแก้ไข
+    Should Not Be Equal    ${TAGS_BEFORE_EDIT}    ${tags_after}    แท็กไม่เปลี่ยนแปลงหลังแก้ไข
+    Should Not Be Equal    ${DESCRIPTION_BEFORE_EDIT}    ${description_after}    รายละเอียดข่าวไม่เปลี่ยนแปลงหลังแก้ไข
+    Should Not Be Equal    ${SOURCE_LINK_BEFORE_EDIT}    ${source_link_after}    แหล่งข้อมูลเพิ่มเติมไม่เปลี่ยนแปลงหลังแก้ไข
+
+    
 *** Test Cases ***
 Test Edit Highlight
     [Tags]    UAT-V3-edittest
@@ -260,13 +231,13 @@ Test Edit Highlight
     Go To Manage Highlights Page
 
     Click Detail Before Edit
+    Collect Detail Before Edit
     Scroll Highlight Detail Page
     Click Profile Icon to Manage Highlight
     Edit Highlight
     Click Home Icon
     Click Highlight Card
     Scroll Highlight Detail Page
-
-    # Edit ImageAlbum Highlight
+    Check Detail After Edit
 
     Close Browser
