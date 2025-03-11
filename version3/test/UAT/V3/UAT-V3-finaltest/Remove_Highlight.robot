@@ -213,21 +213,77 @@ Verify Highlight Images Match
 
     Log    "✅ รูปทั้งหมดจาก Highlight Table ตรงกับรูปในหน้า Home"
 
+Keep Image For REMOVE
+    # ดึงรูปภาพที่ต้องการเก็บไว้เพื่อใช้ในการลบจาก carousel-inner
+    ${home_highlight_image}=    Get Element Attribute    xpath=//div[@class='carousel-inner']//img[1]    src
+    Set Global Variable    ${home_highlight_image}
+    Log    "รูปภาพที่ต้องการเก็บไว้เพื่อใช้ในการลบ: ${home_highlight_image}"
+
+    # ตรวจสอบว่ารูปภาพถูกเก็บไว้ในตัวแปร ${home_highlight_image} หรือไม่
+    Run Keyword If    "${home_highlight_image}" == ""    Fail    "❌ ไม่พบรูปภาพที่ต้องการเก็บไว้"
+
+    # ตรวจสอบว่ารูปภาพถูกเก็บไว้ในตัวแปร ${home_highlight_image} หรือไม่
+    Log    "✅ รูปภาพถูกเก็บไว้ในตัวแปร ${home_highlight_image}"
+
+    # ตรวจสอบว่ารูปภาพถูกเก็บไว้ในตัวแปร ${home_highlight_image} หรือไม่
+    Log    "รูปภาพที่ต้องการเก็บไว้เพื่อใช้ในการลบ: ${home_highlight_image}"
+
+    # ตรวจสอบว่ารูปภาพถูกเก็บไว้ในตัวแปร ${home_highlight_image} หรือไม่
+    Run Keyword If    "${home_highlight_image}" == ""    Fail    "❌ ไม่พบรูปภาพที่ต้องการเก็บไว้"
+
+Click Profile Icon    
+    Wait Until Element Is Visible    xpath=//a[contains(@class, 'ms-3 me-3 text-secondary')]    timeout=10s
+    Click Element    xpath=//a[contains(@class, 'ms-3 me-3 text-secondary')]
+    Sleep    2s
+
+Click MANAGE HIGHLIGHTS
+    Click Link    xpath=//a[@class='nav-link' and contains(span, 'Manage Highlights')]
+    Sleep    1s
+
+Remove Highlight
+    # ตรวจสอบว่า ID ถูกเพิ่มลงในตาราง highlight-table
+    ${highlight_table_row_xpath}=    Set Variable    xpath=//table[@id='highlight-table']//tr[td/img[@src='${home_highlight_image}']]
+    Wait Until Keyword Succeeds    15s    2s    Element Should Be Visible    ${highlight_table_row_xpath}
+
+    # ตรวจสอบว่า ID ถูกเพิ่มลงในตาราง highlight-table
+    ${highlight_table_row}=    Set Variable    ${highlight_table_row_xpath}//td[2]//img//@src
+    Log    "highlight_table_row: ${highlight_table_row}"
+    Log    "home_highlight_image: ${home_highlight_image}"
+    Should Contain    ${highlight_table_row}    ${home_highlight_image}
+    
+    # รอให้ REMOVE ปรากฏในแถวนั้นๆ
+    ${remove_button_xpath}=    Set Variable    xpath=//table[@id='highlight-table']//tr[td/img[@src='${home_highlight_image}']]//button[contains(@class,'btn-remove')]
+    Wait Until Keyword Succeeds    30s    2s    Element Should Be Visible    ${remove_button_xpath}
+    Log    "REMOVE พร้อมให้คลิกแล้ว"
+
+    # ลบ highlight
+    # รอให้ปุ่ม REMOVE ปรากฏและพร้อมใช้งาน
+    Wait Until Element Is Visible    ${remove_button_xpath}    timeout=15s
+    Wait Until Element Is Enabled    ${remove_button_xpath}    timeout=15s
+    
+    # เลื่อน Scroll ไปที่ปุ่ม REMOVE ของ Highlight ที่ต้องการลบ
+    Scroll Element Into View    ${remove_button_xpath}
+    Wait Until Element Is Visible    ${remove_button_xpath}    timeout=5s
+
+    # รอสักครู่เพื่อให้แน่ใจว่าปุ่มพร้อมใช้งาน
+    Sleep    1s
+
+    Click Button    ${remove_button_xpath}
+
+    Sleep    3s
+
 *** Test Cases ***
 Test Create Highlight
     [Tags]    UAT-V3-final1
     [Documentation]    ทดสอบการสร้างข่าวและดูข่าวสำเร็จ
         
-    Go To Manage Highlights Page
-
-    Create Highlight
-    Create Highlight
-
-    Click Add Highlights
-    Click Add Highlights
-
-    Count Highlight
+    Go To Manage Highlights Page 
     Click Home Icon
+    Keep Image For REMOVE
+    Click Profile Icon
+    Click MANAGE HIGHLIGHTS
+    Remove Highlight 
+    Count Highlight
+    Click Home Icon    
     Verify Highlight Images Match
-
     Close Browser
