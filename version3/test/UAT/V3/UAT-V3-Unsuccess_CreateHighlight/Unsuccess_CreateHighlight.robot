@@ -6,8 +6,8 @@ Library          Collections
 ${NEWS_ID}
 ${ADD_HIGHLIGHT_BTN}
 ${HOME_HIGHLIGHT_IMAGE_XPATH}    xpath=//div[@id='highlightNews']//img
-${COVER_IMAGE}    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg
-${ALBUM_IMAGES}    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg\nC:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg
+${COVER_IMAGE}    C:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg
+${ALBUM_IMAGES}    C:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_1.jpeg\nC:/work_2025/git-group-repository-group-4-sec-2/test_v1/Test-Data/1_2.jpeg
 ${DESCRIPTION_TEXT}    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
 ${LINK_TEXT}    https://www.google.com
 

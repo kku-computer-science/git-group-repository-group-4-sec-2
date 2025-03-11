@@ -1,12 +1,13 @@
 *** Settings ***
-Resource          ../../resource_v3.robot
+Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/UAT/resource_v3.robot
 # Library           SeleniumLibrary
 
 *** Variables ***
 ${FIRST_ROW}    xpath=//table[@id='news-table']//tbody/tr[1]
 ${FIRST_DELETE_BUTTON}    xpath=//table[@id='news-table']//tbody/tr[1]//button[contains(@class,'btn-delete')]
-${one_picture}    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg
-${two_pictures}    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg\nC:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg
+${one_picture}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_1.jpeg
+${two_pictures}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg\n/Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg
+
 *** Keywords ***
 
 Delete Highlight
