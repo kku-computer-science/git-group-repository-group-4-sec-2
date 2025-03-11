@@ -5,12 +5,18 @@ Resource          ../../resource_v3.robot
 *** Variables ***
 ${LAST_ROW}    xpath=//table[@id='news-table']//tbody/tr[last()]
 ${LAST_DELETE_BUTTON}    xpath=//table[@id='news-table']//tbody/tr[last()]//button[contains(@class,'btn-delete')]
+${FIRST_ROW}    xpath=//table[@id='news-table']//tbody/tr[1]
+${FIRST_DELETE_BUTTON}    xpath=//table[@id='news-table']//tbody/tr[1]//button[contains(@class,'btn-delete')]
 ${one_picture}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_1.jpeg
 ${two_pictures}    /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg\n/Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_3.jpeg
 
 *** Keywords ***
 
-Delete Highlight
+Refresh Page Once
+    Reload Page
+    Sleep    2s  # รอให้หน้าโหลดเสร็จ
+
+Delete Last Highlight
 
     # รอให้ตารางโหลดก่อน
     Wait Until Element Is Visible    ${LAST_ROW}    timeout=10s
@@ -25,6 +31,28 @@ Delete Highlight
 
     # คลิกปุ่มลบ
     Click Button    ${LAST_DELETE_BUTTON}
+
+    # รอให้ Popup ยืนยันแสดงขึ้นมา
+    Wait Until Element Is Visible    xpath=//h2[@id='swal2-title' and text()='คุณแน่ใจหรือไม่?']    timeout=5s
+    Click Button    xpath=//button[contains(@class,'swal2-confirm') and text()='ใช่, ลบเลย!']
+
+    Sleep    5s
+
+Delete First Highlight
+
+    # รอให้ตารางโหลดก่อน
+    Wait Until Element Is Visible    ${FIRST_ROW}    timeout=10s
+    Wait Until Element Is Visible    ${FIRST_DELETE_BUTTON}    timeout=5s
+
+    # Log ตรวจสอบ XPath
+    Log    ${FIRST_DELETE_BUTTON}
+
+    # เลื่อน Scroll ไปที่ปุ่มลบของแถวสุดท้าย
+    Scroll Element Into View    ${FIRST_DELETE_BUTTON}
+    Sleep    1s   # รอให้หน้าโหลดและปุ่มแสดงผล
+
+    # คลิกปุ่มลบ
+    Click Button    ${FIRST_DELETE_BUTTON}
 
     # รอให้ Popup ยืนยันแสดงขึ้นมา
     Wait Until Element Is Visible    xpath=//h2[@id='swal2-title' and text()='คุณแน่ใจหรือไม่?']    timeout=5s
@@ -58,54 +86,53 @@ Create Highlight
     # หรือใช้ Wait Until Element Is Visible ก่อนคลิก
     Wait Until Element Is Visible    xpath=//button[@type='submit' and contains(text(),'Save')]
     Execute JavaScript    document.querySelector("button.btn.btn-dark").click();
-    Wait Until Page Contains    สร้างข่าวสำเร็จ
+    Wait Until Page Contains    สร้าง Highlight สำเร็จ
     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
 
 *** Test Cases ***
 
-# Test Go To Manage Highlights Page
-#     Go To Manage Highlights Page
-#     Close Browser
+Test Go To Manage Highlights Page
+    Go To Manage Highlights Page
+    Close Browser
 
-# Test Create Highlight Success
-#     # ✅ Passed
-#     [Tags]    UAT-V2-03
-#     [Documentation]    ทดสอบการสร้างข่าวใหม่สำเร็จ
-#     Go To Manage Highlights Page
-#     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
+Test Create Highlight Success
+    # ✅ Passed
+    [Documentation]    ทดสอบการสร้างข่าวใหม่สำเร็จ
+    Go To Manage Highlights Page
+    Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
 
-#     Scroll Element Into View    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
-#     Click Link    xpath=//a[contains(text(), '+ Create')]
-#     Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
-#     Location Should Be    ${CREATE_NEWS_URL}
+    Scroll Element Into View    xpath=//a[contains(@class, 'btn-primary') and contains(text(), 'Create')]
+    Click Link    xpath=//a[contains(text(), '+ Create')]
+    Wait Until Location Is    ${CREATE_NEWS_URL}    ${DELAY}
+    Location Should Be    ${CREATE_NEWS_URL}
 
-#     Click Element    id=coverImageBox
-#     Choose File    xpath=//input[@type='file']    ${one_picture}
-#     Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
+    Click Element    id=coverImageBox
+    Choose File    xpath=//input[@type='file']    ${one_picture}
+    Input Text    id=title    โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
 
-#     Click Element   xpath=//span[contains(@class, 'select2-selection')]
-#     Sleep    1s
-#     Click Element    xpath=//li[contains(text(), 'ทุนวิจัยและโอกาสสนับสนุน')]
-#     Sleep    1s
+    Click Element   xpath=//span[contains(@class, 'select2-selection')]
+    Sleep    1s
+    Click Element    xpath=//li[contains(text(), 'ทุนวิจัยและโอกาสสนับสนุน')]
+    Sleep    1s
 
-#     Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
-#     Input Text    id=link   https://www.google.com
-#     Scroll Element Into View    id=imageAlbumBox
-#     Click Element    id=imageAlbumBox
-#     Choose File    id=image_album    ${two_pictures}
-#     Scroll Element Into View    xpath=//button[@type='submit' and contains(text(),'Save')]
+    Input Text    id=description    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ
+    Input Text    id=link   https://www.google.com
+    Scroll Element Into View    id=imageAlbumBox
+    Click Element    id=imageAlbumBox
+    Choose File    id=image_album    ${two_pictures}
+    Scroll Element Into View    xpath=//button[@type='submit' and contains(text(),'Save')]
 
-#     # หรือใช้ Wait Until Element Is Visible ก่อนคลิก
-#     Wait Until Element Is Visible    xpath=//button[@type='submit' and contains(text(),'Save')]
-#     Execute JavaScript    document.querySelector("button.btn.btn-dark").click();
-#     Wait Until Page Contains    สร้างข่าวสำเร็จ
-#     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}
-#     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
+    # หรือใช้ Wait Until Element Is Visible ก่อนคลิก
+    Wait Until Element Is Visible    xpath=//button[@type='submit' and contains(text(),'Save')]
+    Execute JavaScript    document.querySelector("button.btn.btn-dark").click();
+    Wait Until Page Contains    สร้าง Highlight สำเร็จ
+    Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}
+    Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
 
-#     Delete Highlight
+    Delete Last Highlight
 
-#     Close Browser
+    Close Browser
 
 # Test Delete Highlights
 #     # ✅ Passed
@@ -142,13 +169,13 @@ Create Highlight
 #     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}
 #     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
 
-#     Delete Highlight
+#     Delete First Highlight
 
 #     Close Browser
 
 Test Add Highlights
     # ✅ Passed
-    [Tags]    UAT-V2-03
+
     [Documentation]    ทดสอบการเพิ่ม highlight ใหม่สำเร็จ
     Go To Manage Highlights Page
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
@@ -177,7 +204,7 @@ Test Add Highlights
     # หรือใช้ Wait Until Element Is Visible ก่อนคลิก
     Wait Until Element Is Visible    xpath=//button[@type='submit' and contains(text(),'Save')]
     Execute JavaScript    document.querySelector("button.btn.btn-dark").click();
-    Wait Until Page Contains    สร้างข่าวสำเร็จ
+    Wait Until Page Contains    สร้าง Highlight สำเร็จ
     Wait Until Location Is    ${MANAGE_HIGHLIGHTS_URL}
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
 
@@ -194,6 +221,9 @@ Test Add Highlights
     Wait Until Element Is Visible    xpath=//table[@id='highlight-table']//tr[td[normalize-space(text())='${NEWS_ID}']]    timeout=10s
     # รอให้ตารางอัปเดตก่อนตรวจสอบ
     Sleep    2s
+
+    Refresh Page Once
+
     # ตรวจสอบว่า ID ถูกเพิ่มลงในตาราง highlight-table
     ${highlight_table_row}=    Get Text    xpath=//table[@id='highlight-table']//tr[td[contains(text(),'${NEWS_ID}')]]
     Should Contain    ${highlight_table_row}    ${NEWS_ID}
@@ -211,12 +241,16 @@ Test Add Highlights
     Click Button    xpath=(//table[@id='highlight-table']//tr[td[contains(text(),'${HIGHLIGHT_ID}')]]//button[contains(@class,'btn-remove')])[1]
     # รอให้ Popup แจ้งเตือนปรากฏ
     Wait Until Element Is Visible    xpath=//div[contains(@class,'swal2-popup')]//h2[contains(text(),'นำออกจาก Highlights แล้ว!')]    timeout=5s
+    Sleep    3s
+
+    Refresh Page Once
+
     # รอให้ Highlight หายไปจากตาราง Show Highlights
-    Wait Until Element Is Not Visible    xpath=//table[@id='highlight-table']//tr[td[normalize-space(text())='${HIGHLIGHT_ID}']]    timeout=10s
+    # Wait Until Element Is Not Visible    xpath=//table[@id='highlight-table']//tr[td[normalize-space(text())='${HIGHLIGHT_ID}']]    timeout=10s
     # รอให้ตารางอัปเดตก่อนตรวจสอบ
     Sleep    2s
     
-    Delete Highlight
+    Delete Last Highlight
 
     Close Browser
 
@@ -295,9 +329,9 @@ Test Add Highlights
 
 #     Close Browser
 
-Test Add News To Full Highlights
+Test Add Highlights To Full Highlights
      # ✅ Passed
-    [Tags]    UAT-V1-03
+
     [Documentation]    ทดสอบการเพิ่ม Highlights เมื่อ Highlights เต็ม
     Go To Manage Highlights Page
     ${CREATE_COUNT}    Get Element Count    xpath=//table[@id='news-table']//tbody/tr
@@ -305,8 +339,9 @@ Test Add News To Full Highlights
         Create Highlight
         ${CREATE_COUNT}    Get Element Count    xpath=//table[@id='news-table']//tbody/tr
     END
-    Sleep    2s
-    Reload Page
+
+    Refresh Page Once
+
     ${ROW_COUNT}    Get Element Count    xpath=//table[@id='highlight-table']//tbody/tr
     Log To Console    จำนวนข่าวใน Highlights ก่อนเพิ่ม: ${ROW_COUNT}
 
@@ -336,12 +371,15 @@ Test Add News To Full Highlights
         ${ROW_COUNT}    Get Element Count    xpath=//table[@id='highlight-table']//tbody/tr
         Log To Console    จำนวนข่าวใน Highlights หลังเพิ่ม: ${ROW_COUNT}
 
+        Refresh Page Once
+
         # ตรวจสอบว่าข่าวหายไปจาก news-table
         ${NEWS_COUNT}    Get Element Count    xpath=//table[@id='news-table']//tr
         Exit For Loop If    ${NEWS_COUNT} == 0
     END
 
-    Reload Page
+    Refresh Page Once
+
     ${ADD_BUTTON_STATE}    Get Element Attribute    xpath=(//table[@id='news-table']//tr[1]//button[contains(@class,'btn-add')])[1]    disabled
     Should Be Equal As Strings    ${ADD_BUTTON_STATE}    true
     Location Should Be    ${MANAGE_HIGHLIGHTS_URL}
@@ -375,7 +413,7 @@ Test Add News To Full Highlights
 
     ${DELETE_COUNT}    Get Element Count    xpath=//table[@id='news-table']//tbody/tr
     WHILE    ${DELETE_COUNT} > 0    
-        Delete Highlight
+        Delete Last Highlight
         ${DELETE_COUNT}    Get Element Count    xpath=//table[@id='news-table']//tbody/tr
     END
 

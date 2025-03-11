@@ -14,7 +14,7 @@ Form Should Have Fail
 
 Test Open Home Page
      # ✅ Passed
-    [Tags]    UAT-V2-01
+    [Tags]    UAT-V3-01
     [Documentation]    ทดสอบการเปิดเว็บไซต์
     Open Chrome Browser
     Maximize Browser Window
@@ -22,14 +22,14 @@ Test Open Home Page
 
 Test Go To Login Page
      # ✅ Passed
-    [Tags]    UAT-V2-01
+    [Tags]    UAT-V3-01
     [Documentation]    ทดสอบการเข้าหน้า Login
     Go To Login Page
     Close Browser
     
 Test Login Role Staff Success
      # ✅ Passed
-    [Tags]    UAT-V2-01
+    [Tags]    UAT-V3-01
     [Documentation]    ทดสอบการ Login ของ Staff สำเร็จ
     Go To Login Page
     Login Staff
