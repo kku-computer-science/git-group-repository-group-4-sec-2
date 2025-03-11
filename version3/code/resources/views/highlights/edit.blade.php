@@ -59,7 +59,7 @@
 
                 <div class="form-group">
                     <label for="research_link">Additional Link</label>
-                    <input type="url" class="form-control" name="link" value="{{ $highlight->link ?? '' }}" placeholder="Enter your link">
+                    <input type="url" class="form-control" name="link" id="link" value="{{ $highlight->link ?? '' }}" placeholder="Enter your link">
                 </div>
 
 
