@@ -33,7 +33,7 @@ ${RESEARCHER_PASSWORD}      123456789
 ${INVALID_ADMIN_USERNAME}   thanlao@kku
 ${INVALID_PASSWORD}      111111111
 ${error_message}    Login Failed: Your user ID or password is incorrect
-${DELAY}    2
+${DELAY}    15
 
 ${TITLE}          โครงการทุนวิจัยและโอกาสสนับสนุนสำหรับนักวิจัยรุ่นใหม่
 ${DESCRIPTION}    เปิดรับสมัครทุนวิจัยสำหรับนักวิจัยรุ่นใหม่ เพื่อสนับสนุนการพัฒนาโครงการวิจัยที่มีศักยภาพ

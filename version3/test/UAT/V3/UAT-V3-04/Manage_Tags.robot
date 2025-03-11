@@ -1,5 +1,5 @@
 *** Settings ***
-Resource          /Users/fan/Desktop/myGitLocal/git-group-repository-group-4-sec-2/version3/test/UAT/resource_v3.robot
+Resource          ../../resource_v3.robot
 
 *** Variables ***
 ${CREATE_BUTTON}    xpath=//a[@data-bs-target='#createTagModal'][contains(text(), 'Create')]

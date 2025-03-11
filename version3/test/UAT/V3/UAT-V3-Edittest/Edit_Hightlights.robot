@@ -7,8 +7,8 @@ Library    Collections
 *** Variables ***
 ${LAST_ROW}    xpath=//table[@id='news-table']//tbody/tr[last()]
 ${LAST_DELETE_BUTTON}    xpath=//table[@id='news-table']//tbody/tr[last()]//button[contains(@class,'btn-delete')]
-${one_picture}    D:/projectSoftEn/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_1.jpeg
-${two_pictures}    D:/projectSoftEn/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg
+${one_picture}    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_1.jpeg
+${two_pictures}    C:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_1.jpeg\nC:/work_2025/git-group-repository-group-4-sec-2/version3/test/Test-Data/1_2.jpeg
 ${NEWS_ID}
 ${NEW_TITLE}    โครงการtttttttttttttttt
 ${ADD_HIGHLIGHT_BTN}
