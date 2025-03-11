@@ -29,3 +29,11 @@ _As an administrative staff, I want to present the highlights to all visitors._
 - จัดทำ **คู่มือการใช้งาน (User Manual)** เพื่อช่วยให้เจ้าหน้าที่สามารถใช้งานระบบ **Manage Highlight** ได้อย่างถูกต้องและมีประสิทธิภาพ  
 
 ---  
+
+### **11 มีนาคม 2025** 
+- แก้ไขในส่วนของ priority ให้ตรงกับหน้า Home
+- รวม Test อยู่ใน UAT-V3-finaltest
+- เขียน Change Log และ Document ทั้งหมด ลงใน GitHub repository
+
+---
+
